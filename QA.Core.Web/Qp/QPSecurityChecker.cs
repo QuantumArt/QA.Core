@@ -27,6 +27,11 @@ namespace QA.Core.Web.Qp
         /// <returns></returns>
         public virtual bool CheckAuthorization(HttpContextBase context)
         {
+            if (context.Session == null)
+            {
+                return false;
+            }
+
             if (AdministrationAuthorizationHelper.IsEnabled)
             {
                 if (context == null)

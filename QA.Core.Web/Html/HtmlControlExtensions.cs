@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -170,7 +171,7 @@ namespace QA.Core.Web.Html
 
             if (renderMode != TagRenderMode.EndTag)
             {
-                tag.MergeAttributes(new RouteValueDictionary(htmlAttributes));
+				tag.MergeAttributes(new RouteValueDictionary(htmlAttributes));
 
                 if (val != null)
                 {
@@ -200,9 +201,9 @@ namespace QA.Core.Web.Html
 
             if (renderMode != TagRenderMode.EndTag)
             {
-                if (control.HtmlAttributes is Dictionary<string, object>)
+                if (control.HtmlAttributes is IDictionary<string, object>)
                 {
-                    tag.MergeAttributes(new RouteValueDictionary((Dictionary<string, object>)control.HtmlAttributes));
+                    tag.MergeAttributes(new RouteValueDictionary((IDictionary<string, object>)control.HtmlAttributes));
                 }
                 else
                 {
@@ -403,17 +404,35 @@ namespace QA.Core.Web.Html
             return control;
         }
 
-        /// <summary>
-        /// Устанавливает дополнительные атрибуты контрола
-        /// </summary>
-        /// <typeparam name="T">Тип контрола</typeparam>
-        /// <param name="control">Контрол</param>
-        /// <param name="htmlAttributes">Атрибуты</param>
-        /// <returns></returns>
-        public static T SetHtmlAttributes<T>(
-            this T control,
-            object htmlAttributes) where T : HtmlTagControl
+	    /// <summary>
+	    /// Устанавливает дополнительные атрибуты контрола
+	    /// </summary>
+	    /// <typeparam name="T">Тип контрола</typeparam>
+	    /// <param name="control">Контрол</param>
+	    /// <param name="htmlAttributes">Атрибуты</param>
+	    /// <param name="replaceUnderscopes">автоматом заменять в именах подчеркивание на дефис</param>
+	    /// <returns></returns>
+	    public static T SetHtmlAttributes<T>(this T control, object htmlAttributes, bool replaceUnderscopes = false) where T : HtmlTagControl
         {
+	        if (replaceUnderscopes)
+	        {
+		        var attrsDic = htmlAttributes as IDictionary<string, object> ?? new RouteValueDictionary(htmlAttributes);
+
+				var invalidKeys = attrsDic.Where(x => x.Key.Contains("_")).ToArray();
+
+		        if (invalidKeys.Any())
+		        {
+					foreach (KeyValuePair<string, object> invalidKey in invalidKeys)
+					{
+						attrsDic.Remove(invalidKey.Key);
+
+						attrsDic[invalidKey.Key.Replace('_', '-')] = invalidKey.Value;
+					}
+
+					htmlAttributes = attrsDic;
+		        }
+	        }
+
             control.HtmlAttributes = htmlAttributes;
 
             return control;
