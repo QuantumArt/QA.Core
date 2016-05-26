@@ -1,22 +1,25 @@
 ﻿// Owners: Alexey Abretov, Nikolay Karlov
 
 using System;
-using System.IO;
-using NLog;
-using NLog.Config;
-using System.Diagnostics;
-using QA.Core.Logger;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using QA.Core.Logger;
 
 namespace QA.Core
 {
+
+    using NLog;
+    using NLog.Config;
+
+
     /// <summary>
     /// Реализует журналирование на основе Nlog
     /// </summary>
     public class NLogLogger : ILogger
     {
         private LogFactory _factory;
-
+        private Lazy<NLog.Logger> _logger;
         /// <summary>
         /// Инициализирует экземпляр журнала
         /// </summary>
@@ -47,6 +50,8 @@ namespace QA.Core
             {
                 _factory = new LogFactory();
             }
+
+            _logger = new Lazy<NLog.Logger>(() => _factory.GetCurrentClassLogger(), System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
         }
 
         /// <summary>
@@ -59,13 +64,13 @@ namespace QA.Core
         /// <summary>
         /// Экзеппляр журнала
         /// </summary>
-        protected NLog.Logger Logger
+        protected NLog.Logger CurrentLogger
         {
             get
             {
                 try
                 {
-                    return _factory.GetCurrentClassLogger();
+                    return _logger.Value;
                 }
                 catch
                 {
@@ -85,7 +90,7 @@ namespace QA.Core
             Exception exception,
             params object[] parameters)
         {
-            if (Logger == null)
+            if (CurrentLogger == null)
             {
                 return;
             }
@@ -96,7 +101,7 @@ namespace QA.Core
 
                 foreach (var ex in exception.Flat())
                 {
-                    Logger.ErrorException(ex.Message, ex);
+                    CurrentLogger.ErrorException(ex.Message, ex);
                 }
             }
             catch (Exception logEx)
@@ -113,14 +118,14 @@ namespace QA.Core
             string message,
             params object[] parameters)
         {
-            if (Logger == null)
+            if (CurrentLogger == null)
             {
                 return;
             }
 
             try
             {
-                Logger.Info(string.Format(message, parameters));
+                CurrentLogger.Info(string.Format(message, parameters));
             }
             catch (Exception ex)
             {
@@ -136,14 +141,14 @@ namespace QA.Core
            Func<string, string> message,
             params object[] parameters)
         {
-            if (Logger == null)
+            if (CurrentLogger == null)
             {
                 return;
             }
 
             try
             {
-                Logger.Info(() => message(string.Empty));
+                CurrentLogger.Info(() => message(string.Empty));
             }
             catch (Exception ex)
             {
@@ -159,14 +164,14 @@ namespace QA.Core
             string message,
             params object[] parameters)
         {
-            if (Logger == null)
+            if (CurrentLogger == null)
             {
                 return;
             }
 
             try
             {
-                Logger.Debug(string.Format(message, parameters));
+                CurrentLogger.Debug(string.Format(message, parameters));
             }
             catch (Exception ex)
             {
@@ -182,14 +187,14 @@ namespace QA.Core
             Func<string, string> message,
             params object[] parameters)
         {
-            if (Logger == null)
+            if (CurrentLogger == null)
             {
                 return;
             }
 
             try
             {
-                Logger.Debug(() => message(string.Empty));
+                CurrentLogger.Debug(() => message(string.Empty));
             }
             catch (Exception ex)
             {
@@ -206,7 +211,7 @@ namespace QA.Core
             Exception exception,
             params object[] parameters)
         {
-            if (Logger == null)
+            if (CurrentLogger == null)
             {
                 return;
             }
@@ -217,7 +222,7 @@ namespace QA.Core
 
                 foreach (var ex in exception.Flat())
                 {
-                    Logger.FatalException(ex.Message, ex);
+                    CurrentLogger.FatalException(ex.Message, ex);
                 }
             }
             catch
@@ -233,11 +238,11 @@ namespace QA.Core
         {
             if (args == null || args.Length == 0)
             {
-                Logger.Log(LogLevel.Error, message);
+                CurrentLogger.Log(LogLevel.Error, message);
             }
             else
             {
-                Logger.Log(LogLevel.Error, string.Format(message, args));
+                CurrentLogger.Log(LogLevel.Error, string.Format(message, args));
             }
         }
 
@@ -249,7 +254,7 @@ namespace QA.Core
         {
             try
             {
-                Logger.Log(LogLevel.Error, () => message(string.Empty));
+                CurrentLogger.Log(LogLevel.Error, () => message(string.Empty));
             }
             catch (Exception ex)
             {
@@ -265,11 +270,11 @@ namespace QA.Core
         {
             if (args == null || args.Length == 0)
             {
-                Logger.Log(LogLevel.Fatal, message);
+                CurrentLogger.Log(LogLevel.Fatal, message);
             }
             else
             {
-                Logger.Log(LogLevel.Fatal, string.Format(message, args));
+                CurrentLogger.Log(LogLevel.Fatal, string.Format(message, args));
             }
         }
 
@@ -281,7 +286,7 @@ namespace QA.Core
         {
             try
             {
-                Logger.Log(LogLevel.Fatal, () => message(string.Empty));
+                CurrentLogger.Log(LogLevel.Fatal, () => message(string.Empty));
             }
             catch (Exception ex)
             {
@@ -304,7 +309,7 @@ namespace QA.Core
         public void Log(Func<string> message, Action<IDictionary<object, object>> propertiesSetter, EventLevel eventLevel)
         {
             LogLevel logLevel = null;
-            var logger = Logger;
+            var logger = CurrentLogger;
             switch (eventLevel)
             {
                 case EventLevel.Debug:
@@ -355,7 +360,7 @@ namespace QA.Core
 
         public string GetGlobalContextVariable(string key)
         {
-           return GlobalDiagnosticsContext.Get(key);
+            return GlobalDiagnosticsContext.Get(key);
         }
     }
 }
