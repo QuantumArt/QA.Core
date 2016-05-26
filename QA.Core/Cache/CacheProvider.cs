@@ -11,18 +11,19 @@ namespace QA.Core
     /// </summary>
     public class CacheProvider : ICacheProvider
     {
-        private ObjectCache _cache;
+        private MemoryCache _cache;
         private object _syncRoot = new object();
 
         public CacheProvider()
         {
-            _cache = new MemoryCache(Guid.NewGuid().ToString());
+            var key = DateTime.Now.ToString("yyyy-MM-dd_HH:mm:ss.fff");
+            _cache = MemoryCache.Default;
         }
 
         /// <summary>
         /// Экземпляр хранилища
         /// </summary>
-        private ObjectCache Cache
+        internal MemoryCache Cache
         {
             get
             {

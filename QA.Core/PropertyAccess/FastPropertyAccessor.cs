@@ -31,22 +31,30 @@ namespace QA.Core
             var targetExpression = Expression.Parameter(typeof(object), propertyName);
             var valueExpression = Expression.Parameter(typeof(object), "value");
 
-            var mi = _objectType.GetProperty(propertyName).GetSetMethod();
-            var parameterType = mi.GetParameters().Select(x => x.ParameterType).FirstOrDefault();
 
-            // Создаем лямбда-выражение:
-            // "obj => { ((ObjectType)obj).set_PropertyName((PropertyType)value) }"
-            var setterExpression = Expression.Lambda<Action<object, object>>(
-                  Expression.Call(
-                      Expression.Convert(targetExpression, _objectType), // приводим object к типу объекта
-                      mi, // сеттер
-                      Expression.Convert(valueExpression, parameterType) // приводим object к типу поля
-                  ),
-                  targetExpression,
-                  valueExpression
-            );
+            try
+            {
+                var mi = _objectType.GetProperty(propertyName).GetSetMethod();
+                var parameterType = mi.GetParameters().Select(x => x.ParameterType).FirstOrDefault();
 
-            _setter = setterExpression.Compile();
+                // Создаем лямбда-выражение:
+                // "obj => { ((ObjectType)obj).set_PropertyName((PropertyType)value) }"
+                var setterExpression = Expression.Lambda<Action<object, object>>(
+                      Expression.Call(
+                          Expression.Convert(targetExpression, _objectType), // приводим object к типу объекта
+                          mi, // сеттер
+                          Expression.Convert(valueExpression, parameterType) // приводим object к типу поля
+                      ),
+                      targetExpression,
+                      valueExpression
+                );
+
+                _setter = setterExpression.Compile();
+            }
+            catch
+            {
+                _setter = (_, __) => { throw new InvalidProgramException("Type is readonly"); };
+            }
 
             ParameterExpression obj = Expression.Parameter(typeof(object), "obj");
 

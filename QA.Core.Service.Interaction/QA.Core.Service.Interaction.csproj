@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IServiceResult.cs" />
+    <Compile Include="ServiceResultWithNoReturnValue.cs" />
     <Compile Include="WebServiceToken.cs" />
     <Compile Include="QAWebServiceBase.cs" />
     <Compile Include="QAClientBase.cs" />

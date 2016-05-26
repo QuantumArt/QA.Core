@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -78,28 +78,28 @@
     <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.Helpers.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="System.Web.Mvc, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.1.1\lib\net45\System.Web.Mvc.dll</HintPath>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.Razor.3.1.1\lib\net45\System.Web.Razor.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.WebPages.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -109,6 +109,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cache\CacheExtensions.cs" />
+    <Compile Include="Cache\VersionedCacheProvider3.cs" />
+    <Compile Include="Cache\VersionedCacheProvider2.cs" />
     <Compile Include="Cache\CacheProvider.cs" />
     <Compile Include="Cache\ICacheProvider.cs" />
     <Compile Include="Cache\InvalidationMode.cs" />
@@ -118,13 +120,25 @@
     <Compile Include="Cache\VersionedCacheProvider.cs" />
     <Compile Include="Collections\ReadOnlyDictionary`2.cs" />
     <Compile Include="Extensions\FileExtensions.cs" />
+    <Compile Include="FastWildcardMatcher.cs" />
     <Compile Include="IContentInvalidator.cs" />
+    <Compile Include="IWildcardMatcher.cs" />
+    <Compile Include="Logger\ILoggerExtensions.cs" />
     <Compile Include="Logger\EventLevel.cs" />
     <Compile Include="Logger\TextWriterLogger.cs" />
+    <Compile Include="Performance\ConcurrentBuffer.cs" />
+    <Compile Include="Performance\OperationCancelledException.cs" />
+    <Compile Include="Performance\RapidFailConfig.cs" />
+    <Compile Include="Performance\RapidFailProtector.cs" />
+    <Compile Include="PropertyAccess\FastPropertyAccessor`2.cs" />
+    <Compile Include="PropertyAccess\FastPropertyAccessor`1.cs" />
+    <Compile Include="PropertyAccess\IPropertyAccessor`2.cs" />
+    <Compile Include="PropertyAccess\IPropertyAccessor`1.cs" />
     <Compile Include="PropertyAccess\ReflectedPropertyAccessor.cs" />
     <Compile Include="PropertyAccess\EmitPropertyAccessor.cs" />
     <Compile Include="PropertyAccess\FastPropertyAccessor.cs" />
     <Compile Include="PropertyAccess\IPropertyAccessor.cs" />
+    <Compile Include="PropertyAccess\TypeDescriptorPropertyAccessor.cs" />
     <Compile Include="Replacing\SwapReplacementProcessor.cs" />
     <Compile Include="Replacing\CultureDependentMemberAttribute.cs" />
     <Compile Include="Replacing\IReplacementProcessor.cs" />
@@ -175,6 +189,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
