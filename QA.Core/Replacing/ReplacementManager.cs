@@ -30,7 +30,9 @@ namespace QA.Core.Replacing
         public object Process(object obj, string cultureKey)
         {
             if (obj == null)
-                throw new ArgumentNullException("obj");
+            {
+                return null;
+            }
 
             IReplacementProcessor processor = Get(obj);
 
@@ -46,7 +48,10 @@ namespace QA.Core.Replacing
         public IEnumerable<object> ProcessCollection(IEnumerable<object> obj, string cultureKey)
         {
             if (obj == null)
-                throw new ArgumentNullException("obj");
+            {
+                return null;
+            }
+            
             IReplacementProcessor processor = null;
 
             foreach (object item in obj)
@@ -55,6 +60,7 @@ namespace QA.Core.Replacing
                 processor.Process(item, cultureKey);
 
             }
+
             return obj;
         }
 
@@ -66,7 +72,9 @@ namespace QA.Core.Replacing
         public object Process(object obj)
         {
             if (obj == null)
-                throw new ArgumentNullException("obj");
+            {
+                return null;
+            }
 
             IReplacementProcessor processor = Get(obj);
 

@@ -10,7 +10,7 @@ namespace QA.Core.Replacing
     public class ReplacementProcessor<TModel> : IReplacementProcessor<TModel>
         where TModel : class
     {
-        IReplacementProcessor processor = new ReplacementProcessor(typeof(TModel));
+        IReplacementProcessor processor = new SwapReplacementProcessor(typeof(TModel));
 
         /// <summary>
         /// Тип

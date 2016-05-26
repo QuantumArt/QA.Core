@@ -58,10 +58,14 @@ namespace QA.Core.Linq
                 MethodCallExpression cexp = (MethodCallExpression)exp;
 
                 if (cexp.Method.IsStatic == false)
-                    throw new InvalidOperationException("Invalid type of expression.");
-
-                foreach (var arg in cexp.Arguments)
-                    CollectRelationalMembers(arg, members);
+                {
+                    members.Add(cexp.Method);
+                }
+                else
+                {
+                    foreach (var arg in cexp.Arguments)
+                        CollectRelationalMembers(arg, members);
+                }
             }
             else if (exp.NodeType == ExpressionType.Parameter)
             {

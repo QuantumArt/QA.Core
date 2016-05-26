@@ -11,11 +11,20 @@
 using System;
 using System.Collections;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 namespace QA.Core
 {
-    /// <summary>
+	/// <summary>
+	/// Выставляется у полей и пропертей что бы ObjectDumper их игнорировал
+	/// </summary>
+	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+	public class IgnoreWhileDumpingAttribute : Attribute
+	{
+	}
+
+	/// <summary>
     /// Сериализация текущего состояния объекта в поток/строку
     /// <remarks>
     /// Используется для журналирования состояния объектов. 
@@ -165,7 +174,10 @@ namespace QA.Core
                 }
                 else
                 {
-                    MemberInfo[] members = element.GetType().GetMembers(BindingFlags.Public | BindingFlags.Instance);
+					MemberInfo[] members = element.GetType().GetMembers(BindingFlags.Public | BindingFlags.Instance)
+						.Where(x => !Attribute.IsDefined(x, typeof(IgnoreWhileDumpingAttribute)))
+						.ToArray();
+
                     WriteIndent();
                     Write(prefix);
                     bool propWritten = false;
