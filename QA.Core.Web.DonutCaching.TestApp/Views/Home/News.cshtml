@@ -1,0 +1,7 @@
+﻿@using QA.Core.Web
+Частичный вложенный кеш
+@Html.Partial("Widget")
+no-cache
+@Html.NoCache(@<div class="small no-cache">
+    Дата создания:<strong> @DateTime.Now</strong></div>)
+@ViewBag.Message

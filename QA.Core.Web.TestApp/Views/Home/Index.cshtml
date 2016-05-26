@@ -1,0 +1,38 @@
+﻿@model QA.Core.Web.TestApp.Models.TestModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>TestModel</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.MyProperty1)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.MyProperty1)
+            @Html.ValidationMessageFor(model => model.MyProperty1)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.MyProperty2)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.MyProperty2)
+            @Html.ValidationMessageFor(model => model.MyProperty2)
+        </div>
+
+        @ViewBag.Message
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}

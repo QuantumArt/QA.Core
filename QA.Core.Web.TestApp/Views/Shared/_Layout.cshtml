@@ -1,0 +1,35 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>_Layout</title>
+    <script src="~/Scripts/jquery-1.7.1.js"></script>
+    <style>
+        .fieldset
+        {
+            display: inline-block;
+            height: 300px;
+            width: 24%;
+            min-width:300px
+        }
+    </style>
+</head>
+<body>
+    <div class="fieldset">
+        @{Html.RenderAction("AjaxForm1");}
+    </div>
+    <div class="fieldset">
+        @RenderBody()
+    </div>
+    <div class="fieldset">
+        @{Html.RenderAction("AjaxForm2");}
+    </div>
+    <div class="fieldset">
+        @{Html.RenderAction("AjaxForm3");}
+    </div>
+</body>
+</html>

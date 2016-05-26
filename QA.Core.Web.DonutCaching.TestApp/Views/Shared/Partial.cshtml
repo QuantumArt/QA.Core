@@ -1,0 +1,10 @@
+﻿@using QA.Core.Web
+<div class="widget">
+    <fieldset>
+        <p>
+            User-Agent: @Html.ViewContext.HttpContext.Request.UserAgent
+        </p>
+        @Html.NoCache(@<div class="small no-cache">
+            Дата создания:<strong> @DateTime.Now</strong></div>)
+    </fieldset>
+</div>
