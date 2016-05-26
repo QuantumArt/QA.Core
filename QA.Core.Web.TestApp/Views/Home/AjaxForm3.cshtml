@@ -1,0 +1,41 @@
+﻿@model QA.Core.Web.TestApp.Models.TestModel
+@using QA.Core.Web
+
+<h2>AjaxForm3</h2>
+@using (Html.BeginForm("AjaxFormPost3", "Home", FormMethod.Post, new { id = "f3" }))
+{
+    <fieldset>
+        Values to submit:
+        <ul>
+            <li>@Model.MyProperty1</li>
+            <li>@Model.MyProperty2</li>
+        </ul>
+        <legend>AjaxForm3</legend>
+        <input type="submit" value="submit ajax" />
+    </fieldset>
+}
+<script>
+    $(function () {
+        $("#f3").submit(function (e) {
+            if (e && e.preventDefault) {
+                e.preventDefault();
+            }
+            $.ajax({
+                type: 'POST',
+                url: $(this).attr('action'),
+                headers: {
+                    '@(1234)': '@(Html.GetAntiForgeryToken(headerKey: "1234"))'
+                },
+                data: JSON.parse('@(Html.Raw(new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(Model)))'),
+                success: function (result) {
+                    alert(result);
+                },
+                error: function () {
+                    alert("error");
+                }
+            });
+
+            return false;
+        });
+    });
+</script>
