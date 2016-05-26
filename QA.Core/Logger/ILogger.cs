@@ -96,20 +96,20 @@ namespace QA.Core
            Func<string, string> message,
            params object[] parameters);
 
-        /// <summary>
-        /// Добавление сообщения с долполнительными параметрами
-        /// </summary>
-        /// <param name="message"></param>
-        /// <param name="propertiesSetter"></param>
-        /// <param name="eventLevel"></param>
+        ///// <summary>
+        ///// Добавление сообщения с долполнительными параметрами
+        ///// </summary>
+        ///// <param name="message"></param>
+        ///// <param name="propertiesSetter"></param>
+        ///// <param name="eventLevel"></param>
         //void Log(Func<string> message, Action<IDictionary<object, object>> propertiesSetter, EventLevel eventLevel);
 
-        /// <summary>
-        /// Добавление сообщения
-        /// </summary>
-        /// <param name="message"></param>
-        /// <param name="propertiesSetter"></param>
-        /// <param name="eventLevel"></param>
-        //void Log(Func<string> message, EventLevel eventLevel);
+        ///// <summary>
+        ///// Добавление сообщения
+        ///// </summary>
+        ///// <param name="message"></param>
+        ///// <param name="propertiesSetter"></param>
+        ///// <param name="eventLevel"></param>
+        void Log(Func<string> message, EventLevel eventLevel);
     }
 }

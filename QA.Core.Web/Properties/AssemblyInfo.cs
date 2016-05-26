@@ -2,7 +2,9 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Web;
+using QA.Core.Web;
 using QA.Core.Web.Properties;
+using QA.Core;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
@@ -10,9 +12,9 @@ using QA.Core.Web.Properties;
 [assembly: AssemblyTitle("QA.Core.Web")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("QA.Core.Web")]
-[assembly: AssemblyCopyright("Copyright ©  2011")]
+[assembly: AssemblyCompany("Quantum Art")]
+[assembly: AssemblyProduct("QA.Core")]
+[assembly: AssemblyCopyright("Copyright © 2011-2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -34,9 +36,10 @@ using QA.Core.Web.Properties;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.*")]
+[assembly: AssemblyVersion("3.0.0.0")]
+[assembly: AssemblyFileVersion("3.0.0.0")]
 
 // Позволяем тестировать internals
-[assembly: InternalsVisibleTo("QA.MTS.VoiceMail.WebApp.Tests")]
 [assembly: PreApplicationStartMethod(typeof(PreApplicationInitializer), "Start")]
 
+[assembly:TypeForwardedTo(typeof(IContentInvalidator))]

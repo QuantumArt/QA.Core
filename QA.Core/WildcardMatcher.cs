@@ -11,7 +11,7 @@ namespace QA.Core
     /// Класс, анализирующий соответствие строки и wildcard. 
     /// Примеры:  *.js
     /// </summary>
-    public class WildcardMatcher
+    public class WildcardMatcher : IWildcardMatcher
     {
         private Dictionary<string, Regex> _dictionary;
         private WildcardMatchingOption _option;
@@ -53,7 +53,7 @@ namespace QA.Core
         /// </summary>
         /// <param name="text">строка для проверки</param>
         /// <returns></returns>
-        public IEnumerable<string> Match(string text)
+        public virtual IEnumerable<string> Match(string text)
         {
             foreach (var item in _dictionary)
             {

@@ -1,5 +1,6 @@
 ﻿// Owners: Karlov Nikolay, Abretov Alexey
 
+using QA.Core;
 using System;
 using System.Linq;
 using System.Net;
