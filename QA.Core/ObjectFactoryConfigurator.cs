@@ -54,7 +54,7 @@ namespace QA.Core
             }
             catch (Exception ex)
             {
-                if (shouldFailOnErrors)
+                //if (shouldFailOnErrors)
                     throw new InvalidOperationException("An error occured while initializing unity container.", ex);
             }
 

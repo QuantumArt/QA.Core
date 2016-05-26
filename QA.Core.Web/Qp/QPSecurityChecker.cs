@@ -4,8 +4,8 @@ using System.Data;
 using System.ServiceModel;
 using System.Web;
 using QA.Core.Service.Interaction;
-using Quantumart.QPublishing;
 using Quantumart.QPublishing.Database;
+using Quantumart.QPublishing.OnScreen;
 
 namespace QA.Core.Web.Qp
 {

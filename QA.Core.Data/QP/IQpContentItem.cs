@@ -1,5 +1,5 @@
 ﻿using System;
-using Quantumart.QPublishing;
+using Quantumart.QPublishing.Info;
 
 namespace QA.Core.Data.QP
 {

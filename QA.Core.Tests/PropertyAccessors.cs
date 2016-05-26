@@ -22,6 +22,51 @@ namespace QA.Core.Tests
 
         [TestCategory("ProertyAccessor: tests")]
         [TestMethod]
+        public void Test_ProertyAccessor_Fast_Generic_Gets()
+        {
+            var stub = new StubClass2 { StringProperty = "test" };
+
+            IPropertyAccessor<StubClass2> accessor = new FastPropertyAccessor<StubClass2>("StringProperty");
+
+            Assert.AreEqual("test", (string)accessor.GetValue(stub));
+        }
+
+
+        [TestCategory("ProertyAccessor: tests")]
+        [TestMethod]
+        public void Test_ProertyAccessor_Fast_Generic2_Gets()
+        {
+            var stub = new StubClass2 { StringProperty = "test" };
+
+            var accessor = new FastPropertyAccessor<StubClass2, string>("StringProperty");
+
+            Assert.AreEqual("test", accessor.GetValue(stub));
+        }
+
+        [TestCategory("ProertyAccessor: tests")]
+        [TestMethod]
+        public void Test_ProertyAccessor_Fast_Generic_Sets()
+        {
+            var stub = new StubClass2 { StringProperty = "test" };
+
+            var accessor = new FastPropertyAccessor<StubClass2, string>("StringProperty");
+            accessor.SetValue(stub, "test2");
+            Assert.AreEqual("test2", stub.StringProperty);
+        }
+
+        [TestCategory("ProertyAccessor: tests")]
+        [TestMethod]
+        public void Test_ProertyAccessor_Fast_Generic2_Sets()
+        {
+            var stub = new StubClass2 { StringProperty = "test" };
+
+            IPropertyAccessor<StubClass2> accessor = new FastPropertyAccessor<StubClass2>("StringProperty");
+            accessor.SetValue(stub, "test2");
+            Assert.AreEqual("test2", stub.StringProperty);
+        }
+
+        [TestCategory("ProertyAccessor: tests")]
+        [TestMethod]
         public void Test_ProertyAccessor_Fast_Sets()
         {
             var stub = new StubClass2 { StringProperty = null };
@@ -168,11 +213,33 @@ namespace QA.Core.Tests
         const int LoopCount = 1000000;
         [TestCategory("ProertyAccessor: benchmarks")]
         [TestMethod]
+        public void Test_ProertyAccessor_Fast_Gets_Generic2_Benchmark()
+        {
+            var stub = new StubClass2 { StringProperty = "test" };
+
+            var accessor = new FastPropertyAccessor<StubClass2, string>("StringProperty");
+
+            DoGetStuff(stub, accessor);
+        }
+
+        [TestCategory("ProertyAccessor: benchmarks")]
+        [TestMethod]
         public void Test_ProertyAccessor_Fast_Gets_Benchmark()
         {
             var stub = new StubClass2 { StringProperty = "test" };
 
-            IPropertyAccessor accessor = new FastPropertyAccessor(typeof(StubClass2), "StringProperty");
+            var accessor = new FastPropertyAccessor(typeof(StubClass2), "StringProperty");
+
+            DoGetStuff(stub, accessor);
+        }
+
+        [TestCategory("ProertyAccessor: benchmarks")]
+        [TestMethod]
+        public void Test_ProertyAccessor_Fast_Gets_Generic1_Benchmark()
+        {
+            var stub = new StubClass2 { StringProperty = "test" };
+
+            var accessor = new FastPropertyAccessor<StubClass2>("StringProperty");
 
             DoGetStuff(stub, accessor);
         }
@@ -184,6 +251,28 @@ namespace QA.Core.Tests
             var stub = new StubClass2 { };
 
             IPropertyAccessor accessor = new FastPropertyAccessor(typeof(StubClass2), "StringProperty");
+
+            DoSetStuff(stub, "test value to set", accessor);
+        }
+
+        [TestCategory("ProertyAccessor: benchmarks")]
+        [TestMethod]
+        public void Test_ProertyAccessor_Fast_Sets_Generic_Benchmark()
+        {
+            var stub = new StubClass2 { };
+
+            var accessor = new FastPropertyAccessor<StubClass2>("StringProperty");
+
+            DoSetStuff(stub, "test value to set", accessor);
+        }
+
+        [TestCategory("ProertyAccessor: benchmarks")]
+        [TestMethod]
+        public void Test_ProertyAccessor_Fast_Sets_Generic2_Benchmark()
+        {
+            var stub = new StubClass2 { };
+
+            var accessor = new FastPropertyAccessor<StubClass2, string>("StringProperty");
 
             DoSetStuff(stub, "test value to set", accessor);
         }
@@ -260,6 +349,8 @@ namespace QA.Core.Tests
             DoGetStuff(new StubClass2 { StringProperty = "test" }, new EmitPropertyAccessor(typeof(StubClass2), "StringProperty"));
             DoGetStuff(new StubClass2 { StringProperty = "test" }, new FastPropertyAccessor(typeof(StubClass2), "StringProperty"));
             DoGetStuff(new StubClass2 { StringProperty = "test" }, new ReflectedPropertyAccessor(typeof(StubClass2), "StringProperty"));
+            DoGetStuff(new StubClass2 { StringProperty = "test" }, new FastPropertyAccessor<StubClass2>("StringProperty"));
+            DoGetStuff(new StubClass2 { StringProperty = "test" }, new FastPropertyAccessor<StubClass2, string>("StringProperty"));
         }
 
         [TestCategory("ProertyAccessor: benchmarks")]
@@ -272,23 +363,28 @@ namespace QA.Core.Tests
             DoSetStuff(new StubClass2 { }, "test value to set", new EmitPropertyAccessor(typeof(StubClass2), "StringProperty"));
             DoSetStuff(new StubClass2 { }, "test value to set", new FastPropertyAccessor(typeof(StubClass2), "StringProperty"));
             DoSetStuff(new StubClass2 { }, "test value to set", new ReflectedPropertyAccessor(typeof(StubClass2), "StringProperty"));
+            DoSetStuff(new StubClass2 { }, "test value to set", new FastPropertyAccessor<StubClass2>("StringProperty"));
+            DoSetStuff(new StubClass2 { }, "test value to set", new FastPropertyAccessor<StubClass2, string>("StringProperty"));
         }
         #endregion
 
         #region Helpers
-        private static void DoGetStuff(StubClass2 stub, IPropertyAccessor accessor)
+
+        private static void DoGetStuff<T, P>(T stub, IPropertyAccessor<T, P> accessor)
         {
             var st = new Stopwatch();
             st.Start();
+            P val = default(P);
+
             for (int i = 0; i < LoopCount; i++)
             {
-                var val = accessor.GetValue(stub);
+                val = accessor.GetValue(stub);
             }
             st.Stop();
             Console.WriteLine(string.Format("Get {0}: {1}", accessor, st.ElapsedMilliseconds));
         }
 
-        private static void DoSetStuff(StubClass2 stub, string value, IPropertyAccessor accessor)
+        private static void DoSetStuff<T, P>(T stub, P value, IPropertyAccessor<T, P> accessor)
         {
             var st = new Stopwatch();
             st.Start();
@@ -333,7 +429,7 @@ namespace QA.Core.Tests
             }
             st.Stop();
             Console.WriteLine(string.Format("{0}: {1}", "Baseline (empty loop)", st.ElapsedMilliseconds));
-        } 
+        }
         #endregion
     }
 }
