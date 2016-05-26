@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using Quantumart.QPublishing;
 using Quantumart.QPublishing.Database;
+using Quantumart.QPublishing.Info;
 
 namespace QA.Core.Data.QP
 {

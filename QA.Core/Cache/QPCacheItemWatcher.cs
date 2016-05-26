@@ -6,17 +6,19 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading;
+using QA.Core.Cache;
+using System.Transactions;
 
 namespace QA.Core.Data
 {
     /// <summary>
     /// Класс, отслеживающий изменения в БД
     /// </summary>
-    public class QPCacheItemWatcher : IDisposable
+    public class QPCacheItemWatcher : IDisposable, ICacheItemWatcher
     {
         private static readonly object _locker = new object();
         private readonly Timer _timer;
-        private readonly ConnectionStringSettings _connectionString;
+        protected readonly ConnectionStringSettings _connectionString;
         private Dictionary<int, ContentModification> _modifications = new Dictionary<int, ContentModification>();
         private Dictionary<string, TableModification> _tableModifications = new Dictionary<string, TableModification>();
         private readonly ConcurrentBag<CacheItemTracker> _trackers;
@@ -32,18 +34,31 @@ namespace QA.Core.Data
         /// 
         /// </summary>
         /// <param name="mode">режим работы</param>
+        /// <param name="invalidator">объект, инвалидирующий кеш</param>
+        /// <param name="connectionName">имя строки подключения</param>
+        public QPCacheItemWatcher(InvalidationMode mode, IContentInvalidator invalidator, string connectionName = "qp_database")
+            : this(mode, Timeout.InfiniteTimeSpan, invalidator, connectionName, 0, false)
+        {
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="mode">режим работы</param>
         /// <param name="pollPeriod">интервал опроса бд</param>
         /// <param name="invalidator">объект, инвалидирующий кеш</param>
         /// <param name="connectionName">имя строки подключения</param>
         /// <param name="dueTime">отложенный запуск (ms)</param>
-        public QPCacheItemWatcher(InvalidationMode mode, TimeSpan pollPeriod, IContentInvalidator invalidator, string connectionName = "qp_database", int dueTime = 0)
+        public QPCacheItemWatcher(InvalidationMode mode, TimeSpan pollPeriod, IContentInvalidator invalidator, string connectionName = "qp_database", int dueTime = 0, bool useTimer = true)
         {
             Throws.IfArgumentNull(_ => connectionName);
             Throws.IfArgumentNull(_ => invalidator);
 
             _dueTime = TimeSpan.FromMilliseconds(dueTime);
-            _pollPeriod = pollPeriod; 
-            _timer = new Timer(OnTick, null, 0, Timeout.Infinite);
+            _pollPeriod = pollPeriod;
+            if (useTimer)
+            {
+                _timer = new Timer(OnTick, null, 0, Timeout.Infinite);
+            }
             _connectionString = ConfigurationManager.ConnectionStrings[connectionName];
             _trackers = new ConcurrentBag<CacheItemTracker>();
             _mode = mode;
@@ -56,7 +71,10 @@ namespace QA.Core.Data
         /// </summary>
         public void Start()
         {
-            _timer.Change(_dueTime, _pollPeriod);  
+            if (_timer == null)
+                throw new InvalidOperationException("Parameters for timer was not specified.");
+
+            _timer.Change(_dueTime, _pollPeriod);
         }
 
         /// <summary>
@@ -70,11 +88,21 @@ namespace QA.Core.Data
             _trackers.Add(tracker);
         }
 
+        public void TrackChanges()
+        {
+            TrackChangesInternal();
+        }
+
         /// <summary>
         /// Обработчик таймера
         /// </summary>
         /// <param name="state"></param>
         protected virtual void OnTick(object state)
+        {
+            TrackChangesInternal();
+        }
+
+        private void TrackChangesInternal()
         {
             if (_isBusy)
                 return;
@@ -90,37 +118,8 @@ namespace QA.Core.Data
                     Dictionary<int, ContentModification> newValues = new Dictionary<int, ContentModification>();
                     Dictionary<string, TableModification> tableChanges = new Dictionary<string, TableModification>();
 
-                    using (SqlConnection con = new SqlConnection(_connectionString.ConnectionString))
-                    {
-                        using (SqlCommand cmd = new SqlCommand(_cmdText, con))
-                        {
-                            cmd.CommandType = CommandType.Text;
-                            con.Open();
 
-                            try
-                            {
-                                // производим запрос - без этого не будет работать dependency
-                                using (var reader = cmd.ExecuteReader())
-                                {
-                                    while (reader.Read())
-                                    {
-                                        var item = new ContentModification
-                                        {
-                                            ContentId = Convert.ToInt32(reader["CONTENT_ID"]),
-                                            LiveModified = Convert.ToDateTime(reader["LIVE_MODIFIED"]),
-                                            StageModified = Convert.ToDateTime(reader["STAGE_MODIFIED"])
-                                        };
-
-                                        newValues[item.ContentId] = item;
-                                    }
-                                }
-                            }
-                            finally
-                            {
-                                con.Close();
-                            }
-                        }
-                    }
+                    GetData(newValues);
 
                     var trackers = _trackers.ToList();
 
@@ -156,7 +155,7 @@ namespace QA.Core.Data
                             ObjectFactoryBase.Logger.Debug(_ => ("Invalidating a set of tables " + string.Join(", ", items)));
                         }
                     }
-                    
+
                     if (newValues != null && newValues.Count > 0)
                     {
                         _modifications = newValues;
@@ -174,11 +173,54 @@ namespace QA.Core.Data
                 {
                     ObjectFactoryBase.Logger.ErrorException("qp watcher error", ex);
                     ObjectFactoryBase.Logger.Error("qp watcher error StackTrace: {0}", ex.StackTrace);
+                    throw;
                 }
                 finally
                 {
                     _isBusy = false;
                 }
+            }
+        }
+
+        protected virtual void GetData(Dictionary<int, ContentModification> newValues)
+        {
+            // при возникновении исключения в базе, даже если его перехватить
+            // родительская транзакция все равно откатывается, и дальнейшая работа с базой будет вызывать ошибки.
+            // чтобы этого не было, выполняем код вне родительской транзакции (TransactionScopeOption.Suppress). 
+            using (var tsSuppressed = new TransactionScope(TransactionScopeOption.Suppress))
+            {
+                using (SqlConnection con = new SqlConnection(_connectionString.ConnectionString))
+                {
+                    using (SqlCommand cmd = new SqlCommand(_cmdText, con))
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        con.Open();
+
+                        try
+                        {
+                            // производим запрос - без этого не будет работать dependency
+                            using (var reader = cmd.ExecuteReader())
+                            {
+                                while (reader.Read())
+                                {
+                                    var item = new ContentModification
+                                    {
+                                        ContentId = Convert.ToInt32(reader["CONTENT_ID"]),
+                                        LiveModified = Convert.ToDateTime(reader["LIVE_MODIFIED"]),
+                                        StageModified = Convert.ToDateTime(reader["STAGE_MODIFIED"])
+                                    };
+
+                                    newValues[item.ContentId] = item;
+                                }
+                            }
+                        }
+                        finally
+                        {
+                            con.Close();
+                        }
+                    }
+                }
+                tsSuppressed.Complete();
             }
         }
 
@@ -197,13 +239,13 @@ namespace QA.Core.Data
 
                 var old = modifications[item.Key];
 
-                if ((_mode == InvalidationMode.Live || _mode == InvalidationMode.All) 
+                if ((_mode == InvalidationMode.Live || _mode == InvalidationMode.All)
                     && (old.LiveModified < item.Value.LiveModified))
                 {
                     idsToUpdate.Add(item.Key);
                 }
 
-                if ((_mode == InvalidationMode.Stage || _mode == InvalidationMode.All) 
+                if ((_mode == InvalidationMode.Stage || _mode == InvalidationMode.All)
                     && (old.StageModified < item.Value.StageModified))
                 {
                     idsToUpdate.Add(item.Key);
@@ -227,8 +269,8 @@ namespace QA.Core.Data
         protected class ContentModification : TableModification
         {
             public int ContentId { get; set; }
-        //    public DateTime LiveModified { get; set; }
-        //    public DateTime StageModified { get; set; }
+            //    public DateTime LiveModified { get; set; }
+            //    public DateTime StageModified { get; set; }
         }
     }
 }
