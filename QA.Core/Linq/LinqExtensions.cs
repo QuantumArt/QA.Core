@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace QA.Core
@@ -75,6 +76,37 @@ namespace QA.Core
             }
 
             return result;
+        }
+
+        public static IEnumerable<IEnumerable<T>> Split<T>(this IEnumerable<T> list, int numberOfParts)
+        {
+            int i = 0;
+            var splits = from item in list
+                         group item by i++ % numberOfParts into part
+                         select part.AsEnumerable();
+            return splits;
+        }
+
+        public static IEnumerable<IList<T>>Section<T>(this IEnumerable<T> source, int length)
+        {
+            if (length <= 0)
+                throw new ArgumentOutOfRangeException("length");
+
+            var section = new List<T>(length);
+
+            foreach (var item in source)
+            {
+                section.Add(item);
+
+                if (section.Count == length)
+                {
+                    yield return section.AsReadOnly();
+                    section = new List<T>(length);
+                }
+            }
+
+            if (section.Count > 0)
+                yield return section.AsReadOnly();
         }
     }
 }
