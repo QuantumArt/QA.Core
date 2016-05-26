@@ -1,4 +1,5 @@
 ﻿using Microsoft.Practices.Unity;
+using System.Collections.Generic;
 
 namespace QA.Core
 {
@@ -150,6 +151,17 @@ namespace QA.Core
         public static T ResolveByName<T>(string containerName, string name)
         {
             return Get(containerName).Resolve<T>(name);
+        }
+
+
+        /// <summary>
+        /// возвращает все ИМЕНОВАННЫЕ реализации интерфейса T
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static IEnumerable<T> ResolveAll<T>()
+        {
+            return DefaultContainer.ResolveAll<T>();
         }
 
         #endregion

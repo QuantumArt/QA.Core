@@ -34,10 +34,18 @@ namespace QA.Core.Web
                 .ViewData.TemplateInfo
                 .GetFullHtmlFieldName(ExpressionHelper.GetExpressionText(expression));
 
-            return ValidationHelper<TModel, TProperty>(htmlHelper, expression, propertyPath, tagName, className, innerHtml, htmlAttributes, validationAttribute);
+            return ValidationHelper<TModel>(htmlHelper, propertyPath, tagName, className, innerHtml, htmlAttributes, validationAttribute);
         }
 
-
+        public static MvcHtmlString ValidationBlock<TModel>(this HtmlHelper<TModel> htmlHelper,
+           string propertyPath,
+           string tagName = null, string className = null,
+           string innerHtml = null,
+           Dictionary<string, string> htmlAttributes = null,
+           string validationAttribute = "validation-for")
+        {
+            return ValidationHelper<TModel>(htmlHelper, propertyPath, tagName, className, innerHtml, htmlAttributes, validationAttribute);
+        }
 
         /// <summary>
         /// Кастомизированное сообщение о валидации
@@ -70,7 +78,7 @@ namespace QA.Core.Web
 
             if (!string.IsNullOrEmpty(alternativeText))
             {
-                return ValidationHelper(htmlHelper, expression, modelName, tagName, className, alternativeText, htmlAttributes, validationAttribute);
+                return ValidationHelper(htmlHelper, modelName, tagName, className, alternativeText, htmlAttributes, validationAttribute);
             }
             else
             {
@@ -146,7 +154,7 @@ namespace QA.Core.Web
         }
 
         #region Private members
-        private static MvcHtmlString ValidationHelper<TModel, TProperty>(HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression,
+        private static MvcHtmlString ValidationHelper<TModel>(HtmlHelper<TModel> htmlHelper,
             string propertyPath, string tagName, string className, string innerHtml, Dictionary<string, string> htmlAttributes, string validationAttribute)
         {
             StringBuilder sb = new StringBuilder();

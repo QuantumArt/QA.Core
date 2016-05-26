@@ -1,32 +1,76 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿
+using System;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-
+using QA.Core.Logger;
 namespace QA.Core
 {
+    /// <summary>
+    /// Уровень критичности сообщения
+    /// </summary>
     public static class ILoggerExtensions
     {
-        public static ILogger LogDebug(this ILogger logger, string msg, [CallerMemberName] string caller = "")
+        /// <summary>
+        /// Логирование при условии, что уровень журналирования включен. В текст сообщения включено имя метода, из оторого вызывается логирование
+        /// </summary>
+        /// <param name="logger">логгер</param>
+        /// <param name="msgFactory">функция, которая возвраащет сообщение для логирования</param>
+        /// <param name="caller"></param>
+        /// <returns></returns>
+        public static ILogger LogInfo(this ILogger logger, Func<string> msgFactory, [CallerMemberName]string caller = "")
         {
-            if (logger == null)
-                return null;
-
-            logger.Debug(x => string.Format("{2} Logging for method {0}: {1}", caller, msg, Thread.CurrentThread.ManagedThreadId));
-
+            logger.Log(() => string.Format("{0} -> {1}", msgFactory(), caller), EventLevel.Info);
             return logger;
         }
 
-        public static ILogger LogDebug(this ILogger logger, Func<string> msg, [CallerMemberName] string caller = "")
+        /// <summary>
+        /// Логирование при условии, что уровень журналирования включен. В текст сообщения включено имя метода, из оторого вызывается логирование
+        /// </summary>
+        /// <param name="logger">логгер</param>
+        /// <param name="msgFactory">функция, которая возвраащет сообщение для логирования</param>
+        /// <param name="caller"></param>
+        /// <returns></returns>
+        public static ILogger LogTrace(this ILogger logger, Func<string> msgFactory, [CallerMemberName]string caller = "")
         {
-            if (logger == null)
-                return null;
+            logger.Log(() => string.Format("{0} -> {1}", msgFactory(), caller), EventLevel.Trace);
+            return logger;
+        }
 
-            logger.Debug(x => string.Format("{2} Logging for method {0}: {1}", caller, msg(), Thread.CurrentThread.ManagedThreadId));
+        /// <summary>
+        /// Логирование при условии, что уровень журналирования включен. В текст сообщения включено имя метода, из оторого вызывается логирование
+        /// </summary>
+        /// <param name="logger">логгер</param>
+        /// <param name="msgFactory">функция, которая возвраащет сообщение для логирования</param>
+        /// <param name="caller"></param>
+        /// <returns></returns>
+        public static ILogger LogDebug(this ILogger logger, Func<string> msgFactory, [CallerMemberName]string caller = "")
+        {
+            logger.Log(() => string.Format("{0} -> {1}", msgFactory(), caller), EventLevel.Debug);
+            return logger;
+        }
 
+        /// <summary>
+        /// Логирование при условии, что уровень журналирования включен. В текст сообщения включено имя метода, из оторого вызывается логирование
+        /// </summary>
+        /// <param name="logger">логгер</param>
+        /// <param name="msgFactory">функция, которая возвраащет сообщение для логирования</param>
+        /// <param name="caller"></param>
+        /// <returns></returns>
+        public static ILogger LogError(this ILogger logger, Func<string> msgFactory, [CallerMemberName]string caller = "")
+        {
+            logger.Log(() => string.Format("{0} -> {1}", msgFactory(), caller), EventLevel.Error);
+            return logger;
+        }
+
+        /// <summary>
+        /// Логирование при условии, что уровень журналирования включен. В текст сообщения включено имя метода, из оторого вызывается логирование
+        /// </summary>
+        /// <param name="logger">логгер</param>
+        /// <param name="msgFactory">функция, которая возвраащет сообщение для логирования</param>
+        /// <param name="caller"></param>
+        /// <returns></returns>
+        public static ILogger LogFatal(this ILogger logger, Func<string> msgFactory, [CallerMemberName]string caller = "")
+        {
+            logger.Log(() => string.Format("{0} -> {1}", msgFactory(), caller), EventLevel.Fatal);
             return logger;
         }
     }

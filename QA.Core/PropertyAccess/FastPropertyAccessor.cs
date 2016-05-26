@@ -48,20 +48,20 @@ namespace QA.Core
 
         private Action<object, object> CompileSetter(string propertyName, ParameterExpression targetExpression, ParameterExpression valueExpression)
         {
-            var mi = _objectType.GetProperty(propertyName).GetSetMethod();
-            var parameterType = mi.GetParameters().Select(x => x.ParameterType).FirstOrDefault();
+                var mi = _objectType.GetProperty(propertyName).GetSetMethod();
+                var parameterType = mi.GetParameters().Select(x => x.ParameterType).FirstOrDefault();
 
-            // Создаем лямбда-выражение:
-            // "obj => { ((ObjectType)obj).set_PropertyName((PropertyType)value) }"
-            var setterExpression = Expression.Lambda<Action<object, object>>(
-                  Expression.Call(
-                      Expression.Convert(targetExpression, _objectType), // приводим object к типу объекта
-                      mi, // сеттер
-                      Expression.Convert(valueExpression, parameterType) // приводим object к типу поля
-                  ),
-                  targetExpression,
-                  valueExpression
-            );
+                // Создаем лямбда-выражение:
+                // "obj => { ((ObjectType)obj).set_PropertyName((PropertyType)value) }"
+                var setterExpression = Expression.Lambda<Action<object, object>>(
+                      Expression.Call(
+                          Expression.Convert(targetExpression, _objectType), // приводим object к типу объекта
+                          mi, // сеттер
+                          Expression.Convert(valueExpression, parameterType) // приводим object к типу поля
+                      ),
+                      targetExpression,
+                      valueExpression
+                );
 
             return setterExpression.Compile();
         }

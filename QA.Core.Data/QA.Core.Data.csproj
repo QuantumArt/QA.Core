@@ -90,14 +90,6 @@
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Irony, Version=1.0.0.0, Culture=neutral, PublicKeyToken=ca48ace7223ead47, processorArchitecture=MSIL">
-      <HintPath>..\packages\Quantumart.QP8.BLL.2.0.3.0\lib\net45\Irony.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.1.2.10\lib\2.0\log4net.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=5.0.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
       <Private>True</Private>
