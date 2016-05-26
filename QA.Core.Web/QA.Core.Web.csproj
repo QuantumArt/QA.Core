@@ -261,7 +261,6 @@
     <Compile Include="QpCustomResourceProvider.cs" />
     <Compile Include="AssemblyResourceVirtualPathProvider.cs" />
     <Compile Include="Caching\CacheExtensions.cs" />
-    <Compile Include="Caching\ContentInvalidator.cs" />
     <Compile Include="Controllers\QAControllerBase.cs" />
     <Compile Include="DisposableHelper.cs" />
     <Compile Include="FluentFilters\ActionFilterCriteria.cs" />

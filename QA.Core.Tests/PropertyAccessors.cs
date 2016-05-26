@@ -366,7 +366,7 @@ namespace QA.Core.Tests
             DirectGetStuff(new StubClass2 { StringProperty = "test" });
             var obj = new { StringProperty = "test" };
 
-            DoGetStuff(obj, new FastPropertyAccessor(obj.GetType(), "StringProperty"));
+            DoGetStuff(obj, new FastPropertyAccessor(obj.GetType(), "StringProperty", isReadonly: true));
             DoGetStuff(obj, new ReflectedPropertyAccessor(obj.GetType(), "StringProperty"));
             DoGetStuff(obj, new TypeDescriptorPropertyAccessor(obj.GetType(), "StringProperty"));
 
