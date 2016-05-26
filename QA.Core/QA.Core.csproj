@@ -258,7 +258,6 @@
     <Compile Include="Cache\VersionedCacheProvider2.cs" />
     <Compile Include="Cache\CacheProvider.cs" />
     <Compile Include="Cache\CacheTagModification.cs" />
-    <Compile Include="Cache\ContentInvalidator.cs" />
     <Compile Include="Cache\ICacheItemWatcher.cs" />
     <Compile Include="Cache\ICacheProvider.cs" />
     <Compile Include="Cache\InvalidationMode.cs" />
@@ -270,10 +269,16 @@
     <Compile Include="Collections\ReadOnlyDictionary`2.cs" />
     <Compile Include="HashHelper.cs" />
     <Compile Include="Extensions\FileExtensions.cs" />
+    <Compile Include="FastWildcardMatcher.cs" />
     <Compile Include="IContentInvalidator.cs" />
+    <Compile Include="IWildcardMatcher.cs" />
     <Compile Include="Logger\EventLevel.cs" />
     <Compile Include="Logger\ILoggerExtensions.cs" />
     <Compile Include="Logger\TextWriterLogger.cs" />
+    <Compile Include="Performance\ConcurrentBuffer.cs" />
+    <Compile Include="Performance\OperationCancelledException.cs" />
+    <Compile Include="Performance\RapidFailConfig.cs" />
+    <Compile Include="Performance\RapidFailProtector.cs" />
     <Compile Include="PropertyAccess\FastPropertyAccessor`2.cs" />
     <Compile Include="PropertyAccess\FastPropertyAccessor`1.cs" />
     <Compile Include="PropertyAccess\IPropertyAccessor`2.cs" />
@@ -282,6 +287,7 @@
     <Compile Include="PropertyAccess\EmitPropertyAccessor.cs" />
     <Compile Include="PropertyAccess\FastPropertyAccessor.cs" />
     <Compile Include="PropertyAccess\IPropertyAccessor.cs" />
+    <Compile Include="PropertyAccess\TypeDescriptorPropertyAccessor.cs" />
     <Compile Include="Replacing\SwapReplacementProcessor.cs" />
     <Compile Include="Replacing\CultureDependentMemberAttribute.cs" />
     <Compile Include="Replacing\IReplacementProcessor.cs" />
@@ -334,6 +340,7 @@
     <None Include="packages.config" />
     <None Include="QA.Core.nuspec" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
