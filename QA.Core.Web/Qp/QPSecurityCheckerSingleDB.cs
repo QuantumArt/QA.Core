@@ -2,7 +2,7 @@
 using System.ServiceModel;
 using System.Web;
 using QA.Core.Service.Interaction;
-using Quantumart.QPublishing;
+using Quantumart.QPublishing.Info;
 using Quantumart.QPublishing.Database;
 
 namespace QA.Core.Web.Qp

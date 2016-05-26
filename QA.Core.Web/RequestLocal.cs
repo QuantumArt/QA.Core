@@ -85,6 +85,10 @@ namespace QA.Core.Web
 
                             return threadStaticInstance.Value;
                         }
+                        else
+                        {
+                            return default(T);
+                        }
                     }
                 }
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
-using Quantumart.QPublishing;
+using Quantumart.QPublishing.Info;
 using Quantumart.QPublishing.Database;
+using Quantumart.QPublishing.Info;
 
 namespace QA.Core.Data.QP
 {

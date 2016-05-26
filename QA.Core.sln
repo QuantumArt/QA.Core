@@ -127,4 +127,45 @@ Global
 		{7AF052FF-C40A-45C7-ADFE-BC0FFF0B59FD} = {47600711-F839-477F-A962-55ADEFAB04DA}
 		{B1213078-52A3-42A9-80F3-370E1F5FF4D7} = {03857B97-0F11-42EA-A3AF-836B0EDCB996}
 	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 9
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://tfs.artq.com:8080/tfs/quantumartcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = QA.Core.Service.Interaction\\QA.Core.Service.Interaction.csproj
+		SccProjectTopLevelParentUniqueName1 = QA.Core.sln
+		SccProjectName1 = QA.Core.Service.Interaction
+		SccLocalPath1 = QA.Core.Service.Interaction
+		SccProjectUniqueName2 = QA.Core.Service\\QA.Core.Service.csproj
+		SccProjectTopLevelParentUniqueName2 = QA.Core.sln
+		SccProjectName2 = QA.Core.Service
+		SccLocalPath2 = QA.Core.Service
+		SccProjectUniqueName3 = QA.Core.Web.Tests\\QA.Core.Web.Tests.csproj
+		SccProjectTopLevelParentUniqueName3 = QA.Core.sln
+		SccProjectName3 = QA.Core.Web.Tests
+		SccLocalPath3 = QA.Core.Web.Tests
+		SccProjectUniqueName4 = QA.Core.Web\\QA.Core.Web.csproj
+		SccProjectTopLevelParentUniqueName4 = QA.Core.sln
+		SccProjectName4 = QA.Core.Web
+		SccLocalPath4 = QA.Core.Web
+		SccProjectUniqueName5 = QA.Core\\QA.Core.csproj
+		SccProjectTopLevelParentUniqueName5 = QA.Core.sln
+		SccProjectName5 = QA.Core
+		SccLocalPath5 = QA.Core
+		SccProjectUniqueName6 = QA.Core.Tests\\QA.Core.Tests.csproj
+		SccProjectTopLevelParentUniqueName6 = QA.Core.sln
+		SccProjectName6 = QA.Core.Tests
+		SccLocalPath6 = QA.Core.Tests
+		SccProjectUniqueName7 = QA.Core.Data\\QA.Core.Data.csproj
+		SccProjectTopLevelParentUniqueName7 = QA.Core.sln
+		SccProjectName7 = QA.Core.Data
+		SccLocalPath7 = QA.Core.Data
+		SccProjectUniqueName8 = QA.Core.Data.Tests\\QA.Core.Data.Tests.csproj
+		SccProjectTopLevelParentUniqueName8 = QA.Core.sln
+		SccProjectName8 = QA.Core.Data.Tests
+		SccLocalPath8 = QA.Core.Data.Tests
+	EndGlobalSection
 EndGlobal

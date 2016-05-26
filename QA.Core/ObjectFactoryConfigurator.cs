@@ -24,7 +24,7 @@ namespace QA.Core
             {
                 if (_defaultContainer == null)
                 {
-                    _defaultContainer = GetNamed("Default");
+                    _defaultContainer = GetNamed("Default", true);
                 }
 
                 return _defaultContainer;
@@ -54,7 +54,7 @@ namespace QA.Core
             }
             catch (Exception ex)
             {
-                if (shouldFailOnErrors)
+                //if (shouldFailOnErrors)
                     throw new InvalidOperationException("An error occured while initializing unity container.", ex);
             }
 
@@ -72,13 +72,18 @@ namespace QA.Core
         /// <summary>
         /// Инициализация пользовательским контейнером.
         /// </summary>
-        public static void InitializeWith(IUnityContainer container)
+        public static IUnityContainer InitializeWith(IUnityContainer container)
         {
-            DefaultContainer = container;
-            //var serviceLocator = new UnityServiceLocator(DefaultContainer);
+            lock (_syncContainer)
+            {
+                DefaultContainer = container;
+                //var serviceLocator = new UnityServiceLocator(DefaultContainer);
 
-            // устанавливаем ServiceLocator
-            //ServiceLocator.SetLocatorProvider(() => serviceLocator);
+                // устанавливаем ServiceLocator
+                //ServiceLocator.SetLocatorProvider(() => serviceLocator);
+
+                return container;
+            }
         }
 
         private readonly static Dictionary<string, IUnityContainer> _namedContainers
@@ -91,10 +96,13 @@ namespace QA.Core
         /// <param name="name"></param>
         /// <returns></returns>
         public static IUnityContainer GetNamed(
-            string name)
+            string name, bool initialize = false)
         {
             lock (_syncContainer)
             {
+                if (name.Equals("Default", StringComparison.OrdinalIgnoreCase) && !initialize)
+                    return DefaultContainer;
+
                 if (_namedContainers.ContainsKey(name))
                 {
                     IUnityContainer val = _namedContainers[name];
@@ -109,18 +117,16 @@ namespace QA.Core
 
                 var section = ConfigurationManager.GetSection("unity") as UnityConfigurationSection;
 
-                if (section == null)
-                {
-                    throw new InvalidOperationException("Configuration for unity is not exist.");
-                }
-
-                try
-                {
-                    section.Configure(container, name);
-                }
-                catch (Exception ex)
-                {
-                    throw new InvalidOperationException("An error occured while initializing unity container.", ex);
+                if (section != null)
+                { 
+                    try
+                    {
+                        section.Configure(container, name);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new InvalidOperationException("An error occured while initializing unity container.", ex);
+                    }
                 }
 
                 _namedContainers.Add(name, container);

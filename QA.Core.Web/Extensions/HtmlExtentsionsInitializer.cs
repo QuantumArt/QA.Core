@@ -1,4 +1,6 @@
-﻿using System.Web.Mvc;
+﻿using System.Web;
+using System.Web.Mvc;
+using System.Web.Script.Serialization;
 using System.Web.WebPages;
 using QA.Core.Web.Extensions;
 
@@ -25,9 +27,27 @@ namespace QA.Core.Web
             return ((System.Web.Mvc.WebViewPage)WebPageContext.Current.Page).Html;
         }
 
-        public static System.Web.Mvc.WebViewPage GetMvcPage(this System.Web.WebPages.Html.HtmlHelper html)
+        public static WebViewPage GetMvcPage(this System.Web.WebPages.Html.HtmlHelper html)
         {
-            return ((System.Web.Mvc.WebViewPage)WebPageContext.Current.Page);
+            return ((WebViewPage)WebPageContext.Current.Page);
+        }
+
+        public static string GetJson(this HtmlHelper helper, object model, bool encode = false)
+        {
+            string result = "";
+
+            if (model != null)
+            {
+                result = new JavaScriptSerializer().Serialize(model);
+
+                if (encode && result != null)
+                {
+                    result = result.Replace('\"', '\'');
+                    result = HttpUtility.JavaScriptStringEncode(result);
+                }
+            }
+
+           return result;
         }
     }
 }

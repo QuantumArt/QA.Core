@@ -15,12 +15,7 @@ namespace QA.Core
         private Func<object, object> _getter;
         private Action<object, object> _setter;
 
-        /// <summary>
-        /// При вызове конструктора происходит генерация выражения для быстрого доступа к свойству
-        /// </summary>
-        /// <param name="objectType"></param>
-        /// <param name="propertyName"></param>
-        public FastPropertyAccessor(Type objectType, string propertyName)
+        public FastPropertyAccessor(Type objectType, string propertyName, bool isReadonly)
         {
             Throws.IfArgumentNull(objectType, _ => objectType);
             Throws.IfArgumentNullOrEmpty(propertyName, _ => propertyName);
@@ -31,22 +26,10 @@ namespace QA.Core
             var targetExpression = Expression.Parameter(typeof(object), propertyName);
             var valueExpression = Expression.Parameter(typeof(object), "value");
 
-            var mi = _objectType.GetProperty(propertyName).GetSetMethod();
-            var parameterType = mi.GetParameters().Select(x => x.ParameterType).FirstOrDefault();
-
-            // Создаем лямбда-выражение:
-            // "obj => { ((ObjectType)obj).set_PropertyName((PropertyType)value) }"
-            var setterExpression = Expression.Lambda<Action<object, object>>(
-                  Expression.Call(
-                      Expression.Convert(targetExpression, _objectType), // приводим object к типу объекта
-                      mi, // сеттер
-                      Expression.Convert(valueExpression, parameterType) // приводим object к типу поля
-                  ),
-                  targetExpression,
-                  valueExpression
-            );
-
-            _setter = setterExpression.Compile();
+            if (!isReadonly)
+            {
+                _setter = CompileSetter(propertyName, targetExpression, valueExpression);
+            }
 
             ParameterExpression obj = Expression.Parameter(typeof(object), "obj");
 
@@ -61,6 +44,37 @@ namespace QA.Core
                 obj);
 
             _getter = getterExpression.Compile();
+        }
+
+        private Action<object, object> CompileSetter(string propertyName, ParameterExpression targetExpression, ParameterExpression valueExpression)
+        {
+                var mi = _objectType.GetProperty(propertyName).GetSetMethod();
+                var parameterType = mi.GetParameters().Select(x => x.ParameterType).FirstOrDefault();
+
+                // Создаем лямбда-выражение:
+                // "obj => { ((ObjectType)obj).set_PropertyName((PropertyType)value) }"
+                var setterExpression = Expression.Lambda<Action<object, object>>(
+                      Expression.Call(
+                          Expression.Convert(targetExpression, _objectType), // приводим object к типу объекта
+                          mi, // сеттер
+                          Expression.Convert(valueExpression, parameterType) // приводим object к типу поля
+                      ),
+                      targetExpression,
+                      valueExpression
+                );
+
+            return setterExpression.Compile();
+        }
+
+        /// <summary>
+        /// При вызове конструктора происходит генерация выражения для быстрого доступа к свойству
+        /// </summary>
+        /// <param name="objectType"></param>
+        /// <param name="propertyName"></param>
+        public FastPropertyAccessor(Type objectType, string propertyName)
+            : this(objectType, propertyName, false)
+        {
+
         }
 
         /// <summary>
