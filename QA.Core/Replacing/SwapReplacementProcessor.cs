@@ -14,9 +14,9 @@ namespace QA.Core.Replacing
     /// </summary>
     public class SwapReplacementProcessor : IReplacementProcessor
     {
-        private Dictionary<string, AttributeInfo> _nestedProcessors;
-        private Dictionary<Type, IReplacementProcessor> _processorLookup;
-        private Dictionary<string, Action<object>> _swapAllOperations;
+        private readonly Dictionary<string, AttributeInfo> _nestedProcessors;
+        private readonly Dictionary<Type, IReplacementProcessor> _processorLookup;
+        private readonly Dictionary<string, Action<object>> _swapAllOperations;
         private bool _hasNested;
 
 

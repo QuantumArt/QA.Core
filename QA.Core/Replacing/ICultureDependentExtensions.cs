@@ -1,5 +1,4 @@
-﻿// editied 3.0 тестовый комметарий для проверки сервера символов
-using QA.Core.Replacing;
+﻿using QA.Core.Replacing;
 using System.Collections.Generic;
 
 namespace QA.Core
