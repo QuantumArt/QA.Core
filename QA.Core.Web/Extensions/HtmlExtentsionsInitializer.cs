@@ -27,9 +27,9 @@ namespace QA.Core.Web
             return ((System.Web.Mvc.WebViewPage)WebPageContext.Current.Page).Html;
         }
 
-        public static System.Web.Mvc.WebViewPage GetMvcPage(this System.Web.WebPages.Html.HtmlHelper html)
+        public static WebViewPage GetMvcPage(this System.Web.WebPages.Html.HtmlHelper html)
         {
-            return ((System.Web.Mvc.WebViewPage)WebPageContext.Current.Page);
+            return ((WebViewPage)WebPageContext.Current.Page);
         }
 
         public static string GetJson(this HtmlHelper helper, object model, bool encode = false)

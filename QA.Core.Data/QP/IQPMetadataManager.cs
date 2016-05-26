@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using Quantumart.QPublishing;
+using Quantumart.QPublishing.Info;
 using Quantumart.QPublishing.Database;
 using Quantumart.QPublishing.Info;
 

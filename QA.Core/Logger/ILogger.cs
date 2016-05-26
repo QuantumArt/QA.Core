@@ -110,6 +110,6 @@ namespace QA.Core
         ///// <param name="message"></param>
         ///// <param name="propertiesSetter"></param>
         ///// <param name="eventLevel"></param>
-        //void Log(Func<string> message, EventLevel eventLevel);
+        void Log(Func<string> message, EventLevel eventLevel);
     }
 }

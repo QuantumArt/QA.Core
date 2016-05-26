@@ -4,7 +4,6 @@ using System.Data;
 using System.ServiceModel;
 using System.Web;
 using QA.Core.Service.Interaction;
-using Quantumart.QPublishing;
 using Quantumart.QPublishing.Database;
 using Quantumart.QPublishing.OnScreen;
 
@@ -28,6 +27,11 @@ namespace QA.Core.Web.Qp
         /// <returns></returns>
         public virtual bool CheckAuthorization(HttpContextBase context)
         {
+            if (context.Session == null)
+            {
+                return false;
+            }
+
             if (AdministrationAuthorizationHelper.IsEnabled)
             {
                 if (context == null)

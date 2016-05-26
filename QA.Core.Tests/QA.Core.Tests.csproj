@@ -100,6 +100,8 @@
   <ItemGroup>
     <Compile Include="FastPropertyAccessorsTests.cs" />
     <Compile Include="EmitPropertyAccessorsTests.cs" />
+    <Compile Include="IWildcardMatcherTestsBase`1.cs" />
+    <Compile Include="PropertyAccessorBenchmarkBase.cs" />
     <Compile Include="ReflectedPropertyAccessorsTests.cs" />
     <Compile Include="PropertyAccessorsGenericTests.cs" />
     <Compile Include="CultureReplacementManagerGenericTests.cs" />
@@ -113,6 +115,10 @@
     <Compile Include="UnitTest1.cs" />
     <Compile Include="UnitTest2.cs" />
     <Compile Include="CacheTests.cs" />
+    <Compile Include="ExpressionExtensionsTests.cs" />
+    <Compile Include="UnitTest3.cs" />
+    <Compile Include="ObjectDumperTests.cs" />
+    <Compile Include="WildcardTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\QA.Core\QA.Core.csproj">
