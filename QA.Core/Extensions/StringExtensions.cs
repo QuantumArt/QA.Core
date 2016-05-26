@@ -1,6 +1,8 @@
 ﻿// Owners: Alexey Abretov, Nikolay Karlov
 
 using System;
+using System.Linq;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Runtime.Serialization.Json;
@@ -53,6 +55,16 @@ namespace QA.Core.Extensions
                 serializer.WriteObject(stream, obj);
                 return Encoding.UTF8.GetString(stream.ToArray());
             }
+        }
+
+        public static string[] SplitString(this string @string, params char[] separator)
+        {
+            return @string.Split(separator).Select(x => x.Trim()).Where(x => !string.IsNullOrEmpty(x)).ToArray();
+        }
+
+        public static IEnumerable<Int32> CastAsInt(this IEnumerable<string> source, bool skipOnError = false)
+        {
+            return source.Select(x => Int32.Parse(x));
         }
 
         #endregion

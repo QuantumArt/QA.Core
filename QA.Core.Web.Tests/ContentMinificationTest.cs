@@ -1,8 +1,6 @@
 ﻿// Owners: Karlov Nikolay, Abretov Alexey
 
-using QA.Core.Web;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Web.Mvc;
 using Moq;
 using System.Web.Routing;
@@ -81,7 +79,7 @@ namespace QA.Core.Web.Tests
             string expected = "versioned/1.12.233.32/content/site.min.js";
             string actual;
 
-            actual = ContentMinification.MinifiedContent(urlHelper, path);
+            actual = urlHelper.MinifiedContent(path);
             Assert.AreEqual(expected, actual);
         }
 
