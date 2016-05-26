@@ -10,12 +10,13 @@ namespace QA.Core.Replacing
     /// Управление заменами, указанными с помощью атрибутов CultureDependent и DependentValue.
     /// Данный объект следует кешировать.
     /// </summary>
+    [Obsolete("Use SwapReplacementProcessor instead.")]
     public class ReplacementProcessor : IReplacementProcessor
     {
-        private Dictionary<string, AttributeInfo> _targetProperties;
+        private readonly Dictionary<string, AttributeInfo> _targetProperties;
+        private readonly Dictionary<string, AttributeInfo> _nestedProcessors;
+        private readonly Dictionary<Type, IReplacementProcessor> _processed;
         private Dictionary<string, Dictionary<string, AttributeInfo>> _valueProperties;
-        private Dictionary<string, AttributeInfo> _nestedProcessors;
-        private Dictionary<Type, IReplacementProcessor> _processed;
         private bool _hasNested;
 
         /// <summary>

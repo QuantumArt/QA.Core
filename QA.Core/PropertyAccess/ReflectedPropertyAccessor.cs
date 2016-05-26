@@ -10,7 +10,7 @@ namespace QA.Core
     /// </summary>
     public class ReflectedPropertyAccessor : IPropertyAccessor
     {
-        private System.Reflection.PropertyInfo _propertyInfo;
+        private readonly System.Reflection.PropertyInfo _propertyInfo;
 
         /// <summary>
         /// При вызове конструктора происходит генерация выражения для доступа к свойству

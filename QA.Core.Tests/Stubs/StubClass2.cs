@@ -26,5 +26,10 @@ namespace QA.Core.Tests.Stubs
         public string MyProperty3_Backward_Stub { get; set; }
 
         public int? NullableInt{ get; set; }
+
+        internal string Method()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

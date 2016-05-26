@@ -100,6 +100,8 @@
     <Compile Include="AdministrationAuthorizationAttribute.cs" />
     <Compile Include="AdministrationAuthorizationHelper.cs" />
     <Compile Include="AjaxOnlyAttribute.cs" />
+    <Compile Include="CMSMagazineHandler.cs" />
+    <Compile Include="HttpContextLifetimeManagerBase.cs" />
     <Compile Include="QpCustomResourceProvider.cs" />
     <Compile Include="AssemblyResourceVirtualPathProvider.cs" />
     <Compile Include="Caching\CacheExtensions.cs" />
