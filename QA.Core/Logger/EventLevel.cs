@@ -1,11 +1,17 @@
 ﻿
-namespace QA.Core.Logger
+namespace QA.Core
 {
     /// <summary>
     /// Уровень критичности сообщения
     /// </summary>
     public enum EventLevel
     {
-        Debug = 0, Info = 1, Warning = 2, Error = 3, Fatal = 4
+        Trace = 0,
+        Debug = 1,
+        Info = 2, 
+        Warning = 3, 
+        Error = 4, 
+        Fatal = 5,
+
     }
 }

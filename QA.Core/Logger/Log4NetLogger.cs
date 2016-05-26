@@ -300,7 +300,7 @@ namespace QA.Core
                     break;
             }
 
-            if (logger.Logger.IsEnabledFor(logLevel))
+            if (!logger.Logger.IsEnabledFor(logLevel))
                 return;
 
             LoggingEventData data = new LoggingEventData();

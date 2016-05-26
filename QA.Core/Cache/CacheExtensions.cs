@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Runtime;
 using System.Threading;
+using QA.Core.Logger;
 using System.Threading.Tasks;
 
 namespace QA.Core.Cache
@@ -108,7 +109,7 @@ namespace QA.Core.Cache
                         }
 
                         var time1 = sw.ElapsedMilliseconds;
-                        _logger.Error("Долгое нахождение в ожидании обновления кэша {1} ms, ключ: {0} ", key, time1);
+                        _logger.Log(() => string.Format("Долгое нахождение в ожидании обновления кэша {1} ms, ключ: {0} ", key, time1), EventLevel.Warning);
 
                         result = getData();
 
@@ -255,13 +256,13 @@ namespace QA.Core.Cache
             var elapsed = time2 - time1;
             if (elapsed > 5000)
             {
-                _logger.Error("Долгое получение данных время: {0} мс, ключ: {1}, time1: {2}, time2: {3}",
-                    elapsed, key, time1, time2);
+                _logger.Log(() => string.Format("Долгое получение данных время: {0} мс, ключ: {1}, time1: {2}, time2: {3}",
+                    elapsed, key, time1, time2), EventLevel.Warning);
             }
             if (reportTime1 && time1 > 1000)
             {
-                _logger.Error("Долгая проверка кеша: {0} мс, ключ: {1}",
-                    time1, key);
+                _logger.Log(() => string.Format("Долгая проверка кеша: {0} мс, ключ: {1}",
+                    time1, key), EventLevel.Warning);
             }
         }
 
@@ -341,7 +342,9 @@ namespace QA.Core.Cache
                         }
 
                         var time1 = sw.ElapsedMilliseconds;
-                        _logger.Error("Долгое нахождение в ожидании обновления кэша {1} ms, ключ: {0} ", key, time1);
+                        _logger.Log(() => string.Format("Долгое нахождение в ожидании обновления кэша {1} ms, ключ: {0} ", key, time1),
+                            EventLevel.Warning);
+
                         result = getData();
                         sw.Stop();
                         var time2 = sw.ElapsedMilliseconds;
