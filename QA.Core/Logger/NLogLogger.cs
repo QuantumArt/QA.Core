@@ -125,7 +125,15 @@ namespace QA.Core
 
             try
             {
-                CurrentLogger.Info(string.Format(message, parameters));
+                if (parameters == null || parameters.Length == 0)
+                {
+                    CurrentLogger.Info(message);
+
+                }
+                else
+                {
+                    CurrentLogger.Info(string.Format(message, parameters));
+                }
             }
             catch (Exception ex)
             {
@@ -171,7 +179,14 @@ namespace QA.Core
 
             try
             {
-                CurrentLogger.Debug(string.Format(message, parameters));
+                if (parameters == null || parameters.Length == 0)
+                {
+                    CurrentLogger.Debug(message);
+                }
+                else
+                {
+                    CurrentLogger.Debug(string.Format(message, parameters));
+                }
             }
             catch (Exception ex)
             {
@@ -312,6 +327,9 @@ namespace QA.Core
             var logger = CurrentLogger;
             switch (eventLevel)
             {
+                case EventLevel.Trace:
+                    logLevel = LogLevel.Trace;
+                    break;
                 case EventLevel.Debug:
                     logLevel = LogLevel.Debug;
                     break;
@@ -332,10 +350,24 @@ namespace QA.Core
                     break;
             }
 
-            if (logger.IsEnabled(logLevel))
+            if (!logger.IsEnabled(logLevel))
                 return;
 
-            LogEventInfo theEvent = new LogEventInfo(logLevel, logger.Name, message());
+	        LogEventInfo theEvent;
+			
+			try
+	        {
+				theEvent = new LogEventInfo(logLevel, logger.Name, message());
+	        }
+	        catch (Exception ex)
+	        {
+		        theEvent = new LogEventInfo(logLevel, logger.Name,
+			        string.Format("{0} при попытке выполнить лямбду логгирования: {1}",
+				        ex.GetType().Name,
+				        ex.Message + (ex.InnerException == null ? "" : " " + ex.InnerException.Message)));
+	        }
+
+            theEvent.TimeStamp = DateTime.Now;
 
             if (propertiesSetter != null)
                 propertiesSetter(theEvent.Properties);

@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using QA.Core.Tests.Stubs;
+using QA.Core.PropertyAccess;
 
 namespace QA.Core.Tests
 {
@@ -349,9 +350,28 @@ namespace QA.Core.Tests
             DoGetStuff(new StubClass2 { StringProperty = "test" }, new EmitPropertyAccessor(typeof(StubClass2), "StringProperty"));
             DoGetStuff(new StubClass2 { StringProperty = "test" }, new FastPropertyAccessor(typeof(StubClass2), "StringProperty"));
             DoGetStuff(new StubClass2 { StringProperty = "test" }, new ReflectedPropertyAccessor(typeof(StubClass2), "StringProperty"));
+            DoSetStuff(new StubClass2 { }, "test value to set", new TypeDescriptorPropertyAccessor(typeof(StubClass2), "StringProperty"));
             DoGetStuff(new StubClass2 { StringProperty = "test" }, new FastPropertyAccessor<StubClass2>("StringProperty"));
             DoGetStuff(new StubClass2 { StringProperty = "test" }, new FastPropertyAccessor<StubClass2, string>("StringProperty"));
         }
+
+
+
+        [TestCategory("ProertyAccessor: benchmarks")]
+        [TestMethod]
+        public void Test_ProertyAccessor_All_Gets_Benchmark_AnonymousType()
+        {
+            Console.WriteLine("Gets with {0} loops", LoopCount);
+            BaseLine(null, null);
+            DirectGetStuff(new StubClass2 { StringProperty = "test" });
+            var obj = new { StringProperty = "test" };
+
+            DoGetStuff(obj, new FastPropertyAccessor(obj.GetType(), "StringProperty"));
+            DoGetStuff(obj, new ReflectedPropertyAccessor(obj.GetType(), "StringProperty"));
+            DoGetStuff(obj, new TypeDescriptorPropertyAccessor(obj.GetType(), "StringProperty"));
+
+        }
+
 
         [TestCategory("ProertyAccessor: benchmarks")]
         [TestMethod]
@@ -363,9 +383,14 @@ namespace QA.Core.Tests
             DoSetStuff(new StubClass2 { }, "test value to set", new EmitPropertyAccessor(typeof(StubClass2), "StringProperty"));
             DoSetStuff(new StubClass2 { }, "test value to set", new FastPropertyAccessor(typeof(StubClass2), "StringProperty"));
             DoSetStuff(new StubClass2 { }, "test value to set", new ReflectedPropertyAccessor(typeof(StubClass2), "StringProperty"));
+            DoSetStuff(new StubClass2 { }, "test value to set", new TypeDescriptorPropertyAccessor(typeof(StubClass2), "StringProperty"));
             DoSetStuff(new StubClass2 { }, "test value to set", new FastPropertyAccessor<StubClass2>("StringProperty"));
             DoSetStuff(new StubClass2 { }, "test value to set", new FastPropertyAccessor<StubClass2, string>("StringProperty"));
+
         }
+
+
+
         #endregion
 
         #region Helpers
