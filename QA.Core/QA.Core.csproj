@@ -1,0 +1,202 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{21895C57-CB09-4AF4-906A-71ED4599FE65}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>QA.Core</RootNamespace>
+    <AssemblyName>QA.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>bin\Debug\QA.Core.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\QA.Core.XML</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <CopyOnMSBuild>false</CopyOnMSBuild>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper">
+      <HintPath>..\Bin\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\Bin\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity, Version=2.1.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Bin\unity\2.1\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Configuration, Version=2.1.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Bin\unity\2.1\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Bin\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.1.1\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.1.1\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Cache\CacheExtensions.cs" />
+    <Compile Include="Cache\CacheProvider.cs" />
+    <Compile Include="Cache\ICacheProvider.cs" />
+    <Compile Include="Cache\InvalidationMode.cs" />
+    <Compile Include="Cache\IVersionedCacheProvider.cs" />
+    <Compile Include="Cache\NoCacheProvider.cs" />
+    <Compile Include="Cache\TimedLock.cs" />
+    <Compile Include="Cache\VersionedCacheProvider.cs" />
+    <Compile Include="Collections\ReadOnlyDictionary`2.cs" />
+    <Compile Include="Extensions\FileExtensions.cs" />
+    <Compile Include="IContentInvalidator.cs" />
+    <Compile Include="Logger\EventLevel.cs" />
+    <Compile Include="Logger\TextWriterLogger.cs" />
+    <Compile Include="PropertyAccess\ReflectedPropertyAccessor.cs" />
+    <Compile Include="PropertyAccess\EmitPropertyAccessor.cs" />
+    <Compile Include="PropertyAccess\FastPropertyAccessor.cs" />
+    <Compile Include="PropertyAccess\IPropertyAccessor.cs" />
+    <Compile Include="Replacing\SwapReplacementProcessor.cs" />
+    <Compile Include="Replacing\CultureDependentMemberAttribute.cs" />
+    <Compile Include="Replacing\IReplacementProcessor.cs" />
+    <Compile Include="Replacing\ICultureDependentExtensions.cs" />
+    <Compile Include="Replacing\ReplacementManager.cs" />
+    <Compile Include="Replacing\ReplacementProcessor.cs" />
+    <Compile Include="Replacing\DependentValueAttribute.cs" />
+    <Compile Include="Replacing\CultureDependentAttribute.cs" />
+    <Compile Include="Replacing\ICultureDependent.cs" />
+    <Compile Include="Replacing\ReplacementProcessor`1.cs" />
+    <Compile Include="Extensions\ObjectExtensions.cs" />
+    <Compile Include="Throw.Conditions.cs" />
+    <Compile Include="Enums\EnumExtender.cs" />
+    <Compile Include="Enums\LocalizedEnumAttribute.cs" />
+    <Compile Include="ExceptionHelper.cs" />
+    <Compile Include="Extensions\DateTimeEx.cs" />
+    <Compile Include="Extensions\EnumerableExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Linq\ExpressionExtensions.cs" />
+    <Compile Include="Linq\LinqExtensions.cs" />
+    <Compile Include="Logger\ILogger.cs" />
+    <Compile Include="Logger\Log4NetLogger.cs" />
+    <Compile Include="Logger\NLogLogger.cs" />
+    <Compile Include="MappingHelper.cs" />
+    <Compile Include="Logger\NullLogger.cs" />
+    <Compile Include="ObjectDumper.cs" />
+    <Compile Include="ObjectFactoryBase.cs" />
+    <Compile Include="ObjectFactoryConfigurator.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serialization\XmlSerializerHelper.cs" />
+    <Compile Include="Throw.Arguments.cs" />
+    <Compile Include="Throw.cs" />
+    <Compile Include="Extensions\UnityTypesTrackingExtension.cs" />
+    <Compile Include="Throw.Messages.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Throw.Messages.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Version\VersionProvider.cs" />
+    <Compile Include="WildcardMatcher.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Throw.Messages.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Throw.Messages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  
+   <Target Name="AfterBuild">
+    <CallTarget Targets="CopyOnMSBuildTarget" />
+  </Target>
+  -->
+  <Target Condition="'$(CopyOnMSBuild)' == 'true'" Name="CopyOnMSBuildTarget">
+    <Message Text="Copying output files..." />
+    <Message Text="for $(AssemblyName)" />
+    <Message Text="OutDir is $(OutDir)" />
+    <Message Text="Configuration is $(Configuration)" />
+    <Message Text="MSBuildProjectDirectory is $(MSBuildProjectDirectory)" />
+    <Message Text="ProjectDir is $(ProjectDir)" />
+    <Message Text="ProjectName is $(ProjectName)" />
+    <Message Text="BinariesRoot is $(BinariesRoot)" />
+    <Message Text="OutputPath is $(OutputPath)" />
+    <Exec WorkingDirectory="$(MSBuildProjectDirectory)" Command="xcopy &quot;$(TargetDir)$(AssemblyName).dll&quot; &quot;$(TargetDir)\out\&quot; /y" ContinueOnError="false" />
+  </Target>
+</Project>

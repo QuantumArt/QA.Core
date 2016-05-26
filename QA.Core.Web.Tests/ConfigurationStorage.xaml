@@ -1,0 +1,14 @@
+﻿<ConfigurationStorage xmlns="http://artq.com/configuration" xmlns:bee="http://artq.com/configuration/beeline"  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <bee:SiteConfiguration x:Key="Main">
+        <bee:SiteConfiguration.Name>Main</bee:SiteConfiguration.Name>
+        <bee:SiteConfiguration.SiteId>35</bee:SiteConfiguration.SiteId>
+        <bee:SiteConfiguration.RootPageId>55071</bee:SiteConfiguration.RootPageId>
+        <bee:SiteConfiguration.SiteDescription>Сайт Beeline</bee:SiteConfiguration.SiteDescription>
+    </bee:SiteConfiguration>
+    <bee:SiteConfiguration x:Key="Main2">
+        <bee:SiteConfiguration.Name>Main2</bee:SiteConfiguration.Name>
+        <bee:SiteConfiguration.SiteId>37</bee:SiteConfiguration.SiteId>
+        <bee:SiteConfiguration.RootPageId></bee:SiteConfiguration.RootPageId>
+        <bee:SiteConfiguration.SiteDescription>Сайт Beeline 2</bee:SiteConfiguration.SiteDescription>
+    </bee:SiteConfiguration>
+</ConfigurationStorage>
