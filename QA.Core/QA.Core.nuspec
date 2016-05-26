@@ -8,7 +8,7 @@
     <owners>Quantum Art</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>QA.Core for DPC</description>
-    <releaseNotes>Initial Release</releaseNotes>
+    <releaseNotes>Merged from DPC, Widgets and Main branches</releaseNotes>
     <copyright>Copyright 2016</copyright>
     <tags>Core DPC</tags>
       <dependencies>
