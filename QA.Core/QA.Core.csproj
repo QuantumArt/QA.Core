@@ -254,6 +254,7 @@
   <ItemGroup>
     <Compile Include="Cache\CacheExtensions.cs" />
     <Compile Include="Cache\CacheItemTracker.cs" />
+    <Compile Include="Cache\ContentInvalidator.cs" />
     <Compile Include="Cache\VersionedCacheProvider3.cs" />
     <Compile Include="Cache\VersionedCacheProvider2.cs" />
     <Compile Include="Cache\CacheProvider.cs" />
