@@ -6,7 +6,7 @@ namespace QA.Core.Web
     /// <summary>
     /// Проверка авторизации
     /// </summary>
-    public class AdministrationAuthorizationAttribute : AuthorizeAttribute
+    public class RequireCustomActionAttribute : AuthorizeAttribute
     {
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
@@ -22,7 +22,7 @@ namespace QA.Core.Web
             }
             else
             {
-                filterContext.Result = new HttpUnauthorizedResult("401");
+                filterContext.Result = new HttpUnauthorizedResult("Access to the page is restricted as it is a QP8 custom action.");
             }
         }
     }

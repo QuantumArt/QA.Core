@@ -38,7 +38,7 @@ namespace QA.Core.Web.Qp
         {
             get
             {
-                return ConfigurationManager.AppSettings["QP.HostIdParamName"];
+                return ConfigurationManager.AppSettings["QP.HostIdParamName"] ?? "hostUID";
             }
         }
 

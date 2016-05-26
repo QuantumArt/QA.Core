@@ -10,12 +10,13 @@ namespace QA.Core.Replacing
     /// Управление заменами, указанными с помощью атрибутов CultureDependent и DependentValue.
     /// Данный объект следует кешировать.
     /// </summary>
+    [Obsolete("Use SwapReplacementProcessor instead.")]
     public class ReplacementProcessor : IReplacementProcessor
     {
-        private Dictionary<string, AttributeInfo> _targetProperties;
+        private readonly Dictionary<string, AttributeInfo> _targetProperties;
+        private readonly Dictionary<string, AttributeInfo> _nestedProcessors;
+        private readonly Dictionary<Type, IReplacementProcessor> _processed;
         private Dictionary<string, Dictionary<string, AttributeInfo>> _valueProperties;
-        private Dictionary<string, AttributeInfo> _nestedProcessors;
-        private Dictionary<Type, IReplacementProcessor> _processed;
         private bool _hasNested;
 
         /// <summary>
@@ -112,7 +113,7 @@ namespace QA.Core.Replacing
                                 var genericParameters = propertyType.GetGenericArguments();
                                 if (genericParameters.Length != 1)
                                 {
-                                    throw new InvalidOperationException(string.Format("The type '{0}' cannot be used as DependentMember. Too much generic parameters."));
+                                    throw new InvalidOperationException(string.Format("The type '{0}' cannot be used as DependentMember. Too much generic parameters.", propertyType));
                                 }
                                 if (!processors.TryGetValue(genericParameters[0], out proc))
                                 {
@@ -140,7 +141,7 @@ namespace QA.Core.Replacing
 
                     if (proc == null)
                     {
-                        throw new InvalidOperationException(string.Format("The type '{0}' cannot be used as DependentMember."));
+                        throw new InvalidOperationException(string.Format("The type '{0}' cannot be used as DependentMember.", propertyType));
                     }
 
                     processor._nestedProcessors.Add(propertyInfo.Name, new AttributeInfo(propertyInfo.Name, accesor, proc, propertyType));

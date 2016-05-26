@@ -54,7 +54,7 @@ namespace QA.Core
             }
             catch (Exception ex)
             {
-                if (shouldFailOnErrors)
+                //if (shouldFailOnErrors)
                     throw new InvalidOperationException("An error occured while initializing unity container.", ex);
             }
 
@@ -72,13 +72,18 @@ namespace QA.Core
         /// <summary>
         /// Инициализация пользовательским контейнером.
         /// </summary>
-        public static void InitializeWith(IUnityContainer container)
+        public static IUnityContainer InitializeWith(IUnityContainer container)
         {
-            DefaultContainer = container;
-            //var serviceLocator = new UnityServiceLocator(DefaultContainer);
+            lock (_syncContainer)
+            {
+                DefaultContainer = container;
+                //var serviceLocator = new UnityServiceLocator(DefaultContainer);
 
-            // устанавливаем ServiceLocator
-            //ServiceLocator.SetLocatorProvider(() => serviceLocator);
+                // устанавливаем ServiceLocator
+                //ServiceLocator.SetLocatorProvider(() => serviceLocator);
+
+                return container;
+            }
         }
 
         private readonly static Dictionary<string, IUnityContainer> _namedContainers

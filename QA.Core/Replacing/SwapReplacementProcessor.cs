@@ -14,9 +14,9 @@ namespace QA.Core.Replacing
     /// </summary>
     public class SwapReplacementProcessor : IReplacementProcessor
     {
-        private Dictionary<string, AttributeInfo> _nestedProcessors;
-        private Dictionary<Type, IReplacementProcessor> _processorLookup;
-        private Dictionary<string, Action<object>> _swapAllOperations;
+        private readonly Dictionary<string, AttributeInfo> _nestedProcessors;
+        private readonly Dictionary<Type, IReplacementProcessor> _processorLookup;
+        private readonly Dictionary<string, Action<object>> _swapAllOperations;
         private bool _hasNested;
 
 
@@ -248,7 +248,7 @@ namespace QA.Core.Replacing
                         var genericParameters = propertyType.GetGenericArguments();
                         if (genericParameters.Length != 1)
                         {
-                            throw new InvalidOperationException(string.Format("The type '{0}' cannot be used as DependentMember. Too much generic parameters."));
+                            throw new InvalidOperationException(string.Format("The type '{0}' cannot be used as DependentMember. Too much generic parameters.", propertyType));
                         }
                         if (!processors.TryGetValue(genericParameters[0], out proc))
                         {
@@ -276,7 +276,7 @@ namespace QA.Core.Replacing
 
             if (proc == null)
             {
-                throw new InvalidOperationException(string.Format("The type '{0}' cannot be used as DependentMember."));
+                throw new InvalidOperationException(string.Format("The type '{0}' cannot be used as DependentMember.", propertyType));
             }
 
             processor._nestedProcessors.Add(propertyInfo.Name,

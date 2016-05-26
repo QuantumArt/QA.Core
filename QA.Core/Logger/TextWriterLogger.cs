@@ -17,7 +17,14 @@ namespace QA.Core.Logger
         }
         protected override void WriteMessage(string level, string message, string error)
         {
-           _writer.WriteLine(string.Format("{0}: {1}, {2}", level, message, error));
+            try
+            {
+                _writer.WriteLine(string.Format("{0}: {1}, {2}", level, message, error));
+            }
+            catch
+            {
+
+            }
         }
     }
 }

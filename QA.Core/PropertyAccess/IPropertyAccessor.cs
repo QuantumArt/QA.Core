@@ -5,7 +5,7 @@ namespace QA.Core
     /// Интерфейс для классов, предоставляющих доступ к свойствам объектов.
     /// Экземпляры таких классов надо кешировать.
     /// </summary>
-    public interface IPropertyAccessor
+    public interface IPropertyAccessor : IPropertyAccessor<object>
     {
         /// <summary>
         /// Получение значения свойства объекта
