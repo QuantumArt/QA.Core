@@ -12,8 +12,8 @@
     <copyright>Copyright 2016</copyright>
     <tags>Core DPC Service Interaction</tags>
       <dependencies>
-          <dependency id="QA.Core" version="3.0.0" />
-          <dependency id="QA.Core.Data" version="3.0.0" />          
+          <dependency id="QA.Core" version="3.0.1" />
+          <dependency id="QA.Core.Data" version="3.0.1" />          
       </dependencies>
   </metadata>
 </package>
