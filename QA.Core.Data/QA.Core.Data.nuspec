@@ -12,10 +12,9 @@
     <copyright>Copyright 2016</copyright>
     <tags>Core DPC Data</tags>
       <dependencies>
-          <dependency id="QA.Configuration" version="1.0.1" />
-          <dependency id="Quantumart.QP8.BLL" version="2.0.3" />
+          <dependency id="Quantumart" version="2.0.2" />
           <dependency id="EntityFramework" version="5.0.0" />
-          <dependency id="QA.Core" version="3.0.0" />
+          <dependency id="QA.Core" version="3.0.1" />
       </dependencies>
   </metadata>
 </package>
