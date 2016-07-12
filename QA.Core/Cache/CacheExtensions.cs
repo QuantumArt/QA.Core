@@ -15,17 +15,9 @@ namespace QA.Core.Cache
     public static class CacheExtensions
     {
         private static ConcurrentDictionary<string, object> _lockers = new ConcurrentDictionary<string, object>();
+        private static ConcurrentDictionary<string, SemaphoreSlim> _semaphores = new ConcurrentDictionary<string, SemaphoreSlim>();
         private static readonly ILogger _logger = ObjectFactoryBase.Resolve<ILogger>();
         private const int TRYENTER_TIMEOUT_MS = 7000;
-        public static ConcurrentDictionary<string, object> Lockers
-        {
-            get
-            {
-                return _lockers;
-            }
-        }
-
-
         private static readonly bool _providerType = ObjectFactoryBase.Resolve<ICacheProvider>().GetType() == typeof(VersionedCacheProvider3);
         private static readonly bool _vProviderType = ObjectFactoryBase.Resolve<IVersionedCacheProvider>().GetType() == typeof(VersionedCacheProvider3);
 
@@ -159,15 +151,16 @@ namespace QA.Core.Cache
 
             if (result == null)
             {
-                object localLocker = _lockers.GetOrAdd(key, new object());
+                SemaphoreSlim localLocker = _semaphores.GetOrAdd(key, _ => new SemaphoreSlim(1));
 
                 bool lockTaken = false;
+                SemaphoreSlim sl = new SemaphoreSlim(1);
+
                 try
                 {
                     Stopwatch sw = new Stopwatch();
                     sw.Start();
-
-
+                                        
                     if (supportCallbacks)
                     {
                         // проверяем, что есть предыдущее значение
@@ -176,16 +169,22 @@ namespace QA.Core.Cache
                         if (deprecatedResult != null)
                         {
                             // если есть, то обновлять данные будет только 1 поток
-                            Monitor.TryEnter(localLocker, ref lockTaken);
+                            lockTaken = await localLocker
+                                .WaitAsync(TimeSpan.MaxValue)
+                                .ConfigureAwait(false);
                         }
                         else
                         {
-                            Monitor.TryEnter(localLocker, TRYENTER_TIMEOUT_MS, ref lockTaken);
+                            lockTaken = await localLocker
+                                .WaitAsync(TimeSpan.FromMilliseconds(TRYENTER_TIMEOUT_MS))
+                                .ConfigureAwait(false); ;
                         }
                     }
                     else
                     {
-                        Monitor.TryEnter(localLocker, TRYENTER_TIMEOUT_MS, ref lockTaken);
+                        lockTaken = await localLocker
+                            .WaitAsync(TimeSpan.FromMilliseconds(TRYENTER_TIMEOUT_MS))
+                            .ConfigureAwait(false); ;
                     }
 
                     if (lockTaken)
@@ -240,7 +239,7 @@ namespace QA.Core.Cache
                 {
                     if (lockTaken)
                     {
-                        Monitor.Exit(localLocker);
+                        localLocker.Release();
                     }
                 }
             }
@@ -286,7 +285,7 @@ namespace QA.Core.Cache
             object deprecatedResult = null;
             if (result == null)
             {
-                object localLocker = _lockers.GetOrAdd(key, new object());
+                object localLocker = _lockers.GetOrAdd(key, _ => new object());
                 bool lockTaken = false;
                 try
                 {
@@ -375,7 +374,7 @@ namespace QA.Core.Cache
         }
 
         /// <summary>
-        /// Вычисление ключа для кеширования. 
+        /// Вычисление ключа для кеширования. В ключ кеширования добавляется имя метода, из которого производится вызов данного кода
         /// Использование: var key = CacheExtensions.ComposeCacheKey(new {category, id = item.Id})
         /// </summary>
         /// <param name="anonymousObject"></param>
