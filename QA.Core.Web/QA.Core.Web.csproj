@@ -211,7 +211,6 @@
     <Compile Include="RequiredIfAttribute.cs" />
     <Compile Include="RequiredIfValidator.cs" />
     <Compile Include="TagWrapper.cs" />
-    <Compile Include="ThreadSafeStorage.cs" />
     <Compile Include="Extensions\SectionExtensions.cs" />
     <Compile Include="Extensions\UrlExtensions.cs" />
     <Compile Include="IInitilizeActionFilter.cs" />

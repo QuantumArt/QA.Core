@@ -98,6 +98,7 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cache\CacheExtensionsTests.cs" />
     <Compile Include="FastPropertyAccessorsTests.cs" />
     <Compile Include="EmitPropertyAccessorsTests.cs" />
     <Compile Include="IWildcardMatcherTestsBase`1.cs" />
@@ -114,9 +115,8 @@
     <Compile Include="CultureReplacementManagerTests.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="UnitTest2.cs" />
-    <Compile Include="CacheTests.cs" />
     <Compile Include="ExpressionExtensionsTests.cs" />
-    <Compile Include="UnitTest3.cs" />
+    <Compile Include="Cache\CachingTests.cs" />
     <Compile Include="ObjectDumperTests.cs" />
     <Compile Include="WildcardTests.cs" />
   </ItemGroup>
