@@ -9,7 +9,7 @@ namespace QA.Core.Data.Resolvers
     /// <summary>
     /// Получение маппингов из файлов
     /// </summary>
-    public class FileXmlMappingResolver : IXmlMappingResolver
+    public class FileXmlMappingResolver : ResolverBase
     {
         /// <summary>
         ////Маппинг Stage
@@ -27,8 +27,8 @@ namespace QA.Core.Data.Resolvers
         public FileXmlMappingResolver(
             string stagePath, string livePath)
         {
-            Throws.IfArgumentNullOrEmpty(stagePath, "stagePath");
-            Throws.IfArgumentNullOrEmpty(livePath, "livePath");
+            Throws.IfArgumentNullOrEmpty(stagePath, nameof(stagePath));
+            Throws.IfArgumentNullOrEmpty(livePath, nameof(livePath));
 
             _mappingStageSource = GetFile(stagePath);
 
@@ -60,7 +60,7 @@ namespace QA.Core.Data.Resolvers
             }
             catch
             {
-                realPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, 
+                realPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
                     path.Replace("/", "\\"));
             }
 
@@ -75,7 +75,7 @@ namespace QA.Core.Data.Resolvers
         /// </summary>
         /// <param name="isStage"></param>
         /// <returns></returns>
-        public virtual XmlMappingSource GetMapping(bool isStage)
+        public override XmlMappingSource GetMapping(bool isStage)
         {
             return isStage ? _mappingStageSource : _mappingLiveSource;
         }
@@ -84,39 +84,11 @@ namespace QA.Core.Data.Resolvers
         /// Получить маппинг с учетом конфигурации
         /// </summary>
         /// <returns></returns>
-        public virtual XmlMappingSource GetCurrentMapping()
+        public override XmlMappingSource GetCurrentMapping()
         {
             return GetMapping(IsStageMode);
         }
 
-        protected const string IsStageSiteModeKey = "Mode.IsStage";
 
-        private bool? _isStageMode;
-        /// <summary>
-        /// Режим доступа к данным live/stage
-        /// </summary>
-        public bool IsStageMode
-        {
-            get
-            {
-                if (_isStageMode == null)
-                {
-                    bool result = false;
-                    if (bool.TryParse(ConfigurationManager.AppSettings[IsStageSiteModeKey] ?? string.Empty, out result))
-                    {
-                        return result;
-                    }
-
-                    return false;
-                }
-
-                return _isStageMode.Value;
-            }
-
-            set
-            {
-                _isStageMode = value;
-            }
-        }
     }
 }
