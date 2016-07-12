@@ -124,11 +124,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AsyncLock.cs" />
     <Compile Include="Cache\CacheExtensions.cs" />
     <Compile Include="Cache\CacheItemTracker.cs" />
     <Compile Include="Cache\ContentInvalidator.cs" />
     <Compile Include="Cache\VersionedCacheProvider3.cs" />
-    <Compile Include="Cache\VersionedCacheProvider2.cs" />
     <Compile Include="Cache\CacheProvider.cs" />
     <Compile Include="Cache\CacheTagModification.cs" />
     <Compile Include="Cache\ICacheItemWatcher.cs" />
@@ -137,7 +137,6 @@
     <Compile Include="Cache\IVersionedCacheProvider.cs" />
     <Compile Include="Cache\NoCacheProvider.cs" />
     <Compile Include="Cache\QPCacheItemWatcher.cs" />
-    <Compile Include="Cache\TimedLock.cs" />
     <Compile Include="Cache\VersionedCacheProvider.cs" />
     <Compile Include="Collections\ReadOnlyDictionary`2.cs" />
     <Compile Include="HashHelper.cs" />
