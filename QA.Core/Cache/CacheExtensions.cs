@@ -5,6 +5,7 @@ using System.Runtime;
 using System.Threading;
 using QA.Core.Logger;
 using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
 
 namespace QA.Core.Cache
 {
@@ -27,8 +28,8 @@ namespace QA.Core.Cache
 
         private static readonly bool _providerType = ObjectFactoryBase.Resolve<ICacheProvider>().GetType() == typeof(VersionedCacheProvider3);
         private static readonly bool _vProviderType = ObjectFactoryBase.Resolve<IVersionedCacheProvider>().GetType() == typeof(VersionedCacheProvider3);
-        
-        
+
+
         /// <summary>
         /// Потокобезопасно берет объект из кэша, если его там нет, то вызывает функцию для получения данных
         /// и кладет результат в кэш
@@ -371,6 +372,18 @@ namespace QA.Core.Cache
             }
 
             return Convert<T>(result);
+        }
+
+        /// <summary>
+        /// Вычисление ключа для кеширования. 
+        /// Использование: var key = CacheExtensions.ComposeCacheKey(new {category, id = item.Id})
+        /// </summary>
+        /// <param name="anonymousObject"></param>
+        /// <param name="caller"></param>
+        /// <returns></returns>
+        public static string ComposeCacheKey(object anonymousObject, [CallerMemberName]string caller = "")
+        {
+            return $"{caller}_{anonymousObject}";
         }
     }
 }
