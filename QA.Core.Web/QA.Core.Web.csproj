@@ -143,6 +143,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomHttpContextWrapper.cs" />
     <Compile Include="RequestLocal.cs" />
     <Compile Include="RequireCustomActionAttribute.cs" />
     <Compile Include="AdministrationAuthorizationHelper.cs" />
