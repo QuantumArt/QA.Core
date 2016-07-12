@@ -134,6 +134,7 @@
     <Compile Include="Repository\EFUnitOfWorkBase.cs" />
     <Compile Include="Resolvers\FileXmlMappingResolver.cs" />
     <Compile Include="Resolvers\ManifestXmlMappingResolver.cs" />
+    <Compile Include="Resolvers\ResolverBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

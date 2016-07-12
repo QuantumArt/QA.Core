@@ -5,6 +5,7 @@ using System.Runtime;
 using System.Threading;
 using QA.Core.Logger;
 using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
 
 namespace QA.Core.Cache
 {
@@ -13,22 +14,25 @@ namespace QA.Core.Cache
     /// </summary>
     public static class CacheExtensions
     {
+        internal static ILogger _logger = null;
         private static ConcurrentDictionary<string, object> _lockers = new ConcurrentDictionary<string, object>();
-        private static readonly ILogger _logger = ObjectFactoryBase.Resolve<ILogger>();
+        private static ConcurrentDictionary<string, SemaphoreSlim> _semaphores = new ConcurrentDictionary<string, SemaphoreSlim>();
+        private static readonly Lazy<ILogger> _loggerLazy = new Lazy<ILogger>(() => ObjectFactoryBase.Resolve<ILogger>(),
+            LazyThreadSafetyMode.ExecutionAndPublication);
+
         private const int TRYENTER_TIMEOUT_MS = 7000;
-        public static ConcurrentDictionary<string, object> Lockers
+        internal static Lazy<bool> _providerType = new Lazy<bool>(() => ObjectFactoryBase.Resolve<ICacheProvider>().GetType() == typeof(VersionedCacheProvider3));
+        internal static Lazy<bool> _vProviderType = new Lazy<bool>(() => ObjectFactoryBase.Resolve<IVersionedCacheProvider>().GetType() == typeof(VersionedCacheProvider3));
+
+        private static ILogger Logger
         {
             get
             {
-                return _lockers;
+                return _logger ?? _loggerLazy.Value;
             }
         }
 
 
-        private static readonly bool _providerType = ObjectFactoryBase.Resolve<ICacheProvider>().GetType() == typeof(VersionedCacheProvider3);
-        private static readonly bool _vProviderType = ObjectFactoryBase.Resolve<IVersionedCacheProvider>().GetType() == typeof(VersionedCacheProvider3);
-        
-        
         /// <summary>
         /// Потокобезопасно берет объект из кэша, если его там нет, то вызывает функцию для получения данных
         /// и кладет результат в кэш
@@ -41,7 +45,7 @@ namespace QA.Core.Cache
         /// <returns>закэшированне данные, если они присутствуют в кэше или результат выполнения функции</returns>
         public static T GetOrAdd<T>(this ICacheProvider provider, string key, TimeSpan expiration, Func<T> getData)
         {
-            var supportCallbacks = _providerType;
+            var supportCallbacks = _providerType.Value;
             object result = provider.Get(key);
             object deprecatedResult = null;
 
@@ -109,7 +113,7 @@ namespace QA.Core.Cache
                         }
 
                         var time1 = sw.ElapsedMilliseconds;
-                        _logger.Log(() => string.Format("Долгое нахождение в ожидании обновления кэша {1} ms, ключ: {0} ", key, time1), EventLevel.Warning);
+                        Logger.Log(() => string.Format("Долгое нахождение в ожидании обновления кэша {1} ms, ключ: {0} ", key, time1), EventLevel.Warning);
 
                         result = getData();
 
@@ -152,20 +156,21 @@ namespace QA.Core.Cache
         /// <returns>закэшированне данные, если они присутствуют в кэше или результат выполнения функции</returns>
         public static async Task<T> GetOrAddAsync<T>(this ICacheProvider provider, string key, TimeSpan expiration, Func<Task<T>> getData)
         {
-            var supportCallbacks = _providerType;
+            var supportCallbacks = _providerType.Value;
             object result = provider.Get(key);
             object deprecatedResult = null;
 
             if (result == null)
             {
-                object localLocker = _lockers.GetOrAdd(key, new object());
+                SemaphoreSlim localLocker = _semaphores.GetOrAdd(key, _ => new SemaphoreSlim(1));
 
                 bool lockTaken = false;
+                SemaphoreSlim sl = new SemaphoreSlim(1);
+
                 try
                 {
                     Stopwatch sw = new Stopwatch();
                     sw.Start();
-
 
                     if (supportCallbacks)
                     {
@@ -175,16 +180,22 @@ namespace QA.Core.Cache
                         if (deprecatedResult != null)
                         {
                             // если есть, то обновлять данные будет только 1 поток
-                            Monitor.TryEnter(localLocker, ref lockTaken);
+                            lockTaken = await localLocker
+                                .WaitAsync(TimeSpan.MaxValue)
+                                .ConfigureAwait(false);
                         }
                         else
                         {
-                            Monitor.TryEnter(localLocker, TRYENTER_TIMEOUT_MS, ref lockTaken);
+                            lockTaken = await localLocker
+                                .WaitAsync(TimeSpan.FromMilliseconds(TRYENTER_TIMEOUT_MS))
+                                .ConfigureAwait(false); ;
                         }
                     }
                     else
                     {
-                        Monitor.TryEnter(localLocker, TRYENTER_TIMEOUT_MS, ref lockTaken);
+                        lockTaken = await localLocker
+                            .WaitAsync(TimeSpan.FromMilliseconds(TRYENTER_TIMEOUT_MS))
+                            .ConfigureAwait(false); ;
                     }
 
                     if (lockTaken)
@@ -220,7 +231,7 @@ namespace QA.Core.Cache
                         }
 
                         var time1 = sw.ElapsedMilliseconds;
-                        _logger.Error("Долгое нахождение в ожидании обновления кэша {1} ms, ключ: {0} ", key, time1);
+                        Logger.Error("Долгое нахождение в ожидании обновления кэша {1} ms, ключ: {0} ", key, time1);
 
                         result = await getData().ConfigureAwait(false);
 
@@ -239,7 +250,7 @@ namespace QA.Core.Cache
                 {
                     if (lockTaken)
                     {
-                        Monitor.Exit(localLocker);
+                        localLocker.Release();
                     }
                 }
             }
@@ -256,12 +267,12 @@ namespace QA.Core.Cache
             var elapsed = time2 - time1;
             if (elapsed > 5000)
             {
-                _logger.Log(() => string.Format("Долгое получение данных время: {0} мс, ключ: {1}, time1: {2}, time2: {3}",
+                Logger.Log(() => string.Format("Долгое получение данных время: {0} мс, ключ: {1}, time1: {2}, time2: {3}",
                     elapsed, key, time1, time2), EventLevel.Warning);
             }
             if (reportTime1 && time1 > 1000)
             {
-                _logger.Log(() => string.Format("Долгая проверка кеша: {0} мс, ключ: {1}",
+                Logger.Log(() => string.Format("Долгая проверка кеша: {0} мс, ключ: {1}",
                     time1, key), EventLevel.Warning);
             }
         }
@@ -280,12 +291,12 @@ namespace QA.Core.Cache
         /// <returns>закэшированне данные, если они присутствуют в кэше или результат выполнения функции</returns>
         public static T GetOrAdd<T>(this IVersionedCacheProvider provider, string key, string[] tags, TimeSpan expiration, Func<T> getData)
         {
-            var supportCallbacks = _vProviderType;
+            var supportCallbacks = _vProviderType.Value;
             object result = provider.Get(key, tags);
             object deprecatedResult = null;
             if (result == null)
             {
-                object localLocker = _lockers.GetOrAdd(key, new object());
+                object localLocker = _lockers.GetOrAdd(key, _ => new object());
                 bool lockTaken = false;
                 try
                 {
@@ -342,7 +353,7 @@ namespace QA.Core.Cache
                         }
 
                         var time1 = sw.ElapsedMilliseconds;
-                        _logger.Log(() => string.Format("Долгое нахождение в ожидании обновления кэша {1} ms, ключ: {0} ", key, time1),
+                        Logger.Log(() => string.Format("Долгое нахождение в ожидании обновления кэша {1} ms, ключ: {0} ", key, time1),
                             EventLevel.Warning);
 
                         result = getData();
@@ -371,6 +382,18 @@ namespace QA.Core.Cache
             }
 
             return Convert<T>(result);
+        }
+
+        /// <summary>
+        /// Вычисление ключа для кеширования. В ключ кеширования добавляется имя метода, из которого производится вызов данного кода
+        /// Использование: var key = CacheExtensions.ComposeCacheKey(new {category, id = item.Id})
+        /// </summary>
+        /// <param name="anonymousObject"></param>
+        /// <param name="caller"></param>
+        /// <returns></returns>
+        public static string ComposeCacheKey(object anonymousObject, [CallerMemberName]string caller = "")
+        {
+            return $"{caller}_{anonymousObject}";
         }
     }
 }
