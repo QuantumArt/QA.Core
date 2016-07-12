@@ -16,7 +16,6 @@ namespace QA.Core
 
         public CacheProvider()
         {
-            var key = DateTime.Now.ToString("yyyy-MM-dd_HH:mm:ss.fff");
             _cache = MemoryCache.Default;
         }
 

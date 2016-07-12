@@ -6,7 +6,7 @@ namespace QA.Core.Data.Resolvers
     /// <summary>
     /// Реализует механизм получения маппингов из текущей сборки
     /// </summary>
-    public abstract class ManifestXmlMappingResolver<TContext> : IXmlMappingResolver
+    public abstract class ManifestXmlMappingResolver<TContext> : ResolverBase
     {
         /// <summary>
         /// Шаблон сообщения об ошибке
@@ -58,7 +58,7 @@ namespace QA.Core.Data.Resolvers
         /// </summary>
         /// <param name="isStage"></param>
         /// <returns></returns>
-        public XmlMappingSource GetMapping(bool isStage)
+        public override XmlMappingSource GetMapping(bool isStage)
         {
             return isStage ? _mappingStageSource : _mappingLiveSource;
         }
@@ -67,18 +67,11 @@ namespace QA.Core.Data.Resolvers
         /// Получить маппинг с учетом конфигурации
         /// </summary>
         /// <returns></returns>
-        public XmlMappingSource GetCurrentMapping()
+        public override XmlMappingSource GetCurrentMapping()
         {
             return GetMapping(IsStageMode);
         }
 
-        /// <summary>
-        /// Режим доступа к данным live/stage
-        /// </summary>
-        protected abstract bool IsStageMode
-        {
-            get;
-        }
         
         /// <summary>
         /// Получение полного пути к ресурсу.
