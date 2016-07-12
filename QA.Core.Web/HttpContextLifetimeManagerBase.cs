@@ -16,7 +16,9 @@ namespace QA.Core.Web
 
         private ThreadLocal<object> _val = new ThreadLocal<object>();
 
-
+        /// <summary>
+        /// Ключ для хранения в контексте запроса
+        /// </summary>
         protected abstract string Key { get; }
 
         /// <summary>
@@ -62,13 +64,14 @@ namespace QA.Core.Web
         /// <param name="newValue"></param>
         public override void SetValue(object newValue)
         {
-            if (HttpContext.Current == null)
+            var ctx = HttpContext.Current;
+            if (ctx == null)
             {
                 _val.Value = newValue;
             }
             else
             {
-                HttpContext.Current.Items[Key] = newValue;
+                ctx.Items[Key] = newValue;
             }
         }
 
