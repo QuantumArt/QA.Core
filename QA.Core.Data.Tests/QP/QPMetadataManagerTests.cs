@@ -4,7 +4,7 @@ using QA.Core.Data.QP;
 
 namespace QA.Core.Data.Tests.QP
 {
-    [TestClass]
+
     public class QPMetadataManagerTests
     {
         #region Constructor

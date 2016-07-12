@@ -14,12 +14,23 @@ namespace QA.Core.Cache
     /// </summary>
     public static class CacheExtensions
     {
+        internal static ILogger _logger = null;
         private static ConcurrentDictionary<string, object> _lockers = new ConcurrentDictionary<string, object>();
         private static ConcurrentDictionary<string, SemaphoreSlim> _semaphores = new ConcurrentDictionary<string, SemaphoreSlim>();
-        private static readonly ILogger _logger = ObjectFactoryBase.Resolve<ILogger>();
+        private static readonly Lazy<ILogger> _loggerLazy = new Lazy<ILogger>(() => ObjectFactoryBase.Resolve<ILogger>(),
+            LazyThreadSafetyMode.ExecutionAndPublication);
+
         private const int TRYENTER_TIMEOUT_MS = 7000;
-        private static readonly bool _providerType = ObjectFactoryBase.Resolve<ICacheProvider>().GetType() == typeof(VersionedCacheProvider3);
-        private static readonly bool _vProviderType = ObjectFactoryBase.Resolve<IVersionedCacheProvider>().GetType() == typeof(VersionedCacheProvider3);
+        internal static Lazy<bool> _providerType = new Lazy<bool>(() => ObjectFactoryBase.Resolve<ICacheProvider>().GetType() == typeof(VersionedCacheProvider3));
+        internal static Lazy<bool> _vProviderType = new Lazy<bool>(() => ObjectFactoryBase.Resolve<IVersionedCacheProvider>().GetType() == typeof(VersionedCacheProvider3));
+
+        private static ILogger Logger
+        {
+            get
+            {
+                return _logger ?? _loggerLazy.Value;
+            }
+        }
 
 
         /// <summary>
@@ -34,7 +45,7 @@ namespace QA.Core.Cache
         /// <returns>закэшированне данные, если они присутствуют в кэше или результат выполнения функции</returns>
         public static T GetOrAdd<T>(this ICacheProvider provider, string key, TimeSpan expiration, Func<T> getData)
         {
-            var supportCallbacks = _providerType;
+            var supportCallbacks = _providerType.Value;
             object result = provider.Get(key);
             object deprecatedResult = null;
 
@@ -102,7 +113,7 @@ namespace QA.Core.Cache
                         }
 
                         var time1 = sw.ElapsedMilliseconds;
-                        _logger.Log(() => string.Format("Долгое нахождение в ожидании обновления кэша {1} ms, ключ: {0} ", key, time1), EventLevel.Warning);
+                        Logger.Log(() => string.Format("Долгое нахождение в ожидании обновления кэша {1} ms, ключ: {0} ", key, time1), EventLevel.Warning);
 
                         result = getData();
 
@@ -145,7 +156,7 @@ namespace QA.Core.Cache
         /// <returns>закэшированне данные, если они присутствуют в кэше или результат выполнения функции</returns>
         public static async Task<T> GetOrAddAsync<T>(this ICacheProvider provider, string key, TimeSpan expiration, Func<Task<T>> getData)
         {
-            var supportCallbacks = _providerType;
+            var supportCallbacks = _providerType.Value;
             object result = provider.Get(key);
             object deprecatedResult = null;
 
@@ -160,7 +171,7 @@ namespace QA.Core.Cache
                 {
                     Stopwatch sw = new Stopwatch();
                     sw.Start();
-                                        
+
                     if (supportCallbacks)
                     {
                         // проверяем, что есть предыдущее значение
@@ -220,7 +231,7 @@ namespace QA.Core.Cache
                         }
 
                         var time1 = sw.ElapsedMilliseconds;
-                        _logger.Error("Долгое нахождение в ожидании обновления кэша {1} ms, ключ: {0} ", key, time1);
+                        Logger.Error("Долгое нахождение в ожидании обновления кэша {1} ms, ключ: {0} ", key, time1);
 
                         result = await getData().ConfigureAwait(false);
 
@@ -256,12 +267,12 @@ namespace QA.Core.Cache
             var elapsed = time2 - time1;
             if (elapsed > 5000)
             {
-                _logger.Log(() => string.Format("Долгое получение данных время: {0} мс, ключ: {1}, time1: {2}, time2: {3}",
+                Logger.Log(() => string.Format("Долгое получение данных время: {0} мс, ключ: {1}, time1: {2}, time2: {3}",
                     elapsed, key, time1, time2), EventLevel.Warning);
             }
             if (reportTime1 && time1 > 1000)
             {
-                _logger.Log(() => string.Format("Долгая проверка кеша: {0} мс, ключ: {1}",
+                Logger.Log(() => string.Format("Долгая проверка кеша: {0} мс, ключ: {1}",
                     time1, key), EventLevel.Warning);
             }
         }
@@ -280,7 +291,7 @@ namespace QA.Core.Cache
         /// <returns>закэшированне данные, если они присутствуют в кэше или результат выполнения функции</returns>
         public static T GetOrAdd<T>(this IVersionedCacheProvider provider, string key, string[] tags, TimeSpan expiration, Func<T> getData)
         {
-            var supportCallbacks = _vProviderType;
+            var supportCallbacks = _vProviderType.Value;
             object result = provider.Get(key, tags);
             object deprecatedResult = null;
             if (result == null)
@@ -342,7 +353,7 @@ namespace QA.Core.Cache
                         }
 
                         var time1 = sw.ElapsedMilliseconds;
-                        _logger.Log(() => string.Format("Долгое нахождение в ожидании обновления кэша {1} ms, ключ: {0} ", key, time1),
+                        Logger.Log(() => string.Format("Долгое нахождение в ожидании обновления кэша {1} ms, ключ: {0} ", key, time1),
                             EventLevel.Warning);
 
                         result = getData();

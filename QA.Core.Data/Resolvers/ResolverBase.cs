@@ -16,7 +16,7 @@ namespace QA.Core.Data.Resolvers
 
         public abstract XmlMappingSource GetCurrentMapping();
 
-        public abstract public XmlMappingSource GetMapping(bool isStage);
+        public abstract XmlMappingSource GetMapping(bool isStage);
 
         /// <summary>
         /// Возвращает имя SQL-таблицы по типам контекста и класса контента
