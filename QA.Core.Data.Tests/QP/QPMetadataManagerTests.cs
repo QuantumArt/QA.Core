@@ -9,21 +9,21 @@ namespace QA.Core.Data.Tests.QP
     {
         #region Constructor
 
-        [TestMethod]
+      //  [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void QPMetadataManagerConstructorWithNullConnectionStringTest()
         {
             new QPMetadataManager(null);
         }
 
-        [TestMethod]
+      //  [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void QPMetadataManagerConstructorWithEmptyConnectionStringTest()
         {
             new QPMetadataManager(string.Empty);
         }
 
-        [TestMethod]
+      //  [TestMethod]
         public void QPMetadataManagerConstructorTest()
         {
             var instance = new QPMetadataManager(TestUtils.ConnectionString);
@@ -33,7 +33,7 @@ namespace QA.Core.Data.Tests.QP
             Assert.AreEqual(TestUtils.ConnectionString, instance.DbConnection.InstanceConnectionString);
         }
 
-        [TestMethod]
+      //  [TestMethod]
         public void QPMetadataManagerConstructorWithNullConnectionStringTest2()
         {
             try
@@ -51,7 +51,7 @@ namespace QA.Core.Data.Tests.QP
             Assert.Fail("The exception was not thrown.");
         }
 
-        [TestMethod]
+      //  [TestMethod]
         public void QPMetadataManagerConstructorWithEmptyConnectionStringTest2()
         {
             try
@@ -73,7 +73,7 @@ namespace QA.Core.Data.Tests.QP
 
         #region GetContentId
 
-        [TestMethod]
+      //  [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void QPMetadataManagerGetContentIdWithNullParametersTest()
         {
@@ -81,7 +81,7 @@ namespace QA.Core.Data.Tests.QP
             instance.GetContentId(null, null);
         }
 
-        [TestMethod]
+      //  [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void QPMetadataManagerGetContentIdWithNullParametersTest2()
         {
@@ -89,7 +89,7 @@ namespace QA.Core.Data.Tests.QP
             instance.GetContentId(TestUtils.SiteName, null);
         }
 
-        [TestMethod]
+      //  [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void QPMetadataManagerGetContentIdWithNullParametersTest3()
         {
@@ -97,7 +97,7 @@ namespace QA.Core.Data.Tests.QP
             instance.GetContentId(null, "AbstractItem");
         }
 
-        [TestMethod]
+      //  [TestMethod]
         public void QPMetadataManagerGetContentIdWithNullParametersTest4()
         {
             try
@@ -116,7 +116,7 @@ namespace QA.Core.Data.Tests.QP
             Assert.Fail("The exception was not thrown.");
         }
 
-        [TestMethod]
+      //  [TestMethod]
         public void QPMetadataManagerGetContentIdWithNullParametersTest5()
         {
             try
@@ -135,7 +135,7 @@ namespace QA.Core.Data.Tests.QP
             Assert.Fail("The exception was not thrown.");
         }
 
-        [TestMethod]
+      //  [TestMethod]
         public void QPMetadataManagerGetContentIdWithNullParametersTest6()
         {
             try
@@ -154,7 +154,7 @@ namespace QA.Core.Data.Tests.QP
             Assert.Fail("The exception was not thrown.");
         }
 
-        [TestMethod]
+      //  [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void QPMetadataManagerGetContentIdWithEmptyParametersTest()
         {
@@ -162,7 +162,7 @@ namespace QA.Core.Data.Tests.QP
             instance.GetContentId(string.Empty, string.Empty);
         }
 
-        [TestMethod]
+      //  [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void QPMetadataManagerGetContentIdWithEmptylParametersTest2()
         {
@@ -170,7 +170,7 @@ namespace QA.Core.Data.Tests.QP
             instance.GetContentId(TestUtils.SiteName, string.Empty);
         }
 
-        [TestMethod]
+      //  [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void QPMetadataManagerGetContentIdWithEmptyParametersTest3()
         {
@@ -178,7 +178,7 @@ namespace QA.Core.Data.Tests.QP
             instance.GetContentId(string.Empty, "AbstractItem");
         }
 
-        [TestMethod]
+      //  [TestMethod]
         public void QPMetadataManagerGetContentIdWithEmptyParametersTest4()
         {
             try
@@ -197,7 +197,7 @@ namespace QA.Core.Data.Tests.QP
             Assert.Fail("The exception was not thrown.");
         }
 
-        [TestMethod]
+      //  [TestMethod]
         public void QPMetadataManagerGetContentIdWithEmptyParametersTest5()
         {
             try
@@ -216,7 +216,7 @@ namespace QA.Core.Data.Tests.QP
             Assert.Fail("The exception was not thrown.");
         }
 
-        [TestMethod]
+      //  [TestMethod]
         public void QPMetadataManagerGetContentIdWithEmptyParametersTest6()
         {
             try
@@ -235,7 +235,7 @@ namespace QA.Core.Data.Tests.QP
             Assert.Fail("The exception was not thrown.");
         }
 
-        [TestMethod]
+      //  [TestMethod]
         public void QPMetadataManagerGetContentIdTest()
         {
             var instance = new QPMetadataManager(TestUtils.ConnectionString);
@@ -248,7 +248,7 @@ namespace QA.Core.Data.Tests.QP
 
         #region GetContentName
 
-        [TestMethod]
+      //  [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void QPMetadataManagerGetContentNameWithNullParametersTest()
         {
@@ -256,7 +256,7 @@ namespace QA.Core.Data.Tests.QP
             instance.GetContentName(0);
         }
 
-        [TestMethod]
+      //  [TestMethod]
         public void QPMetadataManagerGetContentNameWithNullParametersTest2()
         {
             try
@@ -275,7 +275,7 @@ namespace QA.Core.Data.Tests.QP
             Assert.Fail("The exception was not thrown.");
         }
 
-        [TestMethod]
+      //  [TestMethod]
         public void QPMetadataManagerGetContentNameTest()
         {
             var instance = new QPMetadataManager(TestUtils.ConnectionString);
@@ -284,7 +284,7 @@ namespace QA.Core.Data.Tests.QP
             Assert.AreEqual("Culture", name);
         }
 
-        [TestMethod]
+      //  [TestMethod]
         public void QPMetadataManagerGetContentNameTest_NotExists()
         {
             var instance = new QPMetadataManager(TestUtils.ConnectionString);
@@ -297,7 +297,7 @@ namespace QA.Core.Data.Tests.QP
 
         #region GetSiteId
 
-        [TestMethod]
+      //  [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void QPMetadataManagerGetSiteIdWithNullParametersTest()
         {
@@ -305,7 +305,7 @@ namespace QA.Core.Data.Tests.QP
             instance.GetSiteId(null);
         }
 
-        [TestMethod]
+      //  [TestMethod]
         public void QPMetadataManagerGetSiteIdWithNullParametersTest2()
         {
             try
@@ -324,7 +324,7 @@ namespace QA.Core.Data.Tests.QP
             Assert.Fail("The exception was not thrown.");
         }
 
-        [TestMethod]
+      //  [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void QPMetadataManagerGetSiteIdWithEmptyParametersTest()
         {
@@ -332,7 +332,7 @@ namespace QA.Core.Data.Tests.QP
             instance.GetSiteId(string.Empty);
         }
 
-        [TestMethod]
+      //  [TestMethod]
         public void QPMetadataManagerGetSiteIdWithEmptyParametersTest2()
         {
             try
@@ -351,7 +351,7 @@ namespace QA.Core.Data.Tests.QP
             Assert.Fail("The exception was not thrown.");
         }
 
-        [TestMethod]
+      //  [TestMethod]
         public void QPMetadataManagerGetSiteIdTest()
         {
             var instance = new QPMetadataManager(TestUtils.ConnectionString);
@@ -360,7 +360,7 @@ namespace QA.Core.Data.Tests.QP
             Assert.AreEqual(35, id);
         }
 
-        [TestMethod]
+      //  [TestMethod]
         public void QPMetadataManagerGetSiteIdTest_NotExists()
         {
             var instance = new QPMetadataManager(TestUtils.ConnectionString);
@@ -373,7 +373,7 @@ namespace QA.Core.Data.Tests.QP
 
         #region GetSiteName
 
-        [TestMethod]
+      //  [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void QPMetadataManagerGetSiteNameWithNullParametersTest()
         {
@@ -381,7 +381,7 @@ namespace QA.Core.Data.Tests.QP
             instance.GetSiteName(0);
         }
 
-        [TestMethod]
+      //  [TestMethod]
         public void QPMetadataManagerGetSiteNameWithNullParametersTest2()
         {
             try
@@ -400,7 +400,7 @@ namespace QA.Core.Data.Tests.QP
             Assert.Fail("The exception was not thrown.");
         }
 
-        [TestMethod]
+      //  [TestMethod]
         public void QPMetadataManagerGetSiteNameTest()
         {
             var instance = new QPMetadataManager(TestUtils.ConnectionString);
@@ -409,7 +409,7 @@ namespace QA.Core.Data.Tests.QP
             Assert.AreEqual(TestUtils.SiteName, name);
         }
 
-        [TestMethod]
+      //  [TestMethod]
         [ExpectedException(typeof(Exception))]
         public void QPMetadataManagerGetSiteNameTest_NotExists()
         {
@@ -417,7 +417,7 @@ namespace QA.Core.Data.Tests.QP
             instance.GetSiteName(350);
         }
 
-        [TestMethod]
+      //  [TestMethod]
         public void QPMetadataManagerGetSiteNameTest_NotExists_CheckExceptionText()
         {
             try
@@ -440,7 +440,7 @@ namespace QA.Core.Data.Tests.QP
 
         #region GetContentAttribute
 
-        [TestMethod]
+      //  [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void QPMetadataManagerGetContentAttributeWithNullParametersTest()
         {
@@ -448,7 +448,7 @@ namespace QA.Core.Data.Tests.QP
             instance.GetContentAttribute(null, null, null);
         }
 
-        [TestMethod]
+      //  [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void QPMetadataManagerGetContentAttributeWithNullParametersTest2()
         {
@@ -456,7 +456,7 @@ namespace QA.Core.Data.Tests.QP
             instance.GetContentAttribute(TestUtils.SiteName, null, null);
         }
 
-        [TestMethod]
+      //  [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void QPMetadataManagerGetContentAttributeWithNullParametersTest3()
         {
@@ -464,7 +464,7 @@ namespace QA.Core.Data.Tests.QP
             instance.GetContentAttribute(TestUtils.SiteName, "AbstractItem", null);
         }
 
-        [TestMethod]
+      //  [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void QPMetadataManagerGetContentAttributeWithNullParametersTest4()
         {
@@ -472,7 +472,7 @@ namespace QA.Core.Data.Tests.QP
             instance.GetContentAttribute(TestUtils.SiteName, null, "Name");
         }
 
-        [TestMethod]
+      //  [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void QPMetadataManagerGetContentAttributeWithNullParametersTest5()
         {
@@ -480,7 +480,7 @@ namespace QA.Core.Data.Tests.QP
             instance.GetContentAttribute(null, null, "Name");
         }
 
-        [TestMethod]
+      //  [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void QPMetadataManagerGetContentAttributeWithNullParametersTest6()
         {
@@ -488,7 +488,7 @@ namespace QA.Core.Data.Tests.QP
             instance.GetContentAttribute(null, "AbstractItem", null);
         }
 
-        [TestMethod]
+      //  [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void QPMetadataManagerGetContentAttributeWithEmptyParametersTest()
         {
@@ -496,7 +496,7 @@ namespace QA.Core.Data.Tests.QP
             instance.GetContentAttribute(string.Empty, string.Empty, string.Empty);
         }
 
-        [TestMethod]
+      //  [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void QPMetadataManagerGetContentAttributeWithEmptyParametersTest2()
         {
@@ -504,7 +504,7 @@ namespace QA.Core.Data.Tests.QP
             instance.GetContentAttribute(TestUtils.SiteName, string.Empty, string.Empty);
         }
 
-        [TestMethod]
+      //  [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void QPMetadataManagerGetContentAttributeWithEmptyParametersTest3()
         {
@@ -512,7 +512,7 @@ namespace QA.Core.Data.Tests.QP
             instance.GetContentAttribute(TestUtils.SiteName, "AbstractItem", string.Empty);
         }
 
-        [TestMethod]
+      //  [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void QPMetadataManagerGetContentAttributeWithEmptyParametersTest4()
         {
@@ -520,7 +520,7 @@ namespace QA.Core.Data.Tests.QP
             instance.GetContentAttribute(TestUtils.SiteName, string.Empty, "Name");
         }
 
-        [TestMethod]
+      //  [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void QPMetadataManagerGetContentAttributeWithEmptyParametersTest5()
         {
@@ -528,7 +528,7 @@ namespace QA.Core.Data.Tests.QP
             instance.GetContentAttribute(string.Empty, string.Empty, "Name");
         }
 
-        [TestMethod]
+      //  [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void QPMetadataManagerGetContentAttributeWithEmptyParametersTest6()
         {
@@ -536,7 +536,7 @@ namespace QA.Core.Data.Tests.QP
             instance.GetContentAttribute(null, "AbstractItem", string.Empty);
         }
 
-        [TestMethod]
+      //  [TestMethod]
         public void QPMetadataManagerGetContentAttributeWithNullParametersTest7()
         {
             try
@@ -555,7 +555,7 @@ namespace QA.Core.Data.Tests.QP
             Assert.Fail("The exception was not thrown.");
         }
 
-        [TestMethod]
+      //  [TestMethod]
         public void QPMetadataManagerGetContentAttributeWithNullParametersTest8()
         {
             try
@@ -574,7 +574,7 @@ namespace QA.Core.Data.Tests.QP
             Assert.Fail("The exception was not thrown.");
         }
 
-        [TestMethod]
+      //  [TestMethod]
         public void QPMetadataManagerGetContentAttributeWithNullParametersTest9()
         {
             try
@@ -593,7 +593,7 @@ namespace QA.Core.Data.Tests.QP
             Assert.Fail("The exception was not thrown.");
         }
 
-        [TestMethod]
+      //  [TestMethod]
         public void QPMetadataManagerGetContentAttributeWithEmptyParametersTest7()
         {
             try
@@ -612,7 +612,7 @@ namespace QA.Core.Data.Tests.QP
             Assert.Fail("The exception was not thrown.");
         }
 
-        [TestMethod]
+      //  [TestMethod]
         public void QPMetadataManagerGetContentAttributeWithEmptyParametersTest8()
         {
             try
@@ -631,7 +631,7 @@ namespace QA.Core.Data.Tests.QP
             Assert.Fail("The exception was not thrown.");
         }
 
-        [TestMethod]
+      //  [TestMethod]
         public void QPMetadataManagerGetContentAttributeWithEmptyParametersTest9()
         {
             try
@@ -650,7 +650,7 @@ namespace QA.Core.Data.Tests.QP
             Assert.Fail("The exception was not thrown.");
         }
 
-        [TestMethod]
+      //  [TestMethod]
         public void QPMetadataManagerGetContentAttributeTest()
         {
             var instance = new QPMetadataManager(TestUtils.ConnectionString);
@@ -668,7 +668,7 @@ namespace QA.Core.Data.Tests.QP
 
         #region GetContentAttributes
 
-        [TestMethod]
+      //  [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void QPMetadataManagerGetContentAttributesWithNullParametersTest()
         {
@@ -676,7 +676,7 @@ namespace QA.Core.Data.Tests.QP
             instance.GetContentAttributes(null, null);
         }
 
-        [TestMethod]
+      //  [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void QPMetadataManagerGetContentAttributesWithNullParametersTest2()
         {
@@ -684,7 +684,7 @@ namespace QA.Core.Data.Tests.QP
             instance.GetContentAttributes(TestUtils.SiteName, null);
         }
 
-        [TestMethod]
+      //  [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void QPMetadataManagerGetContentAttributesWithNullParametersTest3()
         {
@@ -692,7 +692,7 @@ namespace QA.Core.Data.Tests.QP
             instance.GetContentAttributes(null, "AbstractItem");
         }
 
-        [TestMethod]
+      //  [TestMethod]
         public void QPMetadataManagerGetContentAttributesWithNullParametersTest4()
         {
             try
@@ -711,7 +711,7 @@ namespace QA.Core.Data.Tests.QP
             Assert.Fail("The exception was not thrown.");
         }
 
-        [TestMethod]
+      //  [TestMethod]
         public void QPMetadataManagerGetContentAttributesWithNullParametersTest5()
         {
             try
@@ -730,7 +730,7 @@ namespace QA.Core.Data.Tests.QP
             Assert.Fail("The exception was not thrown.");
         }
 
-        [TestMethod]
+      //  [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void QPMetadataManagerGetContentAttributesWithEmptyParametersTest()
         {
@@ -738,7 +738,7 @@ namespace QA.Core.Data.Tests.QP
             instance.GetContentAttributes(string.Empty, string.Empty);
         }
 
-        [TestMethod]
+      //  [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void QPMetadataManagerGetContentAttributesWithEmptyParametersTest2()
         {
@@ -746,7 +746,7 @@ namespace QA.Core.Data.Tests.QP
             instance.GetContentAttributes(TestUtils.SiteName, string.Empty);
         }
 
-        [TestMethod]
+      //  [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void QPMetadataManagerGetContentAttributesWithEmptyParametersTest3()
         {
@@ -754,7 +754,7 @@ namespace QA.Core.Data.Tests.QP
             instance.GetContentAttributes(string.Empty, "AbstractItem");
         }
 
-        [TestMethod]
+      //  [TestMethod]
         public void QPMetadataManagerGetContentAttributesWithEmptyParametersTest4()
         {
             try
@@ -773,7 +773,7 @@ namespace QA.Core.Data.Tests.QP
             Assert.Fail("The exception was not thrown.");
         }
 
-        [TestMethod]
+      //  [TestMethod]
         public void QPMetadataManagerGetContentAttributesWithEmptyParametersTest5()
         {
             try
@@ -820,7 +820,7 @@ namespace QA.Core.Data.Tests.QP
 
         #region ById
 
-        [TestMethod]
+      //  [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void QPMetadataManagerGetContentAttributesByIdWithNullParametersTest()
         {
@@ -828,7 +828,7 @@ namespace QA.Core.Data.Tests.QP
             instance.GetContentAttributes(0);
         }
 
-        [TestMethod]
+      //  [TestMethod]
         public void QPMetadataManagerGetContentAttributesByIdWithNullParametersTest2()
         {
             try
