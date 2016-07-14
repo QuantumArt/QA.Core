@@ -21,6 +21,7 @@ namespace QA.Core.Cache
             LazyThreadSafetyMode.ExecutionAndPublication);
 
         private const int TRYENTER_TIMEOUT_MS = 7000;
+        private const int DEPRECATEDRESULT_TIMEOUT_MS = 7000;
         internal static Lazy<bool> _providerType = new Lazy<bool>(() => ObjectFactoryBase.Resolve<ICacheProvider>().GetType() == typeof(VersionedCacheProvider3));
         internal static Lazy<bool> _vProviderType = new Lazy<bool>(() => ObjectFactoryBase.Resolve<IVersionedCacheProvider>().GetType() == typeof(VersionedCacheProvider3));
 
@@ -113,7 +114,7 @@ namespace QA.Core.Cache
                         }
 
                         var time1 = sw.ElapsedMilliseconds;
-                        Logger.Log(() => string.Format("Долгое нахождение в ожидании обновления кэша {1} ms, ключ: {0} ", key, time1), EventLevel.Warning);
+                        Logger.Log(() => $"Долгое нахождение в ожидании обновления кэша {time1} ms, ключ: {key} ", EventLevel.Warning);
 
                         result = getData();
 
@@ -146,7 +147,9 @@ namespace QA.Core.Cache
 
         /// <summary>
         /// Потокобезопасно берет объект из кэша, если его там нет, то вызывает асинхронную функцию для получения данных
-        /// и кладет результат в кэш
+        /// и кладет результат в кэш.
+        /// ВАЖНО: не поддерживается рекурсивный вызов с одинаковыми ключами (ограничение SemaphoreSlim). 
+        /// В случае вложенного вызова с одинаковым ключом возникнет таймаут длительностью 7 секунд
         /// </summary>
         /// <typeparam name="T">тип объектов в кэше</typeparam>
         /// <param name="provider">провайдер кэша</param>
@@ -165,8 +168,6 @@ namespace QA.Core.Cache
                 SemaphoreSlim localLocker = _semaphores.GetOrAdd(key, _ => new SemaphoreSlim(1));
 
                 bool lockTaken = false;
-                SemaphoreSlim sl = new SemaphoreSlim(1);
-
                 try
                 {
                     Stopwatch sw = new Stopwatch();
@@ -181,7 +182,7 @@ namespace QA.Core.Cache
                         {
                             // если есть, то обновлять данные будет только 1 поток
                             lockTaken = await localLocker
-                                .WaitAsync(TimeSpan.MaxValue)
+                                .WaitAsync(DEPRECATEDRESULT_TIMEOUT_MS)
                                 .ConfigureAwait(false);
                         }
                         else
@@ -231,7 +232,7 @@ namespace QA.Core.Cache
                         }
 
                         var time1 = sw.ElapsedMilliseconds;
-                        Logger.Error("Долгое нахождение в ожидании обновления кэша {1} ms, ключ: {0} ", key, time1);
+                        Logger.Log(() => $"Долгое нахождение в ожидании обновления кэша {time1} ms, ключ: {key} ", EventLevel.Warning);
 
                         result = await getData().ConfigureAwait(false);
 
