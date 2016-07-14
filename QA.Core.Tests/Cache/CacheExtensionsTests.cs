@@ -41,13 +41,49 @@ namespace QA.Core.Tests
 
             var duplicates = tasks.Select(x => x.Result).Distinct().Count();
 
-            Assert.AreEqual(1, duplicates);            
+            Assert.AreEqual(1, duplicates);
         }
 
-        private Task<string> GetTask(VersionedCacheProvider3 cacheProvider)
+        //[TestMethod]
+        //[TestCategory("Caching")]
+        /// <summary>
+        /// This test demonstrates deadlock caused by semaphoreslim reentrancy
+        /// </summary>
+        public void Async_reentrancy_test1()
+        {
+            var cacheProvider = new VersionedCacheProvider3();
+            int count = 3;
+            List<Task<string>> tasks = new List<Task<string>>();
+            for (int i = 0; i < count; i++)
+            {
+                tasks.Add(GetTaskRecursive(cacheProvider));
+                Thread.Sleep(10);
+                tasks.Add(GetTaskRecursive(cacheProvider));
+            }
+
+            Task.WaitAll(tasks.ToArray());
+
+            Assert.AreEqual(1, counter);
+
+            var duplicates = tasks.Select(x => x.Result).Distinct().Count();
+
+            Assert.AreEqual(1, duplicates);
+        }
+
+
+        private Task<string> GetTask(IVersionedCacheProvider cacheProvider)
         {
             return cacheProvider.GetOrAddAsync("testkey", TimeSpan.FromMinutes(1),
                             () => GetData(
+                                    TimeSpan.FromMilliseconds(1000 + (new Random()).Next(100, 105)),
+                                    "test" + (new Random()).Next()));
+        }
+
+        private Task<string> GetTaskRecursive(IVersionedCacheProvider cacheProvider)
+        {
+            return cacheProvider.GetOrAddAsync("testkey", TimeSpan.FromMinutes(1),
+                            () => GetData(
+                                    cacheProvider,
                                     TimeSpan.FromMilliseconds(1000 + (new Random()).Next(100, 105)),
                                     "test" + (new Random()).Next()));
         }
@@ -56,6 +92,16 @@ namespace QA.Core.Tests
         private async Task<string> GetData(TimeSpan wait, string data)
         {
             Interlocked.Increment(ref counter);
+            await Task.Delay(wait);
+            return data;
+        }
+
+
+        private async Task<string> GetData(IVersionedCacheProvider cacheProvider, TimeSpan wait, string data)
+        {
+            Interlocked.Increment(ref counter);
+            await Task.Delay(wait);
+            await GetTask(cacheProvider);
             await Task.Delay(wait);
             return data;
         }
