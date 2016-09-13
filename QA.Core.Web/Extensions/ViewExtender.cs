@@ -1,7 +1,11 @@
 ﻿// Owners: Alexey Abretov, Nikolay Karlov
 
+using System.Collections.Generic;
+using System.Configuration;
 using System.Globalization;
 using System.Web.Mvc;
+using System.Linq;
+using Microsoft.Practices.Unity;
 
 namespace QA.Core.Web
 {
@@ -18,8 +22,8 @@ namespace QA.Core.Web
         /// <returns>Значение ресурса ввиде строки</returns>
         public static string LocalResources(this WebViewPage page, string key)
         {
-            return page.ViewContext.HttpContext.GetLocalResourceObject(
-                page.VirtualPath, key) as string;
+            return UseResourceFormatter(page.ViewContext.HttpContext.GetLocalResourceObject(
+                page.VirtualPath, key) as string);
         }
 
         /// <summary>
@@ -30,22 +34,38 @@ namespace QA.Core.Web
         /// <returns></returns>
         public static object GetGlobalResource(this HtmlHelper htmlHelper, string classKey, string resourceKey)
         {
-            return htmlHelper.ViewContext.HttpContext.GetGlobalResourceObject(classKey, resourceKey);
+            return UseResourceFormatter(htmlHelper.ViewContext.HttpContext.GetGlobalResourceObject(classKey, resourceKey) as string);
         }
 
         public static object GetGlobalResource(this HtmlHelper htmlHelper, string classKey, string resourceKey, CultureInfo culture)
         {
-            return htmlHelper.ViewContext.HttpContext.GetGlobalResourceObject(classKey, resourceKey, culture);
+            return UseResourceFormatter(htmlHelper.ViewContext.HttpContext.GetGlobalResourceObject(classKey, resourceKey, culture) as string);
         }
 
         public static object GetLocalResource(this HtmlHelper htmlHelper, string classKey, string resourceKey)
         {
-            return htmlHelper.ViewContext.HttpContext.GetLocalResourceObject(classKey, resourceKey);
+            return UseResourceFormatter(htmlHelper.ViewContext.HttpContext.GetLocalResourceObject(classKey, resourceKey) as string);
         }
 
         public static object GetLocalResource(this HtmlHelper htmlHelper, string classKey, string resourceKey, CultureInfo culture)
         {
-            return htmlHelper.ViewContext.HttpContext.GetLocalResourceObject(classKey, resourceKey, culture);
+            return UseResourceFormatter(htmlHelper.ViewContext.HttpContext.GetLocalResourceObject(classKey, resourceKey, culture) as string);
+        }
+
+        /// <summary>
+        /// Преобразуем строку с ресурсом с помощью IResourceFormatter, если он зарегистрирован в unity. Иначе оставляем строку без изменений.
+        /// </summary>
+        /// <param name="resource"></param>
+        /// <returns></returns>
+        private static string UseResourceFormatter(string resource)
+        {
+            if (ObjectFactoryBase.DefaultContainer.IsRegistered<IResourceFormatter>())
+            {
+                var formatter = ObjectFactoryBase.DefaultContainer.Resolve<IResourceFormatter>();
+                return formatter.Modify(resource);
+            }
+            
+            return resource;
         }
     }
 }
