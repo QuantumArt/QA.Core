@@ -18,7 +18,7 @@ namespace QA.Core.Data
     {
         private static readonly object _locker = new object();
         private readonly Timer _timer;
-        protected readonly ConnectionStringSettings _connectionString;
+        protected readonly string _connectionString;
         private Dictionary<int, ContentModification> _modifications = new Dictionary<int, ContentModification>();
         private Dictionary<string, TableModification> _tableModifications = new Dictionary<string, TableModification>();
         private readonly ConcurrentBag<CacheItemTracker> _trackers;
@@ -59,7 +59,16 @@ namespace QA.Core.Data
             {
                 _timer = new Timer(OnTick, null, 0, Timeout.Infinite);
             }
-            _connectionString = ConfigurationManager.ConnectionStrings[connectionName];
+            var connectionString = ConfigurationManager.ConnectionStrings[connectionName];
+            try
+            {
+                _connectionString = connectionString.ConnectionString;
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("access to _connectionString.ConnectionString caused an exception", ex);
+            }
+         
             _trackers = new ConcurrentBag<CacheItemTracker>();
             _mode = mode;
             _invalidator = invalidator;
@@ -191,22 +200,7 @@ namespace QA.Core.Data
             {
                 if (newValues == null) throw new ArgumentNullException(nameof(newValues));
 
-                string cnn;
-                try
-                {
-                    cnn = _connectionString.ConnectionString;
-                }
-                catch (Exception ex)
-                {
-                    throw new InvalidOperationException("access to _connectionString.ConnectionString caused an exception", ex);
-                }
-
-                if (string.IsNullOrEmpty(cnn))
-                {
-                    throw new InvalidOperationException("The value of _connectionString.ConnectionString caused is null");
-                }
-
-                using (SqlConnection con = new SqlConnection(cnn))
+                using (SqlConnection con = new SqlConnection(_connectionString))
                 {
                     using (SqlCommand cmd = new SqlCommand(_cmdText, con))
                     {
