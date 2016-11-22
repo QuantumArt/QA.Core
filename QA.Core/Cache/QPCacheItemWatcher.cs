@@ -189,7 +189,24 @@ namespace QA.Core.Data
             // чтобы этого не было, выполняем код вне родительской транзакции (TransactionScopeOption.Suppress). 
             using (var tsSuppressed = new TransactionScope(TransactionScopeOption.Suppress))
             {
-                using (SqlConnection con = new SqlConnection(_connectionString.ConnectionString))
+                if (newValues == null) throw new ArgumentNullException(nameof(newValues));
+
+                string cnn;
+                try
+                {
+                    cnn = _connectionString.ConnectionString;
+                }
+                catch (Exception ex)
+                {
+                    throw new InvalidOperationException("access to _connectionString.ConnectionString caused an exception", ex);
+                }
+
+                if (string.IsNullOrEmpty(cnn))
+                {
+                    throw new InvalidOperationException("The value of _connectionString.ConnectionString caused is null");
+                }
+
+                using (SqlConnection con = new SqlConnection(cnn))
                 {
                     using (SqlCommand cmd = new SqlCommand(_cmdText, con))
                     {
