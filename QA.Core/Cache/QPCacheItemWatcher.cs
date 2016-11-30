@@ -17,6 +17,7 @@ namespace QA.Core.Data
     public class QPCacheItemWatcher : IDisposable, ICacheItemWatcher
     {
         private static readonly object _locker = new object();
+        private static bool _disposing = false;
         private readonly Timer _timer;
         protected readonly string _connectionString;
         private Dictionary<int, ContentModification> _modifications = new Dictionary<int, ContentModification>();
@@ -68,7 +69,9 @@ namespace QA.Core.Data
             {
                 throw new InvalidOperationException("access to _connectionString.ConnectionString caused an exception", ex);
             }
-         
+
+            Throws.IfArgumentNullOrEmpty(_connectionString, nameof(_connectionString));
+                     
             _trackers = new ConcurrentBag<CacheItemTracker>();
             _mode = mode;
             _invalidator = invalidator;
@@ -118,6 +121,11 @@ namespace QA.Core.Data
 
             lock (_locker)
             {
+                if (_disposing)
+                {
+                    throw new InvalidOperationException("obj is being disposed!");
+                }
+
                 if (_isBusy)
                     return;
 
@@ -182,7 +190,6 @@ namespace QA.Core.Data
                 {
                     ObjectFactoryBase.Logger.ErrorException("qp watcher error", ex);
                     ObjectFactoryBase.Logger.Error("qp watcher error StackTrace: {0}", ex.StackTrace);
-                    throw;
                 }
                 finally
                 {
@@ -268,6 +275,7 @@ namespace QA.Core.Data
 
         public void Dispose()
         {
+            _disposing = true;
             if (_timer != null)
                 _timer.Dispose();
         }
