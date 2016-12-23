@@ -25,8 +25,19 @@ namespace QA.Core
         /// </summary>
         /// <param name="fileName">Путь к файлу конфигурации. Поиск производится в
         /// AppDomain.CurrentDomain.BaseDirectory и AppDomain.CurrentDomain.BaseDirectory\bin</param>
-        public NLogLogger(
-            string fileName)
+        public NLogLogger(string fileName)
+            : this(fileName, null)
+        {
+
+        }
+
+        /// <summary>
+        /// Инициализирует экземпляр журнала
+        /// </summary>
+        /// <param name="fileName">Путь к файлу конфигурации. Поиск производится в
+        /// AppDomain.CurrentDomain.BaseDirectory и AppDomain.CurrentDomain.BaseDirectory\bin</param>
+        /// <param name="loggerName">Название лога</param>
+        public NLogLogger(string fileName, string loggerName)
         {
             var path1 = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileName);
 
@@ -51,7 +62,7 @@ namespace QA.Core
                 _factory = new LogFactory();
             }
 
-            _logger = new Lazy<NLog.Logger>(() => _factory.GetCurrentClassLogger(), System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
+            _logger = new Lazy<NLog.Logger>(() => loggerName == null ? _factory.GetCurrentClassLogger() : _factory.GetLogger(loggerName), System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
         }
 
         /// <summary>
