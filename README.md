@@ -1,0 +1,2 @@
+# QA.Core
+QA.Core
