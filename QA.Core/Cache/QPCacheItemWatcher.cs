@@ -31,6 +31,8 @@ namespace QA.Core.Data
         private readonly TimeSpan _pollPeriod;
         private readonly TimeSpan _dueTime;
 
+        private readonly Func<Tuple<int[], string[]>, bool> _onInvalidate;
+
         /// <summary>
         /// 
         /// </summary>
@@ -49,7 +51,12 @@ namespace QA.Core.Data
         /// <param name="invalidator">объект, инвалидирующий кеш</param>
         /// <param name="connectionName">имя строки подключения</param>
         /// <param name="dueTime">отложенный запуск (ms)</param>
-        public QPCacheItemWatcher(InvalidationMode mode, TimeSpan pollPeriod, IContentInvalidator invalidator, string connectionName = "qp_database", int dueTime = 0, bool useTimer = true)
+        /// <param name="onInvalidate">вызывается при удалении старых записей</param>
+        public QPCacheItemWatcher(InvalidationMode mode, TimeSpan pollPeriod, IContentInvalidator invalidator, 
+            string connectionName = "qp_database", 
+            int dueTime = 0, 
+            bool useTimer = true,
+            Func<Tuple<int[], string[]>, bool> onInvalidate = null)
         {
             Throws.IfArgumentNull(_ => connectionName);
             Throws.IfArgumentNull(_ => invalidator);
@@ -75,6 +82,7 @@ namespace QA.Core.Data
             _trackers = new ConcurrentBag<CacheItemTracker>();
             _mode = mode;
             _invalidator = invalidator;
+            _onInvalidate = onInvalidate;
             Throws.IfArgumentNull(_ => _connectionString);
         }
 
@@ -145,32 +153,39 @@ namespace QA.Core.Data
                         tracker.TrackChanges(tableChanges);
                     }
 
+                    List<int> itemsIds = new List<int>();
+                    List<string> itemsTables = new List<string>();
                     if (_modifications != null && _modifications.Count > 0)
                     {
-                        List<int> items = new List<int>();
+                        
                         // check for updates
-                        Compare(_modifications, newValues, items);
+                        Compare(_modifications, newValues, itemsIds);
 
                         // invalidate
-                        if (items.Count > 0)
+                        if (itemsIds.Count > 0)
                         {
-                            _invalidator.InvalidateIds(_mode, items.ToArray());
-                            ObjectFactoryBase.Logger.Debug(_ => ("Invalidating a set of ids " + string.Join(", ", items)));
+                            _invalidator.InvalidateIds(_mode, itemsIds.ToArray());
+                            ObjectFactoryBase.Logger.Debug(_ => ("Invalidating a set of ids " + string.Join(", ", itemsIds)));
                         }
                     }
 
                     if (_tableModifications != null && _tableModifications.Count > 0)
                     {
-                        List<string> items = new List<string>();
+                        
                         // check for updates
-                        Compare(_tableModifications, tableChanges, items);
+                        Compare(_tableModifications, tableChanges, itemsTables);
 
                         // invalidate
-                        if (items.Count > 0)
+                        if (itemsTables.Count > 0)
                         {
-                            _invalidator.InvalidateTables(_mode, items.ToArray());
-                            ObjectFactoryBase.Logger.Debug(_ => ("Invalidating a set of tables " + string.Join(", ", items)));
+                            _invalidator.InvalidateTables(_mode, itemsTables.ToArray());
+                            ObjectFactoryBase.Logger.Debug(_ => ("Invalidating a set of tables " + string.Join(", ", itemsTables)));
                         }
+                    }
+
+                    if(_onInvalidate != null && (itemsIds.Count > 0 || itemsTables.Count > 0))
+                    {
+                        _onInvalidate(new Tuple<int[], string[]>(itemsIds.ToArray(), itemsTables.ToArray()));
                     }
 
                     if (newValues != null && newValues.Count > 0)
