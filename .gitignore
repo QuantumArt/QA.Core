@@ -243,4 +243,8 @@ _Pvt_Extensions
 .idea/
 *.sln.iml
 
-
+# Generated And Builded
+*.orig
+*.sublime-workspace
+**/*.generated.cs
+npm-debug.log.*
