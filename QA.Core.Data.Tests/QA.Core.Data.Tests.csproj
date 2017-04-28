@@ -99,6 +99,7 @@
     <Compile Include="QP\FakeQpDbConnector.cs" />
     <Compile Include="QP\QPContentManagerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\ConnectionManagerTests.cs" />
     <Compile Include="TestUtils.cs" />
     <Compile Include="QP\QPMetadataManagerTests.cs" />
   </ItemGroup>

@@ -16,7 +16,12 @@ namespace QA.Core.Data.Repository
         {
         }
 
+        [Obsolete("Use ConnectionString")]
         protected string _connectionStringName;
+
+
+        protected string ConnectionString;
+
         protected IXmlMappingResolver _mappingSource;
         protected string _siteName;
 
@@ -28,6 +33,9 @@ namespace QA.Core.Data.Repository
         public L2SqlUnitOfWorkBase(string connectionString, IXmlMappingResolver mappingSource)
         {
             _connectionStringName = connectionString;
+
+            ConnectionString = connectionString;
+
             _mappingSource = mappingSource;
 
             OnCreated();
@@ -42,6 +50,9 @@ namespace QA.Core.Data.Repository
         public L2SqlUnitOfWorkBase(string connectionString, string siteName, IXmlMappingResolver mappingSource)
         {
             _connectionStringName = connectionString;
+
+            ConnectionString = connectionString;
+
             _mappingSource = mappingSource;
             _siteName = siteName;
 
@@ -52,7 +63,7 @@ namespace QA.Core.Data.Repository
         {
             get
             {
-                return this._connectionStringName;
+                return this.ConnectionString;
             }
         }
 
@@ -79,7 +90,7 @@ namespace QA.Core.Data.Repository
         protected override T CreateContext()
         {
             return (T)Activator.CreateInstance(typeof(T),
-                _connectionStringName,
+                ConnectionString,
                 _mappingSource);
         }
 
