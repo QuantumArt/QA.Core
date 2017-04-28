@@ -33,7 +33,7 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("3.0.4.0")]
-[assembly: AssemblyInformationalVersion("3.0.4.0-alpha2")]
+[assembly: AssemblyInformationalVersion("3.0.4.0")]
 
 [assembly: TypeForwardedTo(typeof(QA.Core.Data.TableModification))]
 [assembly: TypeForwardedTo(typeof(QA.Core.Data.CacheItemTracker))]
