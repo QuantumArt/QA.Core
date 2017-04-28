@@ -29,12 +29,16 @@ namespace QA.Core.Data.QP
         /// <summary>
         /// Конструирует объект
         /// </summary>
-        /// <param name="connectionName">Название подключения</param>
-        public QpDbConnector(string connectionName)
+        /// <param name="connectionString">Название подключения</param>
+        public QpDbConnector(string connectionString)
         {
-            string connection = ConfigurationManager.ConnectionStrings[
-                connectionName].ConnectionString;
-            DbConnector = new DBConnector(connection);
+            var connectionStringFromConfig = ConfigurationManager.ConnectionStrings[connectionString];
+            if (connectionStringFromConfig != null)
+            {
+                connectionString = connectionStringFromConfig.ConnectionString;
+            }
+
+            DbConnector = new DBConnector(connectionString);
         }
 
         /// <summary>
