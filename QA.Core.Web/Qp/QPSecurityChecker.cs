@@ -53,9 +53,14 @@ namespace QA.Core.Web.Qp
                     return false;
                 }
 
-                var dBConnector = new DBConnector(
-                    ConfigurationManager.ConnectionStrings[
-                        CurrentServiceToken.ConnectionName].ConnectionString);
+
+                var csSettings = ConfigurationManager.ConnectionStrings[
+                        CurrentServiceToken.ConnectionName];
+
+                
+                var dBConnector = new DBConnector( csSettings != null ? csSettings.ConnectionString : CurrentServiceToken.ConnectionName );
+
+
                 int userId = QScreen.AuthenticateForCustomTab(dBConnector);
 
                 bool result = userId > 0; // CheckCustomTabAuthentication(dBConnector);

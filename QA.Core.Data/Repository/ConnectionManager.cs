@@ -19,24 +19,27 @@ namespace QA.Core.Data.Repository
         /// <summary>
         /// Возвращает подключение к БД по имени
         /// </summary>
-        /// <param name="connectionName"></param>
+        /// <param name="connectionString">Строка подключения или название строки подключения в .config</param>
         /// <returns></returns>
-        public IDbConnection GetConnection(string connectionName)
+        public IDbConnection GetConnection(string connectionString)
         {
-            Throws.IfArgumentNullOrEmpty(connectionName, _ => connectionName);
+            Throws.IfArgumentNullOrEmpty(connectionString, _ => connectionString);
 
             //TODO: connection storage
-            if (_connections.ContainsKey(connectionName))
+            if (_connections.ContainsKey(connectionString))
             {
-                return _connections[connectionName];
+                return _connections[connectionString];
             }
 
-            var conn = new SqlConnection(
-                ConfigurationManager
-                    .ConnectionStrings[connectionName]
-                    .ConnectionString);
+            var connectionStringFromConfig = ConfigurationManager.ConnectionStrings[connectionString];
+            if (connectionStringFromConfig != null)
+            {
+                connectionString = connectionStringFromConfig.ConnectionString;
+            }
 
-            _connections.Add(connectionName, conn);
+            var conn = new SqlConnection(connectionString);
+
+            _connections.Add(connectionString, conn);
 
             return conn;
         }
