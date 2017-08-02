@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Web;
 using System.Web.Mvc;
+using QA.Core.Logger;
 
 namespace QA.Core.Web
 {

@@ -14,7 +14,7 @@ using QA.Core;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Quantum Art")]
 [assembly: AssemblyProduct("QA.Core")]
-[assembly: AssemblyCopyright("Copyright © 2011-2016")]
+[assembly: AssemblyCopyright("Copyright © 2011-2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -36,8 +36,8 @@ using QA.Core;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("3.0.5.0")]
-[assembly: AssemblyInformationalVersion("3.0.5.0")]
+[assembly: AssemblyVersion("3.0.6.0")]
+[assembly: AssemblyInformationalVersion("3.0.6.0")]
 
 // Позволяем тестировать internals
 [assembly: PreApplicationStartMethod(typeof(PreApplicationInitializer), "Start")]
