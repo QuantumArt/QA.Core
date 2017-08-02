@@ -1,115 +1,131 @@
 ﻿// Owners: Alexey Abretov, Nikolay Karlov
 
 using System;
-using System.Collections.Generic;
-using QA.Core.Logger;
 
-namespace QA.Core
+namespace QA.Core.Logger
 {
     /// <summary>
-    /// Описывает контракт журналирования
+    /// Базовый интерфейс сервиса, реализующего журналирование
     /// </summary>
     public interface ILogger : IDisposable
     {
         /// <summary>
-        /// Журналирует информацию об исключении
+        /// Журналирование сообщения об исключении c уровнем <see cref="F:EventLevel.Error"/>
         /// </summary>
         /// <param name="message">Сообщение</param>
         /// <param name="exception">Экземпляр исключения</param>
-        void ErrorException(
-            string message,
-            Exception exception,
-            params object[] parameters);
+        /// <param name="parameters">Дополнительные параметы</param>
+        void ErrorException(string message, Exception exception, params object[] parameters);
 
         /// <summary>
-        /// Журналирует сообщение
+        /// Журналирование сообщения c уровнем <see cref="EventLevel"/>.<see cref="EventLevel.Info"/>
         /// </summary>
         /// <param name="message">Сообщение</param>
-        void Info(
-            string message,
-            params object[] parameters);
+        /// <param name="parameters">Дополнительные параметы</param>
+        void Info(string message, params object[] parameters);
 
         /// <summary>
-        /// Журналирует сообщение (отложенное вычисление).
-        /// Лямбда-выражение не выполняется, если отключен данный уровень записи в лог
+        /// Журналирование сообщения (отложенное вычисление) c уровнем <see cref="EventLevel"/>.<see cref="EventLevel.Info"/>
         /// </summary>
-        /// <param name="message">Сообщение</param>
+        /// <remarks>Лямбда-выражение не выполняется, если отключен данный уровень записи в лог</remarks>
+        /// <param name="message">Делегат формирования сообщения</param>
+        /// <param name="parameters">Дополнительные параметы</param>
+        [Obsolete("Необходимо использовать метод с сигнатурой \"void Info(Func<string> message, params object[] parameters)\"")]
         void Info(Func<string, string> message, params object[] parameters);
 
         /// <summary>
-        /// Журналирует отладочную информацию
+        /// Журналирование сообщения (отложенное вычисление) c уровнем <see cref="EventLevel"/>.<see cref="EventLevel.Info"/>
         /// </summary>
-        /// <param name="message">Сообщение</param>
-        void Debug(
-            string message,
-            params object[] parameters);
+        /// <remarks>Лямбда-выражение не выполняется, если отключен данный уровень записи в лог</remarks>
+        /// <param name="message">Делегат формирования сообщения</param>
+        /// <param name="parameters">Дополнительные параметы</param>
+        void Info(Func<string> message, params object[] parameters);
 
         /// <summary>
-        /// Журналирует отладочную информацию (отложенное вычисление). 
-        /// Лямбда-выражение не выполняется, если отключен данный уровень записи в лог
+        /// Журналирование сообщения с уровнем <see cref="EventLevel"/>.<see cref="EventLevel.Debug"/>
         /// </summary>
         /// <param name="message">Сообщение</param>
-        void Debug(
-            Func<string, string> message,
-            params object[] parameters);
+        /// <param name="parameters">Дополнительные параметы</param>
+        void Debug(string message, params object[] parameters);
 
         /// <summary>
-        /// Журналирует фатальную ошибку
+        /// Журналирование сообщения (отложенное вычисление) c уровнем <see cref="EventLevel"/>.<see cref="EventLevel.Debug"/>
         /// </summary>
-        /// <param name="errors">Экземпляр ошибки</param>
-        void Fatal(
-            string message,
-            Exception exception,
-            params object[] parameters);
+        /// <remarks>Лямбда-выражение не выполняется, если отключен данный уровень записи в лог</remarks>
+        /// <param name="message">Делегат формирования сообщения</param>
+        /// <param name="parameters">Дополнительные параметы</param>
+        [Obsolete("Необходимо использовать метод с сигнатурой \"void Debug(Func<string> message, params object[] parameters)\"")]
+        void Debug(Func<string, string> message, params object[] parameters);
 
         /// <summary>
-        /// Журналирует сообщение.
-        /// Лямбда-выражение не выполняется, если отключен данный уровень записи в лог
+        /// Журналирование сообщения (отложенное вычисление) c уровнем <see cref="EventLevel"/>.<see cref="EventLevel.Debug"/>
         /// </summary>
-        /// <param name="message">Сообщение</param>
-        void Error(
-            Func<string, string> message,
-           params object[] parameters);
+        /// <remarks>Лямбда-выражение не выполняется, если отключен данный уровень записи в лог</remarks>
+        /// <param name="message">Делегат формирования сообщения</param>
+        /// <param name="parameters">Дополнительные параметы</param>
+        void Debug(Func<string> message, params object[] parameters);
 
         /// <summary>
-        /// Журналирует сообщение
+        /// Журналирует сообщения c уровнем <see cref="EventLevel"/>.<see cref="EventLevel.Error"/>
         /// </summary>
         /// <param name="message">Сообщение</param>
-        void Error(
-           string message,
-           params object[] parameters);
+        /// <param name="parameters">Дополнительные параметы</param>
+        void Error(string message, params object[] parameters);
 
         /// <summary>
-        /// Журналирует сообщение
+        /// Журналирование сообщения.
         /// </summary>
-        /// <param name="message">Сообщение</param>
-        void Fatal(
-           string message,
-           params object[] parameters);
+        /// <remarks>Лямбда-выражение не выполняется, если отключен данный уровень записи в лог</remarks>
+        /// <param name="message">Делегат формирования сообщения</param>
+        /// <param name="parameters">Дополнительные параметы</param>
+        [Obsolete("Необходимо использовать метод с сигнатурой \"void Error(Func<string> message, params object[] parameters)\"")]
+        void Error(Func<string, string> message, params object[] parameters);
 
         /// <summary>
-        /// Журналирует сообщение.
-        /// Лямбда-выражение не выполняется, если отключен данный уровень записи в лог
+        /// Журналирование сообщения (отложенное вычисление) c уровнем <see cref="EventLevel"/>.<see cref="EventLevel.Error"/>
+        /// </summary>
+        /// <remarks>Лямбда-выражение не выполняется, если отключен данный уровень записи в лог</remarks>
+        /// <param name="message">Делегат формирования сообщения</param>
+        /// <param name="parameters">Дополнительные параметы</param>
+        void Error(Func<string> message, params object[] parameters);
+
+        /// <summary>
+        /// Журналирование сообщения c уровнем <see cref="EventLevel"/>.<see cref="EventLevel.Fatal"/>
         /// </summary>
         /// <param name="message">Сообщение</param>
-        void Fatal(
-           Func<string, string> message,
-           params object[] parameters);
+        /// <param name="exception">Экземпляр исключения</param>
+        /// <param name="parameters">Дополнительные параметы</param>
+        void Fatal(string message, Exception exception, params object[] parameters);
 
-        ///// <summary>
-        ///// Добавление сообщения с долполнительными параметрами
-        ///// </summary>
-        ///// <param name="message"></param>
-        ///// <param name="propertiesSetter"></param>
-        ///// <param name="eventLevel"></param>
-        //void Log(Func<string> message, Action<IDictionary<object, object>> propertiesSetter, EventLevel eventLevel);
+        /// <summary>
+        /// Журналирование сообщения c уровнем <see cref="EventLevel"/>.<see cref="EventLevel.Fatal"/>
+        /// </summary>
+        /// <param name="message">Сообщение</param>
+        /// <param name="parameters">Дополнительные параметы</param>
+        void Fatal(string message, params object[] parameters);
 
-        ///// <summary>
-        ///// Добавление сообщения
-        ///// </summary>
-        ///// <param name="message"></param>
-        ///// <param name="propertiesSetter"></param>
-        ///// <param name="eventLevel"></param>
+        /// <summary>
+        /// Журналирование сообщения (отложенное вычисление) c уровнем <see cref="EventLevel"/>.<see cref="EventLevel.Fatal"/>
+        /// </summary>
+        /// <remarks>Лямбда-выражение не выполняется, если отключен данный уровень записи в лог</remarks>
+        /// <param name="message">Делегат формирования сообщения</param>
+        /// <param name="parameters">Дополнительные параметы</param>
+        [Obsolete("Необходимо использовать метод с сигнатурой \"void Fatal(Func<string> message, params object[] parameters)\"")]
+        void Fatal(Func<string, string> message, params object[] parameters);
+
+        /// <summary>
+        /// Журналирование сообщения (отложенное вычисление) c уровнем <see cref="EventLevel"/>.<see cref="EventLevel.Fatal"/>
+        /// </summary>
+        /// <remarks>Лямбда-выражение не выполняется, если отключен данный уровень записи в лог</remarks>
+        /// <param name="message">Делегат формирования сообщения</param>
+        /// <param name="parameters">Дополнительные параметы</param>
+        void Fatal(Func<string> message, params object[] parameters);
+
+        /// <summary>
+        /// Журналирование сообщения
+        /// </summary>
+        /// <param name="message">Делегат формирования сообщения</param>
+        /// <param name="eventLevel">Уровень критичности сообщения</param>
         void Log(Func<string> message, EventLevel eventLevel);
     }
 }

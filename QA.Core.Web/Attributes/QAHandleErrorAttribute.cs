@@ -2,6 +2,7 @@
 
 using System;
 using System.Web.Mvc;
+using QA.Core.Logger;
 
 namespace QA.Core.Web
 {
