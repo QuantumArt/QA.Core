@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Web;
+using QA.Core.Logger;
 
 namespace QA.Core.Web
 {
