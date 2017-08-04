@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
@@ -10,11 +10,7 @@ namespace QA.Core.Data.Repository
     /// </summary>
     public class ConnectionManager
     {
-        private Dictionary<string, IDbConnection> _connections =
-            new Dictionary<string, IDbConnection>();
-
-        private Dictionary<string, IDbTransaction> _transactions =
-            new Dictionary<string, IDbTransaction>();
+        private readonly ConcurrentDictionary<string, IDbConnection> _connections = new ConcurrentDictionary<string, IDbConnection>();
 
         /// <summary>
         /// Возвращает подключение к БД по имени
@@ -25,96 +21,18 @@ namespace QA.Core.Data.Repository
         {
             Throws.IfArgumentNullOrEmpty(connectionString, _ => connectionString);
 
-            //TODO: connection storage
-            if (_connections.ContainsKey(connectionString))
-            {
-                return _connections[connectionString];
-            }
+            return _connections.GetOrAdd(
+                connectionString, connStr =>
+                {
+                    var connectionStringFromConfig = ConfigurationManager.ConnectionStrings[connectionString];
+                    if (connectionStringFromConfig != null)
+                    {
+                        connectionString = connectionStringFromConfig.ConnectionString;
+                    }
 
-            var connectionStringFromConfig = ConfigurationManager.ConnectionStrings[connectionString];
-            if (connectionStringFromConfig != null)
-            {
-                connectionString = connectionStringFromConfig.ConnectionString;
-            }
-
-            var conn = new SqlConnection(connectionString);
-
-            _connections.Add(connectionString, conn);
-
-            return conn;
+                    var conn = new SqlConnection(connectionString);
+                    return conn;
+                });
         }
-
-        //TODO: ?
-        //public IDbTransaction BeginTransaction(IUnitOfWork unitOfWork)
-        //{
-        //    Throws.IfArgumentNull(unitOfWork, _ => unitOfWork);
-        //    Throws.IfArgumentNullOrEmpty(unitOfWork.ConnectionName, _ => unitOfWork.ConnectionName);
-
-        //    // TODO: smart open
-        //    if (_connections[unitOfWork.ConnectionName].State != ConnectionState.Open)
-        //    {
-        //        _connections[unitOfWork.ConnectionName].Open();
-        //    }
-
-        //    IDbTransaction tran;
-        //    if (_transactions.ContainsKey(unitOfWork.ConnectionName))
-        //    {
-        //        tran = _transactions[unitOfWork.ConnectionName];
-        //    }
-        //    else
-        //    {
-        //        tran = _connections[unitOfWork.ConnectionName].BeginTransaction();
-
-        //        if (!_transactions.ContainsKey(unitOfWork.ConnectionName))
-        //        {
-        //            _transactions.Add(unitOfWork.ConnectionName, tran);
-        //        }
-        //    }
-
-        //    if (unitOfWork.Context is DataContext)
-        //    {
-        //        (unitOfWork.Context as DataContext).Transaction = tran as DbTransaction;
-        //    }
-            
-        //    //TODO: EF
-
-        //    return tran;
-        //}
-
-        //public void CommitTransaction(IUnitOfWork unitOfWork)
-        //{
-        //    Throws.IfArgumentNull(unitOfWork, _ => unitOfWork);
-        //    Throws.IfArgumentNullOrEmpty(unitOfWork.ConnectionName, _ => unitOfWork.ConnectionName);
-
-        //    _transactions[unitOfWork.ConnectionName].Commit();
-
-        //    if (_transactions.ContainsKey(unitOfWork.ConnectionName))
-        //    {
-        //        _transactions.Remove(unitOfWork.ConnectionName);
-        //    }
-
-        //    if (unitOfWork.Context is DataContext)
-        //    {
-        //        (unitOfWork.Context as DataContext).Transaction = null;
-        //    }
-        //}
-
-        //public void RollbackTransaction(IUnitOfWork unitOfWork)
-        //{
-        //    Throws.IfArgumentNull(unitOfWork, _ => unitOfWork);
-        //    Throws.IfArgumentNullOrEmpty(unitOfWork.ConnectionName, _ => unitOfWork.ConnectionName);
-
-        //    _transactions[unitOfWork.ConnectionName].Rollback();
-
-        //    if (_transactions.ContainsKey(unitOfWork.ConnectionName))
-        //    {
-        //        _transactions.Remove(unitOfWork.ConnectionName);
-        //    }
-
-        //    if (unitOfWork.Context is DataContext)
-        //    {
-        //        (unitOfWork.Context as DataContext).Transaction = null;
-        //    }
-        //}
     }
 }

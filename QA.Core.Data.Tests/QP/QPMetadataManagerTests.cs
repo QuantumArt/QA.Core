@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using QA.Core.Data.QP;
 
@@ -854,7 +855,7 @@ namespace QA.Core.Data.Tests.QP
             var attrs = instance.GetContentAttributes(293);
 
             Assert.IsNotNull(attrs);
-            Assert.AreEqual(18, attrs.Count);
+            Assert.AreEqual(18, attrs.Count());
 
             foreach (var item in attrs)
             {
@@ -866,7 +867,7 @@ namespace QA.Core.Data.Tests.QP
 
             attrs = instance.GetContentAttributes(int.MaxValue);
             Assert.IsNotNull(attrs);
-            Assert.AreEqual(0, attrs.Count);
+            Assert.AreEqual(0, attrs.Count());
         }
 
         #endregion

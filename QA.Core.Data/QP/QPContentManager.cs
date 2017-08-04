@@ -5,7 +5,6 @@ using System.Data.SqlClient;
 using System.Linq;
 using Quantumart.QPublishing.Info;
 using Quantumart.QPublishing.Database;
-using Quantumart.QPublishing.Info;
 
 namespace QA.Core.Data.QP
 {
@@ -39,12 +38,12 @@ namespace QA.Core.Data.QP
         /// <summary>
         /// Список связанных контентов
         /// </summary>
-        public List<string> Includes { get; protected set; }
+        public HashSet<string> Includes { get; protected set; }
 
         /// <summary>
         /// Список полей
         /// </summary>
-        public List<string> FieldList { get; protected set; }
+        public HashSet<string> FieldList { get; protected set; }
 
         #endregion
 
@@ -65,7 +64,8 @@ namespace QA.Core.Data.QP
                 ContentItemStatus.Published.GetDescription(),
                 (byte)0, (byte)0, false, 0.0, false, false);
 
-            Includes = new List<string>();
+            Includes = new HashSet<string>();
+            FieldList = new HashSet<string>();
         }
 
         #endregion
@@ -79,8 +79,7 @@ namespace QA.Core.Data.QP
         /// </summary>
         /// <param name="connectionString">Строка подключения</param>
         /// <returns></returns>
-        public virtual QPContentManager Connection(
-            string connectionString)
+        public virtual QPContentManager Connection(string connectionString)
         {
             Throws.IfArgumentNullOrEmpty(connectionString, _ => connectionString);
             Query.Cnn = new DBConnector(connectionString);
@@ -93,8 +92,7 @@ namespace QA.Core.Data.QP
         /// </summary>
         /// <param name="siteName"></param>
         /// <returns></returns>
-        public virtual QPContentManager SiteName(
-            string siteName)
+        public virtual QPContentManager SiteName(string siteName)
         {
             Throws.IfArgumentNullOrEmpty(siteName, _ => siteName);
 
@@ -108,8 +106,7 @@ namespace QA.Core.Data.QP
         /// </summary>
         /// <param name="contentName">Имя контента</param>
         /// <returns></returns>
-        public virtual QPContentManager ContentName(
-            string contentName)
+        public virtual QPContentManager ContentName(string contentName)
         {
             Throws.IfArgumentNullOrEmpty(contentName, _ => contentName);
 
@@ -123,27 +120,35 @@ namespace QA.Core.Data.QP
         /// </summary>
         /// <param name="fields">Поля через запятую. * - игнорируется.</param>
         /// <returns></returns>
-        public virtual QPContentManager Fields(
-            string fields)
+        public virtual QPContentManager Fields(string fields)
         {
             Throws.IfArgumentNullOrEmpty(fields, _ => fields);
 
-            if (FieldList == null)
-            {
-                FieldList = new List<string>();
-            }
-
-            var fieldArray = fields.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+            var fieldArray = fields.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
 
             foreach (var f in fieldArray)
             {
-                if (!FieldList.Contains(f))
-                {
-                    FieldList.Add(f);
-                }
+                FieldList.Add(f);
             }
 
-            Query.Fields = string.Join(",", FieldList);
+            Query.Fields = $"{Query.Fields},{string.Join(",", FieldList)}";
+
+            return this;
+        }
+
+        /// <summary>
+        /// Устанавливает список полей
+        /// </summary>
+        public QPContentManager Fields(params string[] fields)
+        {
+            Throws.IfArrayArgumentNullOrEmpty(fields, _ => fields);
+
+            foreach (var f in fields)
+            {
+                FieldList.Add(f);
+            }
+
+            Query.Fields = $"{Query.Fields},{string.Join(",", FieldList)}";
 
             return this;
         }
@@ -153,8 +158,7 @@ namespace QA.Core.Data.QP
         /// </summary>
         /// <param name="where"></param>
         /// <returns></returns>
-        public virtual QPContentManager Where(
-            string where)
+        public virtual QPContentManager Where(string where)
         {
             Query.Where = where;
 
@@ -166,8 +170,7 @@ namespace QA.Core.Data.QP
         /// </summary>
         /// <param name="orderBy"></param>
         /// <returns></returns>
-        public virtual QPContentManager OrderBy(
-            string orderBy)
+        public virtual QPContentManager OrderBy(string orderBy)
         {
             Query.OrderBy = orderBy;
 
@@ -179,8 +182,7 @@ namespace QA.Core.Data.QP
         /// </summary>
         /// <param name="startIndex"></param>
         /// <returns></returns>
-        public virtual QPContentManager StartIndex(
-            long startIndex)
+        public virtual QPContentManager StartIndex(long startIndex)
         {
             Query.StartRow = startIndex;
 
@@ -192,8 +194,7 @@ namespace QA.Core.Data.QP
         /// </summary>
         /// <param name="pageSize"></param>
         /// <returns></returns>
-        public virtual QPContentManager PageSize(
-            long pageSize)
+        public virtual QPContentManager PageSize(long pageSize)
         {
             Query.PageSize = pageSize;
 
@@ -205,8 +206,7 @@ namespace QA.Core.Data.QP
         /// </summary>
         /// <param name="isUseSchedule"></param>
         /// <returns></returns>
-        public virtual QPContentManager IsUseSchedule(
-            bool isUseSchedule)
+        public virtual QPContentManager IsUseSchedule(bool isUseSchedule)
         {
             Query.UseSchedule = (byte)(isUseSchedule ? 1 : 0);
 
@@ -218,8 +218,7 @@ namespace QA.Core.Data.QP
         /// </summary>
         /// <param name="status"></param>
         /// <returns></returns>
-        public virtual QPContentManager StatusName(
-            ContentItemStatus status)
+        public virtual QPContentManager StatusName(ContentItemStatus status)
         {
             Query.StatusName = status.GetDescription();
 
@@ -231,8 +230,7 @@ namespace QA.Core.Data.QP
         /// </summary>
         /// <param name="status"></param>
         /// <returns></returns>
-        public virtual QPContentManager StatusName(
-            string status)
+        public virtual QPContentManager StatusName(string status)
         {
             Query.StatusName = status;
 
@@ -244,8 +242,7 @@ namespace QA.Core.Data.QP
         /// </summary>
         /// <param name="isShowSplittedArticle"></param>
         /// <returns></returns>
-        public virtual QPContentManager IsShowSplittedArticle(
-            bool isShowSplittedArticle)
+        public virtual QPContentManager IsShowSplittedArticle(bool isShowSplittedArticle)
         {
             Query.ShowSplittedArticle = (byte)(isShowSplittedArticle ? 1 : 0);
 
@@ -257,8 +254,7 @@ namespace QA.Core.Data.QP
         /// </summary>
         /// <param name="isIncludeArchive"></param>
         /// <returns></returns>
-        public virtual QPContentManager IsIncludeArchive(
-            bool isIncludeArchive)
+        public virtual QPContentManager IsIncludeArchive(bool isIncludeArchive)
         {
             Query.IncludeArchive = (byte)(isIncludeArchive ? 1 : 0);
 
@@ -270,8 +266,7 @@ namespace QA.Core.Data.QP
         /// </summary>
         /// <param name="isCacheResult">Признак кэширования</param>
         /// <returns></returns>
-        public virtual QPContentManager IsCacheResult(
-            bool isCacheResult)
+        public virtual QPContentManager IsCacheResult(bool isCacheResult)
         {
             Query.CacheResult = isCacheResult;
 
@@ -283,8 +278,7 @@ namespace QA.Core.Data.QP
         /// </summary>
         /// <param name="isResetCache"></param>
         /// <returns></returns>
-        public virtual QPContentManager IsResetCache(
-            bool isResetCache)
+        public virtual QPContentManager IsResetCache(bool isResetCache)
         {
             Query.WithReset = isResetCache;
 
@@ -296,8 +290,7 @@ namespace QA.Core.Data.QP
         /// </summary>
         /// <param name="cacheInterval"></param>
         /// <returns></returns>
-        public virtual QPContentManager CacheInterval(
-            double cacheInterval)
+        public virtual QPContentManager CacheInterval(double cacheInterval)
         {
             Query.CacheInterval = cacheInterval;
 
@@ -309,8 +302,7 @@ namespace QA.Core.Data.QP
         /// </summary>
         /// <param name="isUseClientSelection"></param>
         /// <returns></returns>
-        public virtual QPContentManager IsUseClientSelection(
-            bool isUseClientSelection)
+        public virtual QPContentManager IsUseClientSelection(bool isUseClientSelection)
         {
             Query.UseClientSelection = isUseClientSelection;
 
@@ -322,17 +314,10 @@ namespace QA.Core.Data.QP
         /// </summary>
         /// <param name="path">Имя поля</param>
         /// <returns></returns>
-        public virtual QPContentManager Include(
-            string path)
+        public virtual QPContentManager Include(string path)
         {
-            // TODO: последовательность через точку
-            if (Includes.Contains(path))
-            {
-                return this;
-            }
-
-            Includes.Add(path);
-            Fields(path);
+            if (Includes.Add(path))
+                Fields(path);
 
             return this;
         }
@@ -372,10 +357,10 @@ namespace QA.Core.Data.QP
 
             Throws.IfArgumentNull(Query.Fields, _ => Query.Fields);
 
-            var command = new SqlCommand();
-            command.CommandText = "SELECT " + Query.Fields +
-                " FROM " + Query.ContentName +
-                (string.IsNullOrEmpty(Query.Where) ? "" : (" WHERE " + Query.Where));
+            var command = new SqlCommand
+            {
+                CommandText = $"SELECT {Query.Fields} FROM {Query.ContentName}{(string.IsNullOrEmpty(Query.Where) ? "" : ($" WHERE {Query.Where}"))}"
+            };
 
             var result = new ContentResult
             {
@@ -393,99 +378,96 @@ namespace QA.Core.Data.QP
         /// Получает связанные контенты
         /// </summary>
         /// <param name="result">Результат</param>
-        protected virtual void GetIncludes(
-            ContentResult result)
+        protected virtual void GetIncludes(ContentResult result)
         {
-            if (Includes.Count > 0)
+            if (Includes.Count <= 0)
+                return;
+
+            var attributes = new QPMetadataManager(DbConnection.InstanceConnectionString)
+                .GetContentAttributes(Query.SiteName, Query.ContentName);
+
+            foreach (var path in Includes)
             {
-                var attributes = new QPMetadataManager(DbConnection.InstanceConnectionString)
-                    .GetContentAttributes(
-                        Query.SiteName,
-                        Query.ContentName);
+                var attr = attributes.SingleOrDefault(w => w.Name == path);
+                var contentName = DbConnection.GetContentName(attr.RelatedContentId.Value);
 
-                foreach (var path in Includes)
+                var values = string.Empty;
+
+                if (attr.LinkId == null)
                 {
-                    var attr = attributes.Where(w => w.Name == path).SingleOrDefault();
-                    string contentName = DbConnection.GetContentName(attr.RelatedContentId.Value);
-
-                    string values = string.Empty;
-
-                    if (attr.LinkId == null)
+                    foreach (DataRow row in result.PrimaryContent.Rows)
                     {
-                        foreach (DataRow row in result.PrimaryContent.Rows)
+                        if (contentName == Query.ContentName & !string.IsNullOrEmpty(row[path].ToString()))
                         {
-                            if (contentName == Query.ContentName & !string.IsNullOrEmpty(row[path].ToString()))
+                            if (result.PrimaryContent.Select(ContentItemIdFieldName + " = " + row[path]).Any())
                             {
-                                if (result.PrimaryContent.Select(ContentItemIdFieldName + " = " + row[path].ToString()).Any())
-                                {
-                                    continue;
-                                }
-                            }
-
-                            if (!string.IsNullOrEmpty(values) && !values.EndsWith(", "))
-                            {
-                                values += ", ";
-                            }
-
-                            string val = row[path].ToString();
-                            if (!string.IsNullOrEmpty(val))
-                            {
-                                values += val;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        foreach (DataRow row in result.PrimaryContent.Rows)
-                        {
-                            if (!string.IsNullOrEmpty(values))
-                            {
-                                values += ", ";
-                            }
-
-                            string val = row[ContentItemIdFieldName].ToString();
-                            if (!string.IsNullOrEmpty(val))
-                            {
-                                values += val;
+                                continue;
                             }
                         }
 
-                        if (!string.IsNullOrEmpty(values) && !string.IsNullOrWhiteSpace(values))
+                        if (!string.IsNullOrEmpty(values) && !values.EndsWith(", "))
                         {
-                            values = DbConnection.GetContentItemLinkIDs(attr.Name, values);
+                            values += ", ";
+                        }
+
+                        string val = row[path].ToString();
+                        if (!string.IsNullOrEmpty(val))
+                        {
+                            values += val;
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (DataRow row in result.PrimaryContent.Rows)
+                    {
+                        if (!string.IsNullOrEmpty(values))
+                        {
+                            values += ", ";
+                        }
+
+                        string val = row[ContentItemIdFieldName].ToString();
+                        if (!string.IsNullOrEmpty(val))
+                        {
+                            values += val;
                         }
                     }
 
-                    values = values.Trim();
-                    if (values.EndsWith(","))
+                    if (!string.IsNullOrEmpty(values) && !string.IsNullOrWhiteSpace(values))
                     {
-                        values = values.Substring(0, values.Length - 1);
+                        values = DbConnection.GetContentItemLinkIDs(attr.Name, values);
+                    }
+                }
+
+                values = values.Trim();
+                if (values.EndsWith(","))
+                {
+                    values = values.Substring(0, values.Length - 1);
+                }
+
+                if (!string.IsNullOrEmpty(values))
+                {
+                    long total = 0;
+
+                    var query = new ContentDataQueryObject(
+                        DbConnection.DbConnector, Query.SiteName, contentName, "*",
+                        ContentItemIdFieldName + $" in ({values})", null,
+                        (long)0, (long)0,
+                        (byte)0,
+                        ContentItemStatus.Published.GetDescription(),
+                        (byte)0, (byte)0, false, 0.0, false, false);
+
+                    var contentData = DbConnection.GetContentData(query, ref total);
+                    var existsContentData = result.GetContent(contentName);
+
+                    if (existsContentData != null)
+                    {
+                        //NOTE: this line doesn't coverage unit tests
+                        existsContentData.Merge(
+                            contentData);
                     }
 
-                    if (!string.IsNullOrEmpty(values))
-                    {
-                        long total = 0;
-
-                        var query = new ContentDataQueryObject(
-                            DbConnection.DbConnector, Query.SiteName, contentName, "*",
-                            string.Format(ContentItemIdFieldName + " in ({0})", values), null,
-                            (long)0, (long)0,
-                            (byte)0,
-                            ContentItemStatus.Published.GetDescription(),
-                            (byte)0, (byte)0, false, 0.0, false, false);
-
-                        var contentData = DbConnection.GetContentData(query, ref total);
-                        var existsContentData = result.GetContent(contentName);
-
-                        if (existsContentData != null)
-                        {
-                            //NOTE: this line doesn't coverage unit tests
-                            existsContentData.Merge(
-                                contentData);
-                        }
-
-                        result.AddContent(contentName, contentData);
-                    }
+                    result.AddContent(contentName, contentData);
                 }
             }
         }
@@ -558,6 +540,9 @@ namespace QA.Core.Data.QP
             }
         }
 
+        /// <summary>
+        /// Устанавливает статус для элемента
+        /// </summary>
         public void ChangeStatus(ContentItemStatus status)
         {
             ValidateQuery();

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Quantumart.QPublishing.Info;
-using Quantumart.QPublishing.Info;
 
 namespace QA.Core.Data.QP
 {
@@ -43,8 +42,7 @@ namespace QA.Core.Data.QP
         /// </summary>
         /// <param name="contentName"></param>
         /// <returns></returns>
-        public DataTable GetContent(
-            string contentName)
+        public DataTable GetContent(string contentName)
         {
             Throws.IfArgumentNullOrEmpty(contentName, "contentName");
 
@@ -53,12 +51,8 @@ namespace QA.Core.Data.QP
                 return null;
             }
 
-            if (Contents.ContainsKey(contentName))
-            {
-                return Contents[contentName];
-            }
-
-            return null;
+            DataTable content;
+            return Contents.TryGetValue(contentName, out content) ? content : null;
         }
 
         /// <summary>
@@ -66,8 +60,7 @@ namespace QA.Core.Data.QP
         /// </summary>
         /// <param name="contentName">Название контента</param>
         /// <param name="content">Содержимое контента</param>
-        internal void AddContent(
-            string contentName, DataTable content)
+        internal void AddContent(string contentName, DataTable content)
         {
             if (Contents == null)
             {
@@ -88,12 +81,15 @@ namespace QA.Core.Data.QP
         /// <returns></returns>
         public DataRow GetContentRowById(string contentName, int id)
         {
-            if (!Contents.ContainsKey(contentName))
+            if (Contents == null || Contents.Count == 0)
             {
                 return null;
             }
 
-            return Contents[contentName].Select("CONTENT_ITEM_ID = " + id).FirstOrDefault();
+            DataTable content;
+            return Contents.TryGetValue(contentName, out content) ?
+                content.Select("CONTENT_ITEM_ID = " + id).FirstOrDefault() :
+                null;
         }
 
         /// <summary>

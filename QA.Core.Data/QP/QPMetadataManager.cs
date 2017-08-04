@@ -2,7 +2,6 @@
 using System.Linq;
 using Quantumart.QPublishing.Info;
 using Quantumart.QPublishing.Database;
-using Quantumart.QPublishing.Info;
 
 namespace QA.Core.Data.QP
 {
@@ -21,7 +20,7 @@ namespace QA.Core.Data.QP
         /// <summary>
         /// Строка подключения
         /// </summary>
-        public string ConnectionString { get { return DbConnection == null ? string.Empty:  DbConnection.InstanceConnectionString; } }
+        public string ConnectionString => DbConnection == null ? string.Empty :  DbConnection.InstanceConnectionString;
 
         #endregion
 
@@ -49,15 +48,12 @@ namespace QA.Core.Data.QP
         /// <param name="siteName">Имя сайта</param>
         /// <param name="contentName">Имя контента</param>
         /// <returns></returns>
-        public virtual List<ContentAttribute> GetContentAttributes(
-            string siteName,
-            string contentName)
+        public virtual IEnumerable<ContentAttribute> GetContentAttributes(string siteName, string contentName)
         {
             Throws.IfArgumentNullOrEmpty(siteName, _ => siteName);
             Throws.IfArgumentNullOrEmpty(contentName, _ => contentName);
 
-            return GetContentAttributes(GetContentId(
-                siteName, contentName));
+            return GetContentAttributes(GetContentId(siteName, contentName));
         }
 
         /// <summary>
@@ -65,8 +61,7 @@ namespace QA.Core.Data.QP
         /// </summary>
         /// <param name="contentId">Идентификатор контента</param>
         /// <returns></returns>
-        public virtual List<ContentAttribute> GetContentAttributes(
-            int contentId)
+        public virtual IEnumerable<ContentAttribute> GetContentAttributes(int contentId)
         {
             Throws.IfArgumentNot(contentId > 0, _ => contentId);
 
@@ -80,19 +75,14 @@ namespace QA.Core.Data.QP
         /// <param name="contentName">Имя контента</param>
         /// <param name="fieldName">Имя поля</param>
         /// <returns></returns>
-        public virtual ContentAttribute GetContentAttribute(
-            string siteName,
-            string contentName,
-            string fieldName)
+        public virtual ContentAttribute GetContentAttribute(string siteName, string contentName, string fieldName)
         {
             Throws.IfArgumentNullOrEmpty(siteName, _ => siteName);
             Throws.IfArgumentNullOrEmpty(contentName, _ => contentName);
             Throws.IfArgumentNullOrEmpty(fieldName, _ => fieldName);
 
-            int fieldId = DbConnection.GetAttributeIdByNetName(
-                GetContentId(
-                    siteName,
-                    contentName), fieldName);
+            var fieldId = DbConnection.GetAttributeIdByNetName(
+                GetContentId(siteName, contentName), fieldName);
 
             return DbConnection.GetContentAttributeObject(fieldId);
         }
@@ -103,15 +93,12 @@ namespace QA.Core.Data.QP
         /// <param name="siteName">Имя сайта</param>
         /// <param name="contentName">Имя контента</param>
         /// <returns></returns>
-        public virtual int GetContentId(
-            string siteName,
-            string contentName)
+        public virtual int GetContentId(string siteName, string contentName)
         {
             Throws.IfArgumentNullOrEmpty(siteName, _ => siteName);
             Throws.IfArgumentNullOrEmpty(contentName, _ => contentName);
 
-            int contentId = DbConnection.GetContentId(
-                GetSiteId(siteName), contentName);
+            var contentId = DbConnection.GetContentId(GetSiteId(siteName), contentName);
 
             return contentId;
         }
@@ -121,12 +108,11 @@ namespace QA.Core.Data.QP
         /// </summary>
         /// <param name="contentId">Идентификатор контента</param>
         /// <returns></returns>
-        public virtual string GetContentName(
-            int contentId)
+        public virtual string GetContentName(int contentId)
         {
             Throws.IfArgumentNot(contentId > 0, _ => contentId);
 
-            string contentName = DbConnection.GetContentName(contentId);
+            var contentName = DbConnection.GetContentName(contentId);
 
             return contentName;
         }
@@ -140,7 +126,7 @@ namespace QA.Core.Data.QP
         {
             Throws.IfArgumentNullOrEmpty(siteName, _ => siteName);
 
-            int siteId = DbConnection.GetSiteId(siteName);
+            var siteId = DbConnection.GetSiteId(siteName);
             return siteId;
         }
 
@@ -153,7 +139,7 @@ namespace QA.Core.Data.QP
         {
             Throws.IfArgumentNot(siteId > 0, _ => siteId);
 
-            string siteName = DbConnection.GetSiteName(siteId);
+            var siteName = DbConnection.GetSiteName(siteId);
             return siteName;
         }
 

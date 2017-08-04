@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 using System.Data.Linq.Mapping;
 using System.IO;
 using System.Web;

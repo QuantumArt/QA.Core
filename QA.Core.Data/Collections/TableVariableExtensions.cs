@@ -16,6 +16,9 @@ namespace QA.Core.Data.Collections
         /// <returns></returns>
         public static IEnumerable<SqlDataRecord> CreateSqlDataRecords(this IEnumerable<int> ids)
         {
+            if (ids == null)
+                yield break;
+
             SqlMetaData[] metaData = new SqlMetaData[1];
             metaData[0] = new SqlMetaData("Id", SqlDbType.Int);
             SqlDataRecord record = new SqlDataRecord(metaData);
@@ -27,7 +30,7 @@ namespace QA.Core.Data.Collections
         }
 		public static IEnumerable<SqlDataRecord> Ensure(this IEnumerable<SqlDataRecord> ids)
 		{
-			if (!ids.Any())
+			if (ids == null || !ids.Any())
 			{
 				return null;
 			}

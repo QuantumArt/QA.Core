@@ -35,16 +35,6 @@ namespace QA.Core.Data.Repository
         }
 
         /// <summary>
-        /// Возвращает набор сущности
-        /// </summary>
-        /// <typeparam name="T">Тип сущности</typeparam>
-        /// <returns></returns>
-        protected virtual DbSet<T> GetDbSet2<T>() where T : class
-        {
-            return (this.UnitOfWork.Context as DbContext).Set<T>();
-        }
-
-        /// <summary>
         /// Возвращает запрос к сущности
         /// </summary>
         /// <typeparam name="TEntity">Тип сушности</typeparam>

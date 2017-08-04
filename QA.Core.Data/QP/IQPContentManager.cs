@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 using Quantumart.QPublishing.Info;
-using Quantumart.QPublishing.Database;
-using Quantumart.QPublishing.Info;
 
 namespace QA.Core.Data.QP
 {
@@ -18,12 +16,12 @@ namespace QA.Core.Data.QP
         IQpDbConnector DbConnection { get; }
 
         /// <summary>
-        /// Запрос
+        /// Список связанных контентов
         /// </summary>
-        List<string> Includes { get; }
+        HashSet<string> Includes { get; }
 
         /// <summary>
-        /// Список связанных контентов
+        /// Запрос
         /// </summary>
         ContentDataQueryObject Query { get; }
 
@@ -60,6 +58,13 @@ namespace QA.Core.Data.QP
         /// <param name="fields">Поля через запятую</param>
         /// <returns></returns>
         QPContentManager Fields(string fields);
+
+        /// <summary>
+        /// Устанавливает список полей
+        /// </summary>
+        /// <param name="fields">Поля</param>
+        /// <returns></returns>
+        QPContentManager Fields(params string[] fields);
 
         /// <summary>
         /// Устанавливает список дополнительных контентов

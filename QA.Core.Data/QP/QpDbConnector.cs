@@ -1,10 +1,8 @@
-﻿using System;
-using System.Configuration;
+﻿using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using Quantumart.QPublishing.Info;
 using Quantumart.QPublishing.Database;
-using Quantumart.QPublishing.Info;
 
 namespace QA.Core.Data.QP
 {
@@ -65,13 +63,7 @@ namespace QA.Core.Data.QP
         /// <summary>
         /// Строка подключения
         /// </summary>
-        public string InstanceConnectionString
-        {
-            get
-            {
-                return DbConnector.InstanceConnectionString;
-            }
-        }
+        public string InstanceConnectionString => DbConnector.InstanceConnectionString;
 
         /// <summary>
         /// Вовзращает имя контента
@@ -117,9 +109,6 @@ namespace QA.Core.Data.QP
         /// <summary>
         /// Реальный коннектор
         /// </summary>
-        public object Connector
-        {
-            get { return DbConnector; }
-        }
+        public object Connector => DbConnector;
     }
 }

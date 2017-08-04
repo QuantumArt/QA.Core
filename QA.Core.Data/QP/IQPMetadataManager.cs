@@ -1,8 +1,6 @@
 using System.Collections.Generic;
-using System.Linq;
 using Quantumart.QPublishing.Info;
 using Quantumart.QPublishing.Database;
-using Quantumart.QPublishing.Info;
 
 namespace QA.Core.Data.QP
 {
@@ -17,17 +15,14 @@ namespace QA.Core.Data.QP
         /// <param name="siteName">Имя сайта</param>
         /// <param name="contentName">Имя контента</param>
         /// <returns></returns>
-        List<ContentAttribute> GetContentAttributes(
-            string siteName,
-            string contentName);
+        IEnumerable<ContentAttribute> GetContentAttributes(string siteName, string contentName);
 
         /// <summary>
         /// Возвращает список атрибутов контента
         /// </summary>
         /// <param name="contentId">Идентификатор контента</param>
         /// <returns></returns>
-        List<ContentAttribute> GetContentAttributes(
-            int contentId);
+        IEnumerable<ContentAttribute> GetContentAttributes(int contentId);
 
         /// <summary>
         /// Возвращает атрибут контента
@@ -36,10 +31,7 @@ namespace QA.Core.Data.QP
         /// <param name="contentName">Имя контента</param>
         /// <param name="fieldName">Имя поля</param>
         /// <returns></returns>
-        ContentAttribute GetContentAttribute(
-            string siteName,
-            string contentName,
-            string fieldName);
+        ContentAttribute GetContentAttribute(string siteName, string contentName, string fieldName);
 
         /// <summary>
         /// Возвращает идентификатор контента
@@ -47,17 +39,14 @@ namespace QA.Core.Data.QP
         /// <param name="siteName">Имя сайта</param>
         /// <param name="contentName">Имя контента</param>
         /// <returns></returns>
-        int GetContentId(
-            string siteName,
-            string contentName);
+        int GetContentId(string siteName, string contentName);
 
         /// <summary>
         /// Возвращает имя контента
         /// </summary>
         /// <param name="contentId">Идентификатор контента</param>
         /// <returns></returns>
-        string GetContentName(
-            int contentId);
+        string GetContentName(int contentId);
 
         /// <summary>
         /// Возвращает идентификатор сайта
