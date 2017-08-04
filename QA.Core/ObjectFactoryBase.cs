@@ -11,13 +11,7 @@ namespace QA.Core
         /// <summary>
         /// Контейнер
         /// </summary>
-        public static IUnityContainer DefaultContainer
-        {
-            get
-            {
-                return ObjectFactoryConfigurator.DefaultContainer;
-            }
-        }
+        public static IUnityContainer DefaultContainer => ObjectFactoryConfigurator.DefaultContainer;
 
         /// <summary>
         /// Возвращает именованный контейнер
@@ -39,49 +33,27 @@ namespace QA.Core
         /// </summary>
         static ObjectFactoryBase()
         {
-
         }
 
         /// <summary>
         /// Cтандартный логгера.
         /// </summary>
-        public static ILogger Logger
-        {
-            get { return DefaultContainer.Resolve<ILogger>(); }
-        }
+        public static ILogger Logger => DefaultContainer.Resolve<ILogger>();
 
         /// <summary>
         /// Экземпляр класса для клиентского журналирования
         /// </summary>
-        public static ILogger ClientLogger
-        {
-            get
-            {
-                return DefaultContainer.Resolve<ILogger>("Client");
-            }
-        }
+        public static ILogger ClientLogger => DefaultContainer.Resolve<ILogger>("Client");
 
         /// <summary>
         /// Экземпляр класса для серверного журналирования
         /// </summary>
-        public static ILogger ServerLogger
-        {
-            get
-            {
-                return DefaultContainer.Resolve<ILogger>("Server");
-            }
-        }
+        public static ILogger ServerLogger => DefaultContainer.Resolve<ILogger>("Server");
 
         /// <summary>
         /// Экземпляр класса для журналирования почтовых сообщений 
         /// </summary>
-        public static ILogger MailLogger
-        {
-            get
-            {
-                return DefaultContainer.Resolve<ILogger>("Mail");
-            }
-        }
+        public static ILogger MailLogger => DefaultContainer.Resolve<ILogger>("Mail");
 
         /// <summary>
         /// Экземпляр класса для журналирования с именнованой конфигурацией 
@@ -95,18 +67,12 @@ namespace QA.Core
         /// <summary>
         /// Получение стандартного провайдера кэша.
         /// </summary>
-        public static ICacheProvider CacheProvider
-        {
-            get { return DefaultContainer.Resolve<ICacheProvider>(); }
-        }
+        public static ICacheProvider CacheProvider => DefaultContainer.Resolve<ICacheProvider>();
 
         /// <summary>
         /// Получение стандартного провайдера кэша.
         /// </summary>
-        public static IVersionedCacheProvider VersionedCacheProvider
-        {
-            get { return DefaultContainer.Resolve<IVersionedCacheProvider>(); }
-        }
+        public static IVersionedCacheProvider VersionedCacheProvider => DefaultContainer.Resolve<IVersionedCacheProvider>();
 
         #region IoC
         /// <summary>
