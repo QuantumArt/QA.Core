@@ -1,29 +1,35 @@
-﻿using System;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 
 namespace QA.Core.Logger
 {
     /// <summary>
-    /// Логгер, который использует  TextWriter
+    /// Реализация журналирования на основе TextWriter.
     /// </summary>
     public class TextWriterLogger : NullLogger
     {
-        private TextWriter _writer;
+        private readonly TextWriter _writer;
+
+        /// <summary>
+        /// Инициализация экземпляра <see cref="TextWriterLogger"/>
+        /// </summary>
         public TextWriterLogger(TextWriter writer)
         {
             Throws.IfArgumentNull(writer, _ => writer);
             _writer = writer;
         }
+
+        /// <summary>
+        /// Запись сообщения в трейс-лог
+        /// </summary>
         protected override void WriteMessage(string level, string message, string error)
         {
             try
             {
-                _writer.WriteLine(string.Format("{0}: {1}, {2}", level, message, error));
+                _writer.WriteLine($"{level}: {message}, {error}");
             }
             catch
             {
-
+                // ignored
             }
         }
     }

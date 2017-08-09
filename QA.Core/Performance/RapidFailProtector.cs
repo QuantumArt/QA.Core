@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using QA.Core;
+using QA.Core.Logger;
 using QA.Core.Performance;
 
 namespace QA.Core.Performance

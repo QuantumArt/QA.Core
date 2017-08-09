@@ -1,35 +1,37 @@
 ﻿// Owners: Alexey Abretov, Nikolay Karlov
 
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using log4net.Config;
-using System.Diagnostics;
-using System.Collections.Generic;
-using QA.Core.Logger;
 using log4net.Core;
 
-namespace QA.Core
+namespace QA.Core.Logger
 {
     /// <summary>
-    /// Реализует журналирование на основе Log4Net
+    /// Реализация журналирования на основе Log4Net
     /// </summary>
     public class Log4NetLogger : ILogger
     {
         /// <summary>
-        /// Создает экземпляр логгера
+        /// Экзеппляр логгера
         /// </summary>
-        /// <param name="fileName">конфиг</param>
-        /// <param name="loggerName">имя логгера</param>
-        public Log4NetLogger(
-            string fileName,
-            string loggerName)
+        protected log4net.ILog Logger { get; set; }
+
+        /// <summary>
+        /// Инициализация экземпляра <see cref="Log4NetLogger"/>
+        /// </summary>
+        /// <param name="fileName">Путь к файлу конфигурации</param>
+        /// <param name="loggerName">Имя логгера</param>
+        public Log4NetLogger(string fileName, string loggerName)
         {
             log4net.Config.XmlConfigurator.Configure(new FileInfo(fileName));
             Logger = log4net.LogManager.GetLogger(loggerName);
         }
 
         /// <summary>
-        /// Создает экземпляр логгера
+        /// Инициализация экземпляра <see cref="Log4NetLogger"/>
         /// </summary>
         public Log4NetLogger()
         {
@@ -38,30 +40,19 @@ namespace QA.Core
         }
 
         /// <summary>
-        /// Экзеппляр логгера
-        /// </summary>
-        protected log4net.ILog Logger
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Журналирует информацию об исключении
+        /// Журналирование сообщения об исключении c уровнем <see cref="F:EventLevel.Error"/>
         /// </summary>
         /// <param name="message">Сообщение</param>
         /// <param name="exception">Экземпляр исключения</param>
-        public void ErrorException(
-            string message,
-            Exception exception,
-            params object[] parameters)
+        /// <param name="parameters">Дополнительные параметы</param>
+        public virtual void ErrorException(string message, Exception exception, params object[] parameters)
         {
             try
             {
                 Error(message, parameters);
                 foreach (var ex in exception.Flat())
                 {
-                    Logger.Error(string.Format("{0}\n{1}\n{2}", ex.Message, ex.StackTrace, ex.Source), ex);
+                    Logger.Error($"{ex.Message}{Environment.NewLine}{ex.StackTrace}{Environment.NewLine}{ex.Source}", ex);
                 }               
             }
             catch(Exception logEx)
@@ -71,12 +62,11 @@ namespace QA.Core
         }
 
         /// <summary>
-        /// Журналирует сообщение
+        /// Журналирование сообщения c уровнем <see cref="F:EventLevel.Info"/>
         /// </summary>
         /// <param name="message">Сообщение</param>
-        public void Info(
-            string message,
-            params object[] parameters)
+        /// <param name="parameters">Дополнительные параметы</param>
+        public virtual void Info(string message, params object[] parameters)
         {
             try
             {
@@ -96,9 +86,12 @@ namespace QA.Core
         }
 
         /// <summary>
-        /// Журналирует сообщение (отложенное вычисление)
+        /// Журналирование сообщения (отложенное вычисление) c уровнем <see cref="F:EventLevel.Info"/>
         /// </summary>
-        /// <param name="message">Сообщение</param>
+        /// <remarks>Лямбда-выражение не выполняется, если отключен данный уровень записи в лог</remarks>
+        /// <param name="message">Делегат формирования сообщения</param>
+        /// <param name="parameters">Дополнительные параметы</param>
+        [Obsolete("Необходимо использовать метод с сигнатурой \"void Info(Func<string> message, params object[] parameters)\"")]
         public void Info(Func<string, string> message, params object[] parameters)
         {
             try
@@ -115,12 +108,32 @@ namespace QA.Core
         }
 
         /// <summary>
-        /// Журналирует отладочную информацию
+        /// Журналирование сообщения (отложенное вычисление) c уровнем <see cref="F:EventLevel.Info"/>
+        /// </summary>
+        /// <remarks>Лямбда-выражение не выполняется, если отключен данный уровень записи в лог</remarks>
+        /// <param name="message">Делегат формирования сообщения</param>
+        /// <param name="parameters">Дополнительные параметы</param>
+        public virtual void Info(Func<string> message, params object[] parameters)
+        {
+            try
+            {
+                if (Logger.IsInfoEnabled)
+                {
+                    Info(message(), parameters);
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorException("Ошибка во время логирования", ex);
+            }
+        }
+
+        /// <summary>
+        /// Журналирование сообщения с уровнем <see cref="F:EventLevel.Debug"/>
         /// </summary>
         /// <param name="message">Сообщение</param>
-        public void Debug(
-            string message,
-            params object[] parameters)
+        /// <param name="parameters">Дополнительные параметы</param>
+        public virtual void Debug(string message, params object[] parameters)
         {
             try
             {
@@ -140,9 +153,12 @@ namespace QA.Core
         }
 
         /// <summary>
-        /// Журналирует отладочную информацию (отложенное вычисление)
+        /// Журналирование сообщения (отложенное вычисление) c уровнем <see cref="F:EventLevel.Debug"/>
         /// </summary>
-        /// <param name="message">Сообщение</param>
+        /// <remarks>Лямбда-выражение не выполняется, если отключен данный уровень записи в лог</remarks>
+        /// <param name="message">Делегат формирования сообщения</param>
+        /// <param name="parameters">Дополнительные параметы</param>
+        [Obsolete("Необходимо использовать метод с сигнатурой \"void Debug(Func<string> message, params object[] parameters)\"")]
         public void Debug(Func<string, string> message, params object[] parameters)
         {
             try
@@ -159,20 +175,18 @@ namespace QA.Core
         }
 
         /// <summary>
-        /// Журналирует фатальную ошибку
+        /// Журналирование сообщения (отложенное вычисление) c уровнем <see cref="F:EventLevel.Debug"/>
         /// </summary>
-        /// <param name="errors">Экземпляр ошибки</param>
-        public void Fatal(
-            string message,
-            Exception exception,
-            params object[] parameters)
+        /// <remarks>Лямбда-выражение не выполняется, если отключен данный уровень записи в лог</remarks>
+        /// <param name="message">Делегат формирования сообщения</param>
+        /// <param name="parameters">Дополнительные параметы</param>
+        public virtual void Debug(Func<string> message, params object[] parameters)
         {
             try
             {
-                Fatal(message, parameters);
-                foreach (var ex in exception.Flat())
+                if (Logger.IsDebugEnabled)
                 {
-                    Logger.Fatal(string.Format("{0}\n{1}\n{2}", ex.Message, ex.StackTrace, ex.Source), ex);
+                    Debug(message(), parameters);
                 }
             }
             catch (Exception ex)
@@ -181,14 +195,12 @@ namespace QA.Core
             }
         }
 
-
         /// <summary>
-        /// Журналирует сообщение
+        /// Журналирование сообщения c уровнем <see cref="F:EventLevel.Error"/>
         /// </summary>
         /// <param name="message">Сообщение</param>
-        public void Error(
-            string message,
-            params object[] parameters)
+        /// <param name="parameters">Дополнительные параметы</param>
+        public virtual void Error(string message, params object[] parameters)
         {
             try
             {
@@ -208,12 +220,76 @@ namespace QA.Core
         }
 
         /// <summary>
-        /// Журналирует сообщение
+        /// Журналирование сообщения (отложенное вычисление) c уровнем <see cref="F:EventLevel.Error"/>
+        /// </summary>
+        /// <remarks>Лямбда-выражение не выполняется, если отключен данный уровень записи в лог</remarks>
+        /// <param name="message">Делегат формирования сообщения</param>
+        /// <param name="parameters">Дополнительные параметы</param>
+        [Obsolete("Необходимо использовать метод с сигнатурой \"void Error(Func<string> message, params object[] parameters)\"")]
+        public void Error(Func<string, string> message, params object[] parameters)
+        {
+            if (Logger.IsInfoEnabled)
+            {
+                try
+                {
+                    Error(message(string.Empty), parameters);
+                }
+                catch (Exception ex)
+                {
+                    ErrorException("Ошибка во время логирования", ex);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Журналирование сообщения (отложенное вычисление) c уровнем <see cref="F:EventLevel.Error"/>
+        /// </summary>
+        /// <remarks>Лямбда-выражение не выполняется, если отключен данный уровень записи в лог</remarks>
+        /// <param name="message">Делегат формирования сообщения</param>
+        /// <param name="parameters">Дополнительные параметы</param>
+        public virtual void Error(Func<string> message, params object[] parameters)
+        {
+            if (Logger.IsInfoEnabled)
+            {
+                try
+                {
+                    Error(message(), parameters);
+                }
+                catch (Exception ex)
+                {
+                    ErrorException("Ошибка во время логирования", ex);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Журналирование сообщения c уровнем <see cref="F:EventLevel.Fatal"/>
         /// </summary>
         /// <param name="message">Сообщение</param>
-        public void Fatal(
-            string message,
-            params object[] parameters)
+        /// <param name="exception">Экземпляр исключения</param>
+        /// <param name="parameters">Дополнительные параметы</param>
+        public virtual void Fatal(string message, Exception exception, params object[] parameters)
+        {
+            try
+            {
+                Fatal(message, parameters);
+                foreach (var ex in exception.Flat())
+                {
+                    Logger.Fatal($"{ex.Message}{Environment.NewLine}{ex.StackTrace}{Environment.NewLine}{ex.Source}", ex);
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorException("Ошибка во время логирования", ex);
+            }
+        }
+
+        /// <summary>
+        /// Журналирование сообщения c уровнем <see cref="F:EventLevel.Fatal"/>
+        /// </summary>
+        /// <param name="message">Сообщение</param>
+        /// <param name="parameters">Дополнительные параметы</param>
+        public virtual void Fatal(string message, params object[] parameters)
         {
             try
             {
@@ -232,28 +308,14 @@ namespace QA.Core
             }
         }
 
+
         /// <summary>
-        /// Журналирует сообщение (отложенное вычисление)
+        /// Журналирование сообщения (отложенное вычисление) c уровнем <see cref="F:EventLevel.Fatal"/>
         /// </summary>
-        /// <param name="message">Сообщение</param>
-        public void Error(Func<string, string> message, params object[] parameters)
-        {
-            if (Logger.IsInfoEnabled)
-            {
-                try
-                {
-                    Error(message(string.Empty), parameters);
-                }
-                catch (Exception ex)
-                {
-                    ErrorException("Ошибка во время логирования", ex);
-                }
-            }
-        }
-        /// <summary>
-        /// Журналирует сообщение (отложенное вычисление)
-        /// </summary>
-        /// <param name="message">Сообщение</param>
+        /// <remarks>Лямбда-выражение не выполняется, если отключен данный уровень записи в лог</remarks>
+        /// <param name="message">Делегат формирования сообщения</param>
+        /// <param name="parameters">Дополнительные параметы</param>
+        [Obsolete("Необходимо использовать метод с сигнатурой \"void Fatal(Func<string> message, params object[] parameters)\"")]
         public void Fatal(Func<string, string> message, params object[] parameters)
         {
             if (Logger.IsInfoEnabled)
@@ -269,11 +331,43 @@ namespace QA.Core
             }
         }
 
-        public void Log(Func<string> message, EventLevel eventLevel)
+        /// <summary>
+        /// Журналирование сообщения (отложенное вычисление) c уровнем <see cref="F:EventLevel.Fatal"/>
+        /// </summary>
+        /// <remarks>Лямбда-выражение не выполняется, если отключен данный уровень записи в лог</remarks>
+        /// <param name="message">Делегат формирования сообщения</param>
+        /// <param name="parameters">Дополнительные параметы</param>
+        public virtual void Fatal(Func<string> message, params object[] parameters)
+        {
+            if (Logger.IsInfoEnabled)
+            {
+                try
+                {
+                    Fatal(message(), parameters);
+                }
+                catch (Exception ex)
+                {
+                    ErrorException("Ошибка во время логирования", ex);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Журналирование сообщения
+        /// </summary>
+        /// <param name="message">Делегат формирования сообщения</param>
+        /// <param name="eventLevel">Требуемый уровень критичности сообщения</param>
+        public virtual void Log(Func<string> message, EventLevel eventLevel)
         {
             Log(message, null, eventLevel);
         }
 
+        /// <summary>
+        /// Журналирование сообщения
+        /// </summary>
+        /// <param name="message">Делегат формирования сообщения</param>
+        /// <param name="propertiesSetter">Делегат формирования параметров</param>
+        /// <param name="eventLevel">Требуемый уровень критичности сообщения</param>
         public void Log(Func<string> message, Action<IDictionary<object, object>> propertiesSetter, EventLevel eventLevel)
         {
             Level logLevel = null;
@@ -303,15 +397,17 @@ namespace QA.Core
             if (!logger.Logger.IsEnabledFor(logLevel))
                 return;
 
-            LoggingEventData data = new LoggingEventData();
+            var data = new LoggingEventData
+            {
+                Level = logLevel,
+                Message = message(),
+                TimeStamp = DateTime.Now
+            };
 
-            data.Level = logLevel;
-            data.Message = message();
-            data.TimeStamp = DateTime.Now;
-            
+
             if (propertiesSetter != null)
             {
-                Dictionary<object, object> dict = new Dictionary<object, object>();
+                var dict = new Dictionary<object, object>();
                 propertiesSetter(dict);
                 data.Properties = new log4net.Util.PropertiesDictionary();
                 foreach (var item in dict)
@@ -320,7 +416,7 @@ namespace QA.Core
                 }
             }
 
-            LoggingEvent theEvent = new LoggingEvent(data);
+            var theEvent = new LoggingEvent(data);
 
             Logger.Logger.Log(theEvent);
         }

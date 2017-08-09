@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Web.Mvc;
 using Microsoft.Practices.Unity;
+using QA.Core.Logger;
+
 //using QA.Core;
 
 namespace QA.Core.Web
