@@ -1,10 +1,11 @@
-﻿// Owners: Alexey Abretov, Nikolay Karlov
+// Owners: Alexey Abretov, Nikolay Karlov
 using System;
 using System.Collections.Generic;
 using System.ServiceModel;
 using System.Web;
 using QA.Core.Data;
 using QA.Core.Data.Repository;
+using QA.Core.Logger;
 
 namespace QA.Core.Service.Interaction
 {
@@ -23,6 +24,16 @@ namespace QA.Core.Service.Interaction
         /// </summary>
         protected const string UserContentNullExceptionMessage = "Неверно указан контекст пользователя.";
 
+        /// <summary>
+        /// Собственный логгер
+        /// </summary>
+        protected ILogger Logger { get; set; }
+
+
+        private ILogger GetLogger()
+        {
+            return Logger ?? ObjectFactoryBase.Logger;
+        }
 
         /// <summary>
         /// Создает ненулевой объект для репорта об ошибке
@@ -67,12 +78,9 @@ namespace QA.Core.Service.Interaction
         /// <param name="exception">Объект исключения</param>
         protected virtual void LogException(Exception exception)
         {
-            var logger = ObjectFactoryBase.Logger;
-            if (logger != null)
-            {
-                logger.ErrorException(exception.Message, exception);
-            }
+            GetLogger()?.ErrorException(exception.Message, exception);
         }
+
 
         #region Run
 
@@ -113,7 +121,7 @@ namespace QA.Core.Service.Interaction
             {
                 result.IsSucceeded = false;
                 result.Error = new ServiceError { ErrorCode = -1, Message = ex.Message };
-                ObjectFactoryBase.Logger.ErrorException(
+                GetLogger()?.ErrorException(
                     GeneralServiceExceptionMessage
                     //+ this.GetType() + caller
                     , ex);
@@ -161,7 +169,7 @@ namespace QA.Core.Service.Interaction
             {
                 result.IsSucceeded = false;
                 result.Error = new ServiceError { ErrorCode = -1, Message = ex.Message };
-                ObjectFactoryBase.Logger.ErrorException(
+                GetLogger()?.ErrorException(
                     GeneralServiceExceptionMessage, ex);
             }
 
@@ -204,7 +212,7 @@ namespace QA.Core.Service.Interaction
             {
                 result.IsSucceeded = false;
                 result.Error = new ServiceError { ErrorCode = -1, Message = ex.Message };
-                ObjectFactoryBase.Logger.ErrorException(
+                GetLogger()?.ErrorException(
                     GeneralServiceExceptionMessage, ex);
             }
 
