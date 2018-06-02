@@ -3,7 +3,7 @@
 using System;
 using System.Threading;
 using System.Web;
-using Microsoft.Practices.Unity;
+using Unity;
 
 namespace QA.Core.Web
 {

@@ -5,7 +5,7 @@ using System.Configuration;
 using System.Globalization;
 using System.Web.Mvc;
 using System.Linq;
-using Microsoft.Practices.Unity;
+using Unity;
 
 namespace QA.Core.Web
 {
