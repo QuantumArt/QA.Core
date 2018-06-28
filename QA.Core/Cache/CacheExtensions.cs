@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Runtime;
@@ -6,6 +6,8 @@ using System.Threading;
 using QA.Core.Logger;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace QA.Core.Cache
 {
@@ -25,10 +27,8 @@ namespace QA.Core.Cache
         internal static Lazy<bool> _providerType = new Lazy<bool>(() => ObjectFactoryBase.Resolve<ICacheProvider>().GetType() == typeof(VersionedCacheProvider3));
         internal static Lazy<bool> _vProviderType = new Lazy<bool>(() => ObjectFactoryBase.Resolve<IVersionedCacheProvider>().GetType() == typeof(VersionedCacheProvider3));
 
-        private static ILogger Logger
-        {
-            get
-            {
+        private static ILogger Logger {
+            get {
                 return _logger ?? _loggerLazy.Value;
             }
         }
@@ -258,23 +258,143 @@ namespace QA.Core.Cache
             return Convert<T>(result);
         }
 
+        class ObjectCache
+        {
+            public SemaphoreSlim Locker { get; set; }
+            public string Key { get; set; }
+            public object Entity { get; set; }
+        }
+        /// <summary>
+        /// Потокобезопасно берет группу объектов из кэша, если каких-то занчений там нет, то вызывает асинхронную функцию для получения данных
+        /// и кладет результат в кэш.
+        /// ВАЖНО: не поддерживается рекурсивный вызов с одинаковыми ключами (ограничение SemaphoreSlim). 
+        /// </summary>
+        /// <typeparam name="T">тип объектов в кэше</typeparam>
+        /// <param name="provider">провайдер кэша</param>
+        /// <param name="keys">тэги, в общем случае представляет строковый индекс объекта</param>
+        /// <param name="keySufix">Общая часть для тега, в общем случае представляет имя класса сервиса + имя метода + список параметров</param>
+        /// <param name="expiration">время жизни в кэше</param>
+        /// <param name="getData">функция для получения данных, если одного или более объектов кэше нет. нужно использовать асинхронный анонимный делегат.
+        /// В функцию передается массив из объектов <paramref name="keys"/>, которые нуждаются в обновлении.</param>
+        /// <returns>закэшированне данные, если они присутствуют в кэше или результат выполнения функции</returns>
+        public static async Task<List<T>> GetOrAddValuesAsync<T>(this ICacheProvider provider, string[] keys, string keySufix, TimeSpan expiration, Func<string[], Task<Dictionary<string, T>>> getData)
+        {
+            var supportCallbacks = _providerType.Value;
+            keys = keys.Distinct().ToArray();
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+
+            List<T> resultValues = new List<T>(keys.Length);
+            Dictionary<string, T> сacheDeprecatedValues = new Dictionary<string, T>(keys.Length);
+            List<string> excludeKeys = new List<string>(keys.Length);
+            foreach (string key in keys)
+            {
+                string fullKey = key + keySufix;
+                object сacheValue = provider.Get(fullKey);
+                if (сacheValue == null)
+                {
+                    if (supportCallbacks)
+                    {
+                        сacheValue = provider.Get(VersionedCacheProvider3.CalculateDeprecatedKey(fullKey));
+                        if (сacheValue == null)
+                        {
+                            excludeKeys.Add(key);
+                        }
+                        else
+                        {
+                            сacheDeprecatedValues.Add(key, Convert<T>(сacheValue));
+                        }
+                    }
+                    else
+                    {
+                        excludeKeys.Add(key);
+                    }
+                }
+                else
+                {
+                    resultValues.Add(Convert<T>(сacheValue));
+                }
+            }
+
+            List<ObjectCache> allDeprecatedLockers = сacheDeprecatedValues.Select(dv =>
+            {
+                SemaphoreSlim semaphore = _semaphores.GetOrAdd(dv.Key + keySufix, _ => new SemaphoreSlim(1));
+                return new ObjectCache()
+                {
+                    Locker = semaphore,
+                    Key = dv.Key,
+                    Entity = dv.Value
+                };
+            }).ToList();
+
+            List<ObjectCache> updatedLockers = new List<ObjectCache>(allDeprecatedLockers.Count);
+            try
+            {
+                foreach (ObjectCache deprecatedLocker in allDeprecatedLockers)
+                {
+                    if (await deprecatedLocker.Locker.WaitAsync(TRYENTER_TIMEOUT_MS).ConfigureAwait(false))
+                    {
+                        updatedLockers.Add(deprecatedLocker);
+                        //Проверяем, что данные не обновились в другом потоке, пока ждали.
+                        object сacheValue = provider.Get(deprecatedLocker.Key + keySufix);
+                        if (сacheValue == null)
+                        {
+                            excludeKeys.Add(deprecatedLocker.Key);
+                        }
+                        else
+                        {
+                            resultValues.Add(Convert<T>(сacheValue));
+                        }
+                    }
+                    else
+                    {
+                        resultValues.Add(Convert<T>(deprecatedLocker.Entity));
+                    }
+                }
+
+                if (excludeKeys.Count > 0)
+                {
+                    var time1 = sw.ElapsedMilliseconds;
+                    Dictionary<string, T> newValues = await getData(excludeKeys.ToArray()).ConfigureAwait(false);
+                    sw.Stop();
+                    var time2 = sw.ElapsedMilliseconds;
+                    CheckPerformance($"\"{string.Join(", ", excludeKeys.Select(ek => ek + keySufix))}\"", time1, time2, countUpdateObjects: excludeKeys.Count, countCheckObjects: keys.Length);
+
+                    foreach (KeyValuePair<string, T> newValue in newValues.Where(nv => nv.Value != null))
+                    {
+                        provider.Set(newValue.Key + keySufix, newValue.Value, expiration);
+                        resultValues.Add(newValue.Value);
+                    }
+                }
+            }
+            finally
+            {
+                foreach (ObjectCache updatedLocker in updatedLockers)
+                {
+                    updatedLocker.Locker.Release();
+                }
+            }
+            sw.Stop();
+            return resultValues;
+        }
+
         private static T Convert<T>(object result)
         {
             return result == null ? default(T) : (T)result;
         }
 
-        private static void CheckPerformance(string key, long time1, long time2, bool reportTime1 = true)
+        private static void CheckPerformance(string key, long time1, long time2, bool reportTime1 = true, int countUpdateObjects = 1, int countCheckObjects = 1)
         {
             var elapsed = time2 - time1;
-            if (elapsed > 5000)
+            if (elapsed > 5000 * countUpdateObjects)
             {
-                Logger.Log(() => string.Format("Долгое получение данных время: {0} мс, ключ: {1}, time1: {2}, time2: {3}",
-                    elapsed, key, time1, time2), EventLevel.Warning);
+                Logger.Log(() => string.Format("Долгое получение данных время: {0} мс, ключ: {1}, time1: {2}, time2: {3}, количество объектов: {4}",
+                    elapsed, key, time1, time2, countUpdateObjects), EventLevel.Warning);
             }
-            if (reportTime1 && time1 > 1000)
+            if (reportTime1 && time1 > 1000 * countCheckObjects)
             {
-                Logger.Log(() => string.Format("Долгая проверка кеша: {0} мс, ключ: {1}",
-                    time1, key), EventLevel.Warning);
+                Logger.Log(() => string.Format("Долгая проверка кеша: {0} мс, ключ: {1}, количество объектов: {2}",
+                    time1, key, countCheckObjects), EventLevel.Warning);
             }
         }
 
