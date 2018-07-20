@@ -118,7 +118,7 @@ namespace QA.Core.Tests
                 cacheProvider.Set(item, $"{item}value", TimeSpan.FromSeconds(20));
             }
             Assert.AreEqual(0, counter);
-            List<Task<List<string>>> tasks = new List<Task<List<string>>>();
+            List<Task<string[]>> tasks = new List<Task<string[]>>();
             for (int i = 0; i < count; i++)
             {
                 tasks.Add(GetGroupData(cacheProvider, data));
@@ -133,7 +133,7 @@ namespace QA.Core.Tests
             //Ожидаем окончания времени жизни куки
             Thread.Sleep(25000);
 
-            tasks = new List<Task<List<string>>>();
+            tasks = new List<Task<string[]>>();
             for (int i = 0; i < count; i++)
             {
                 tasks.Add(GetGroupData(cacheProvider, data));
@@ -163,7 +163,7 @@ namespace QA.Core.Tests
                 cacheProvider.Set(data[i], $"{data[i]}value", TimeSpan.FromSeconds(((i % 2) + 1) * 20));
             }
             Assert.AreEqual(0, counter);
-            List<Task<List<string>>> tasks = new List<Task<List<string>>>();
+            List<Task<string[]>> tasks = new List<Task<string[]>>();
             for (int i = 0; i < count; i++)
             {
                 tasks.Add(GetGroupData(cacheProvider, data));
@@ -178,7 +178,7 @@ namespace QA.Core.Tests
             //Ожидаем окончания времени жизни четных записей
             Thread.Sleep(25000);
 
-            tasks = new List<Task<List<string>>>();
+            tasks = new List<Task<string[]>>();
             for (int i = 0; i < count; i++)
             {
                 tasks.Add(GetGroupData(cacheProvider, data));
@@ -195,7 +195,7 @@ namespace QA.Core.Tests
             Assert.AreEqual(countInCache, duplicates);
         }
 
-        private Task<List<string>> GetGroupData(IVersionedCacheProvider cacheProvider, string[] data)
+        private Task<string[]> GetGroupData(IVersionedCacheProvider cacheProvider, string[] data)
         {
             return cacheProvider.GetOrAddValuesAsync(
                 data,

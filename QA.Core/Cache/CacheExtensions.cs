@@ -153,12 +153,12 @@ namespace QA.Core.Cache
         /// <typeparam name="T">тип объектов в кэше</typeparam>
         /// <param name="provider">провайдер кэша</param>
         /// <param name="keys">тэги, в общем случае представляет строковый индекс объекта</param>
-        /// <param name="keySufix">Общая часть для тега, в общем случае представляет имя класса сервиса + имя метода + список параметров</param>
+        /// <param name="keySuffix">Общая часть для тега, в общем случае представляет имя класса сервиса + имя метода + список параметров</param>
         /// <param name="expiration">время жизни в кэше</param>
         /// <param name="getData">функция для получения данных, если одного или более объектов кэше нет. нужно использовать асинхронный анонимный делегат.
         /// В функцию передается массив из объектов <paramref name="keys"/>, которые нуждаются в обновлении.</param>
         /// <returns>закэшированне данные, если они присутствуют в кэше или результат выполнения функции</returns>
-        public static List<T> GetOrAddValues<T>(this ICacheProvider provider, string[] keys, string keySufix, TimeSpan expiration, Func<string[], Dictionary<string, T>> getData)
+        public static T[] GetOrAddValues<T>(this IVersionedCacheProvider provider, string[] keys, string keySuffix, string[] tags, TimeSpan expiration, Func<string[], Dictionary<string, T>> getData)
         {
             var supportCallbacks = _providerType.Value;
             keys = keys.Distinct().ToArray();
@@ -170,13 +170,13 @@ namespace QA.Core.Cache
             List<string> excludeKeys = new List<string>(keys.Length);
             foreach (string key in keys)
             {
-                string fullKey = key + keySufix;
-                object сacheValue = provider.Get(fullKey);
+                string fullKey = key + keySuffix;
+                object сacheValue = provider.Get(fullKey, tags);
                 if (сacheValue == null)
                 {
                     if (supportCallbacks)
                     {
-                        сacheValue = provider.Get(VersionedCacheProvider3.CalculateDeprecatedKey(fullKey));
+                        сacheValue = provider.Get(VersionedCacheProvider3.CalculateDeprecatedKey(fullKey), tags);
                         if (сacheValue == null)
                         {
                             excludeKeys.Add(key);
@@ -199,7 +199,7 @@ namespace QA.Core.Cache
 
             List<ObjectCache> allDeprecatedLockers = сacheDeprecatedValues.Select(dv =>
             {
-                SemaphoreSlim semaphore = _semaphores.GetOrAdd(dv.Key + keySufix, _ => new SemaphoreSlim(1));
+                SemaphoreSlim semaphore = _semaphores.GetOrAdd(dv.Key + keySuffix, _ => new SemaphoreSlim(1));
                 return new ObjectCache()
                 {
                     Locker = semaphore,
@@ -217,7 +217,7 @@ namespace QA.Core.Cache
                     {
                         updatedLockers.Add(deprecatedLocker);
                         //Проверяем, что данные не обновились в другом потоке, пока ждали.
-                        object сacheValue = provider.Get(deprecatedLocker.Key + keySufix);
+                        object сacheValue = provider.Get(deprecatedLocker.Key + keySuffix, tags);
                         if (сacheValue == null)
                         {
                             excludeKeys.Add(deprecatedLocker.Key);
@@ -239,11 +239,11 @@ namespace QA.Core.Cache
                     Dictionary<string, T> newValues = getData(excludeKeys.ToArray());
                     sw.Stop();
                     var time2 = sw.ElapsedMilliseconds;
-                    CheckPerformance($"\"{string.Join(", ", excludeKeys.Select(ek => ek + keySufix))}\"", time1, time2, countUpdateObjects: excludeKeys.Count, countCheckObjects: keys.Length);
+                    CheckPerformance($"\"{string.Join(", ", excludeKeys.Select(ek => ek + keySuffix))}\"", time1, time2, countUpdateObjects: excludeKeys.Count, countCheckObjects: keys.Length);
 
                     foreach (KeyValuePair<string, T> newValue in newValues.Where(nv => nv.Value != null))
                     {
-                        provider.Set(newValue.Key + keySufix, newValue.Value, expiration);
+                        provider.Add(newValue.Value, newValue.Key + keySuffix, tags, expiration);
                         resultValues.Add(newValue.Value);
                     }
                 }
@@ -256,7 +256,7 @@ namespace QA.Core.Cache
                 }
             }
             sw.Stop();
-            return resultValues;
+            return resultValues.ToArray();
         }
 
 
@@ -387,12 +387,12 @@ namespace QA.Core.Cache
         /// <typeparam name="T">тип объектов в кэше</typeparam>
         /// <param name="provider">провайдер кэша</param>
         /// <param name="keys">тэги, в общем случае представляет строковый индекс объекта</param>
-        /// <param name="keySufix">Общая часть для тега, в общем случае представляет имя класса сервиса + имя метода + список параметров</param>
+        /// <param name="keySuffix">Общая часть для тега, в общем случае представляет имя класса сервиса + имя метода + список параметров</param>
         /// <param name="expiration">время жизни в кэше</param>
         /// <param name="getData">функция для получения данных, если одного или более объектов кэше нет. нужно использовать асинхронный анонимный делегат.
         /// В функцию передается массив из объектов <paramref name="keys"/>, которые нуждаются в обновлении.</param>
         /// <returns>закэшированне данные, если они присутствуют в кэше или результат выполнения функции</returns>
-        public static async Task<List<T>> GetOrAddValuesAsync<T>(this ICacheProvider provider, string[] keys, string keySufix, TimeSpan expiration, Func<string[], Task<Dictionary<string, T>>> getData)
+        public static async Task<T[]> GetOrAddValuesAsync<T>(this ICacheProvider provider, string[] keys, string keySuffix, TimeSpan expiration, Func<string[], Task<Dictionary<string, T>>> getData)
         {
             var supportCallbacks = _providerType.Value;
             keys = keys.Distinct().ToArray();
@@ -404,7 +404,7 @@ namespace QA.Core.Cache
             List<string> excludeKeys = new List<string>(keys.Length);
             foreach (string key in keys)
             {
-                string fullKey = key + keySufix;
+                string fullKey = key + keySuffix;
                 object сacheValue = provider.Get(fullKey);
                 if (сacheValue == null)
                 {
@@ -433,7 +433,7 @@ namespace QA.Core.Cache
 
             List<ObjectCache> allDeprecatedLockers = сacheDeprecatedValues.Select(dv =>
             {
-                SemaphoreSlim semaphore = _semaphores.GetOrAdd(dv.Key + keySufix, _ => new SemaphoreSlim(1));
+                SemaphoreSlim semaphore = _semaphores.GetOrAdd(dv.Key + keySuffix, _ => new SemaphoreSlim(1));
                 return new ObjectCache()
                 {
                     Locker = semaphore,
@@ -451,7 +451,7 @@ namespace QA.Core.Cache
                     {
                         updatedLockers.Add(deprecatedLocker);
                         //Проверяем, что данные не обновились в другом потоке, пока ждали.
-                        object сacheValue = provider.Get(deprecatedLocker.Key + keySufix);
+                        object сacheValue = provider.Get(deprecatedLocker.Key + keySuffix);
                         if (сacheValue == null)
                         {
                             excludeKeys.Add(deprecatedLocker.Key);
@@ -473,11 +473,11 @@ namespace QA.Core.Cache
                     Dictionary<string, T> newValues = await getData(excludeKeys.ToArray()).ConfigureAwait(false);
                     sw.Stop();
                     var time2 = sw.ElapsedMilliseconds;
-                    CheckPerformance($"\"{string.Join(", ", excludeKeys.Select(ek => ek + keySufix))}\"", time1, time2, countUpdateObjects: excludeKeys.Count, countCheckObjects: keys.Length);
+                    CheckPerformance($"\"{string.Join(", ", excludeKeys.Select(ek => ek + keySuffix))}\"", time1, time2, countUpdateObjects: excludeKeys.Count, countCheckObjects: keys.Length);
 
                     foreach (KeyValuePair<string, T> newValue in newValues.Where(nv => nv.Value != null))
                     {
-                        provider.Set(newValue.Key + keySufix, newValue.Value, expiration);
+                        provider.Set(newValue.Key + keySuffix, newValue.Value, expiration);
                         resultValues.Add(newValue.Value);
                     }
                 }
@@ -490,7 +490,7 @@ namespace QA.Core.Cache
                 }
             }
             sw.Stop();
-            return resultValues;
+            return resultValues.ToArray();
         }
 
         private static T Convert<T>(object result)
