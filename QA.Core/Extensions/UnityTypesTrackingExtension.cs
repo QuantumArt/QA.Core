@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Collections.Generic;
-using Microsoft.Practices.Unity;
+using Unity.Extension;
+using Unity;
 
 namespace QA.Core.Extensions
 {

@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Configuration;
-using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Configuration;
+using Unity;
 
 namespace QA.Core
 {

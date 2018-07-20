@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Web;
@@ -36,8 +36,8 @@ using QA.Core;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("3.0.6.0")]
-[assembly: AssemblyInformationalVersion("3.0.6.0")]
+[assembly: AssemblyVersion("3.1.6.0")]
+[assembly: AssemblyInformationalVersion("3.1.6.0")]
 
 // Позволяем тестировать internals
 [assembly: PreApplicationStartMethod(typeof(PreApplicationInitializer), "Start")]

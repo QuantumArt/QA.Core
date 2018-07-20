@@ -1,9 +1,11 @@
-﻿// Owners: Alexey Abretov, Nikolay Karlov
+// Owners: Alexey Abretov, Nikolay Karlov
 
 using System;
 using System.Threading;
 using System.Web;
-using Microsoft.Practices.Unity;
+using Unity;
+using Unity.Lifetime;
+//using Unity.Lifetime;
 
 namespace QA.Core.Web
 {

@@ -2,7 +2,7 @@
 
 using System;
 using System.ServiceModel;
-using Microsoft.Practices.Unity;
+using Unity;
 
 namespace QA.Core.Service
 {
