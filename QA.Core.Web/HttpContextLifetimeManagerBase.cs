@@ -1,9 +1,10 @@
-﻿// Owners: Alexey Abretov, Nikolay Karlov
+// Owners: Alexey Abretov, Nikolay Karlov
 
 using System;
 using System.Threading;
 using System.Web;
-using Microsoft.Practices.Unity;
+using Unity;
+using Unity.Lifetime;
 
 namespace QA.Core.Web
 {
@@ -25,7 +26,7 @@ namespace QA.Core.Web
         /// Возвращает значение
         /// </summary>
         /// <returns></returns>
-        public override object GetValue()
+        public override object GetValue(ILifetimeContainer container = null)
         {
             var ctx = HttpContext.Current;
 
@@ -40,7 +41,7 @@ namespace QA.Core.Web
         /// <summary>
         /// Удаление значения
         /// </summary>
-        public override void RemoveValue()
+        public void RemoveValue()
         {
             var disposable = GetValue() as IDisposable;
             var ctx = HttpContext.Current;
@@ -62,7 +63,7 @@ namespace QA.Core.Web
         /// Устанавливает значение
         /// </summary>
         /// <param name="newValue"></param>
-        public override void SetValue(object newValue)
+        public void SetValue(object newValue)
         {
             var ctx = HttpContext.Current;
             if (ctx == null)
@@ -81,6 +82,15 @@ namespace QA.Core.Web
         public void Dispose()
         {
             RemoveValue();
+        }
+
+        /// <summary>
+        /// Создание LifetimeManagera
+        /// </summary>
+        /// <returns></returns>
+        protected override LifetimeManager OnCreateLifetimeManager()
+        {
+            throw new NotImplementedException();
         }
     }
 }

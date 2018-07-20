@@ -1,7 +1,7 @@
-﻿// Owners: Alexey Abretov, Nikolay Karlov
+// Owners: Alexey Abretov, Nikolay Karlov
 
 using System;
-using Microsoft.Practices.Unity;
+using Unity;
 using System.ServiceModel.Dispatcher;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
@@ -34,7 +34,6 @@ namespace QA.Core.Service
 
         public void ReleaseInstance(InstanceContext instanceContext, object instance)
         {
-            container.Teardown(instance);
         }
     }
 }

@@ -1,6 +1,6 @@
-﻿using Microsoft.Practices.Unity;
 using System.Collections.Generic;
 using QA.Core.Logger;
+using Unity;
 
 namespace QA.Core
 {
