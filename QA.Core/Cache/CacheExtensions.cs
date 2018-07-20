@@ -145,6 +145,121 @@ namespace QA.Core.Cache
             return Convert<T>(result);
         }
 
+                /// <summary>
+        /// Потокобезопасно берет группу объектов из кэша, если каких-то занчений там нет, то вызывает асинхронную функцию для получения данных
+        /// и кладет результат в кэш.
+        /// ВАЖНО: не поддерживается рекурсивный вызов с одинаковыми ключами (ограничение SemaphoreSlim). 
+        /// </summary>
+        /// <typeparam name="T">тип объектов в кэше</typeparam>
+        /// <param name="provider">провайдер кэша</param>
+        /// <param name="keys">тэги, в общем случае представляет строковый индекс объекта</param>
+        /// <param name="keySufix">Общая часть для тега, в общем случае представляет имя класса сервиса + имя метода + список параметров</param>
+        /// <param name="expiration">время жизни в кэше</param>
+        /// <param name="getData">функция для получения данных, если одного или более объектов кэше нет. нужно использовать асинхронный анонимный делегат.
+        /// В функцию передается массив из объектов <paramref name="keys"/>, которые нуждаются в обновлении.</param>
+        /// <returns>закэшированне данные, если они присутствуют в кэше или результат выполнения функции</returns>
+        public static List<T> GetOrAddValues<T>(this ICacheProvider provider, string[] keys, string keySufix, TimeSpan expiration, Func<string[], Dictionary<string, T>> getData)
+        {
+            var supportCallbacks = _providerType.Value;
+            keys = keys.Distinct().ToArray();
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+
+            List<T> resultValues = new List<T>(keys.Length);
+            Dictionary<string, T> сacheDeprecatedValues = new Dictionary<string, T>(keys.Length);
+            List<string> excludeKeys = new List<string>(keys.Length);
+            foreach (string key in keys)
+            {
+                string fullKey = key + keySufix;
+                object сacheValue = provider.Get(fullKey);
+                if (сacheValue == null)
+                {
+                    if (supportCallbacks)
+                    {
+                        сacheValue = provider.Get(VersionedCacheProvider3.CalculateDeprecatedKey(fullKey));
+                        if (сacheValue == null)
+                        {
+                            excludeKeys.Add(key);
+                        }
+                        else
+                        {
+                            сacheDeprecatedValues.Add(key, Convert<T>(сacheValue));
+                        }
+                    }
+                    else
+                    {
+                        excludeKeys.Add(key);
+                    }
+                }
+                else
+                {
+                    resultValues.Add(Convert<T>(сacheValue));
+                }
+            }
+
+            List<ObjectCache> allDeprecatedLockers = сacheDeprecatedValues.Select(dv =>
+            {
+                SemaphoreSlim semaphore = _semaphores.GetOrAdd(dv.Key + keySufix, _ => new SemaphoreSlim(1));
+                return new ObjectCache()
+                {
+                    Locker = semaphore,
+                    Key = dv.Key,
+                    Entity = dv.Value
+                };
+            }).ToList();
+
+            List<ObjectCache> updatedLockers = new List<ObjectCache>(allDeprecatedLockers.Count);
+            try
+            {
+                foreach (ObjectCache deprecatedLocker in allDeprecatedLockers)
+                {
+                    if (deprecatedLocker.Locker.Wait(TRYENTER_TIMEOUT_MS))
+                    {
+                        updatedLockers.Add(deprecatedLocker);
+                        //Проверяем, что данные не обновились в другом потоке, пока ждали.
+                        object сacheValue = provider.Get(deprecatedLocker.Key + keySufix);
+                        if (сacheValue == null)
+                        {
+                            excludeKeys.Add(deprecatedLocker.Key);
+                        }
+                        else
+                        {
+                            resultValues.Add(Convert<T>(сacheValue));
+                        }
+                    }
+                    else
+                    {
+                        resultValues.Add(Convert<T>(deprecatedLocker.Entity));
+                    }
+                }
+
+                if (excludeKeys.Count > 0)
+                {
+                    var time1 = sw.ElapsedMilliseconds;
+                    Dictionary<string, T> newValues = getData(excludeKeys.ToArray());
+                    sw.Stop();
+                    var time2 = sw.ElapsedMilliseconds;
+                    CheckPerformance($"\"{string.Join(", ", excludeKeys.Select(ek => ek + keySufix))}\"", time1, time2, countUpdateObjects: excludeKeys.Count, countCheckObjects: keys.Length);
+
+                    foreach (KeyValuePair<string, T> newValue in newValues.Where(nv => nv.Value != null))
+                    {
+                        provider.Set(newValue.Key + keySufix, newValue.Value, expiration);
+                        resultValues.Add(newValue.Value);
+                    }
+                }
+            }
+            finally
+            {
+                foreach (ObjectCache updatedLocker in updatedLockers)
+                {
+                    updatedLocker.Locker.Release();
+                }
+            }
+            sw.Stop();
+            return resultValues;
+        }
+
+
         /// <summary>
         /// Потокобезопасно берет объект из кэша, если его там нет, то вызывает асинхронную функцию для получения данных
         /// и кладет результат в кэш.
