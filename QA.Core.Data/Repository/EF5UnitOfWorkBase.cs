@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.Common;
 using System.Data.Entity;
+#pragma warning disable 1591
 
 namespace QA.Core.Data.Repository
 {
@@ -71,14 +72,14 @@ namespace QA.Core.Data.Repository
                 _transaction = null;
             }
         }
-        
+
         /// <summary>
         /// Включить изменения в транзакцию
         /// </summary>
         /// <param name="tran"></param>
         public override void AttachTransaction(IDbTransaction tran)
         {
-            
+
         }
 
         /// <summary>
@@ -115,7 +116,7 @@ namespace QA.Core.Data.Repository
         /// <summary>
         /// Освобождает ресурсы
         /// </summary>
-        ~EF5UnitOfWorkBase() 
+        ~EF5UnitOfWorkBase()
         {
             Dispose(false);
         }

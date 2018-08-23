@@ -3,6 +3,8 @@
 using System;
 using System.Collections.Concurrent;
 using System.Runtime.Caching;
+#pragma warning disable 1591
+
 
 namespace QA.Core
 {
@@ -41,7 +43,7 @@ namespace QA.Core
             {
                 return null;
             }
-           
+
             return Cache[key];
         }
 
@@ -124,6 +126,6 @@ namespace QA.Core
         {
         }
 
-       
+
     }
 }

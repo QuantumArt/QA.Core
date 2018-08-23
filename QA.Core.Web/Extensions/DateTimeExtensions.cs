@@ -18,6 +18,10 @@ namespace QA.Core.Web.Extensions
         private const string DefaultFormatTwoZero = "00";
         private const string DefaultFormatFourZero = "0000";
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="htmlHelper"></param>
         public DateTimeExtensions(HtmlHelper<TModel> htmlHelper)
         {
             this._htmlHelper = htmlHelper;

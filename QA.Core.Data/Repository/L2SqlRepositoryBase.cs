@@ -18,7 +18,7 @@ namespace QA.Core.Data.Repository
         /// <summary>
         /// Конструирует объект
         /// </summary>
-        /// <param name="unitOfWork">Контекст данных</param>
+        /// <param name="unityOfWork"></param>
         public L2SqlRepositoryBase(IUnitOfWork unityOfWork)
             : base(unityOfWork)
         {
@@ -27,11 +27,11 @@ namespace QA.Core.Data.Repository
         /// <summary>
         /// Возвращает набор сущности
         /// </summary>
-        /// <typeparam name="T">Тип сущности</typeparam>
+        /// <typeparam name="TEntity">Тип сущности</typeparam>
         /// <returns></returns>
-        protected virtual Table<T> GetDbSet<T>() where T : class
+        protected virtual Table<TEntity> GetDbSet<TEntity>() where TEntity : class
         {
-            return (this.UnitOfWork.Context as DataContext).GetTable<T>();
+            return (this.UnitOfWork.Context as DataContext)?.GetTable<TEntity>();
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace QA.Core.Data.Repository
         /// <returns></returns>
         protected virtual IQueryable<TEntity> GetAllQuery<TEntity>() where TEntity : class
         {
-            return (this.UnitOfWork.Context as DataContext).GetTable<TEntity>().AsQueryable<TEntity>();
+            return (this.UnitOfWork.Context as DataContext)?.GetTable<TEntity>().AsQueryable<TEntity>();
         }
 
         /// <summary>

@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Web.WebPages;
 using System.Web.Routing;
 using System.Web;
+#pragma warning disable 1591
 
 namespace QA.Core.Web
 {
@@ -36,7 +37,8 @@ namespace QA.Core.Web
         /// <summary>
         /// Создает некешируемую аттрибутом ResultCacheAttribute область разметки Razor
         /// </summary>
-        /// <param name="action">Лямбда-выражение для разметки Razor. Не может включать методы-расширения, 
+        /// <param name="helper"></param>
+        /// <param name="action">Лямбда-выражение для разметки Razor. Не может включать методы-расширения,
         /// обращающиеся к Stream (BeginForm, RenderPartial,...)</param>
         /// <returns></returns>
         public static MvcHtmlString NoCache(this HtmlHelper helper, Func<object, HelperResult> action)
@@ -119,21 +121,23 @@ namespace QA.Core.Web
             // получаем автозамены из контекста контроллера
             return GetReplacements<ActionReplacement>(controller, ActionReplacement);
         }
-        
+
         /// <summary>
         /// Ключ коллекции автозамен в ViewData
         /// </summary>
         /// <param name="controller"></param>
+        /// <param name="key"></param>
         /// <returns></returns>
         private static string GenerateViewDataKey(ControllerBase controller, string key)
         {
-            return key;
+            return key ?? throw new ArgumentNullException(nameof(key));
         }
 
         /// <summary>
         /// Ключ автозамены
         /// </summary>
         /// <param name="helper"></param>
+        /// <param name="key"></param>
         /// <returns></returns>
         private static string CreatePlaceholderKey(HtmlHelper helper, string key)
         {

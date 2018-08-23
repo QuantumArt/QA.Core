@@ -53,7 +53,7 @@ namespace QA.Core.Logger
                 foreach (var ex in exception.Flat())
                 {
                     Logger.Error($"{ex.Message}{Environment.NewLine}{ex.StackTrace}{Environment.NewLine}{ex.Source}", ex);
-                }               
+                }
             }
             catch(Exception logEx)
             {
@@ -401,7 +401,7 @@ namespace QA.Core.Logger
             {
                 Level = logLevel,
                 Message = message(),
-                TimeStamp = DateTime.Now
+                TimeStampUtc = DateTime.UtcNow
             };
 
 

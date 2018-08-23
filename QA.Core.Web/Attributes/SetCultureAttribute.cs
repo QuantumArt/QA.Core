@@ -6,16 +6,17 @@ using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using QA.Core.Logger;
+#pragma warning disable 1591
 
 namespace QA.Core.Web
 {
     /// <summary>
     /// Установка текущей культуры
     /// Сначала берется инфрмация о культуре из выбранного источника.
-    /// Если в источнике нет информации о культуре, 
+    /// Если в источнике нет информации о культуре,
     /// то эта информация берется из браузера.
     /// </summary>
-    public class SetCultureAttribute : FilterAttribute, IActionFilter, 
+    public class SetCultureAttribute : FilterAttribute, IActionFilter,
         IInitilizeFilter // позволяет выполнять действия в момент инициализации контроллера
     {
         #region Enums
@@ -28,24 +29,24 @@ namespace QA.Core.Web
         {
             None = 0,
             /// <summary>
-            /// Use when the culture code is saved in a cookie.  
+            /// Use when the culture code is saved in a cookie.
             /// When using be sure to specify the CookieName property.
             /// </summary>
             Cookie = 1,
             /// <summary>
-            /// Use when the culture code is specified in the query string.  
+            /// Use when the culture code is specified in the query string.
             /// When using be sure to specify the QueryStringParamName property.
             /// </summary>
             QueryString = 2,
             /// <summary>
-            /// Use when the culture code is saved in session state.  
+            /// Use when the culture code is saved in session state.
             /// When using be sure to specify the SessionParamName property.
             /// </summary>
             Session = 4,
             /// <summary>
-            /// Use when the culture code is specified in the URL.  
+            /// Use when the culture code is specified in the URL.
             /// This assume a format of "{language}/{country}".
-            /// When using be sure to specify the CountryActionParamName and 
+            /// When using be sure to specify the CountryActionParamName and
             /// LanguageActionParamName properties.
             /// </summary>
             URL = 16
@@ -102,15 +103,15 @@ namespace QA.Core.Web
                     });
             }
         }
-        
+
         public virtual void OnActionExecuting(ActionExecutingContext filterContext)
         {
             if (!ShouldSetOnInitialize)
             {
-                ResolveCulture(filterContext); 
+                ResolveCulture(filterContext);
             }
         }
-       
+
 
         #endregion IActionFilter implementation
 
@@ -171,7 +172,7 @@ namespace QA.Core.Web
             if (filterContext is ActionExecutingContext)
             {
                 var actionContext = (ActionExecutingContext)filterContext;
-                //if URL it is expected the URL path will contain the culture 
+                //if URL it is expected the URL path will contain the culture
                 if (CultureStore == CultureLocation.URL)
                 {
                     if (actionContext.ActionParameters[LanguageActionParamName] != null && actionContext.ActionParameters[CountryActionParamName] != null
@@ -184,11 +185,11 @@ namespace QA.Core.Web
                     }
 
                     return cultureCode;
-                } 
+                }
             }
 
             return cultureCode ?? string.Empty;
-        }      
+        }
 
         private void ResolveCulture(ControllerContext filterContext)
         {

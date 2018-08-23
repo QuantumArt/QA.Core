@@ -2,7 +2,6 @@
 using System.Data.SqlClient;
 using Quantumart.QPublishing.Info;
 using Quantumart.QPublishing.Database;
-using Quantumart.QPublishing.Info;
 
 namespace QA.Core.Data.QP
 {
@@ -11,6 +10,9 @@ namespace QA.Core.Data.QP
     /// </summary>
     public interface IQpDbConnector
     {
+        /// <summary>
+        /// DbConnector
+        /// </summary>
         DBConnector DbConnector { get; }
 
         /// <summary>
@@ -24,7 +26,7 @@ namespace QA.Core.Data.QP
         /// <param name="query">Запрос</param>
         /// <param name="totalRecords">Общее количество строк</param>
         /// <returns></returns>
-        DataTable GetContentData(ContentDataQueryObject query, ref long totalRecords);
+        DataTable GetContentData(ContentDataQueryObject query, out long totalRecords);
 
         /// <summary>
         /// Возвращает данные контента

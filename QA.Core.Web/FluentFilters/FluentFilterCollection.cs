@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+#pragma warning disable 1591
 
 namespace QA.Core.Web.FluentFilters
 {

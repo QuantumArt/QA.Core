@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+#pragma warning disable 1591
 
 namespace QA.Core.Web.Extensions
 {
@@ -67,8 +68,8 @@ namespace QA.Core.Web.Extensions
         public MvcHtmlString Render()
         {
             /*
-             <div id="@(id ?? "")" 
-                 class="b-loader page-overlay @(className ?? string.Empty) 
+             <div id="@(id ?? "")"
+                 class="b-loader page-overlay @(className ?? string.Empty)
                  @HiddenIf(isHidden)"
                  style='@(zIndex.HasValue ? "z-index: " + zIndex : string.Empty)'>
                  <div class="load-overlay">

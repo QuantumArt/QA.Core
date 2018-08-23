@@ -14,6 +14,9 @@ namespace QA.Core.Web
         /// </summary>
         public T Result { get; set; }
 
+        /// <summary>
+        /// JsonServerResult
+        /// </summary>
         public JsonServerResult()
         {
             Result = new T();
@@ -25,7 +28,6 @@ namespace QA.Core.Web
     /// <summary>
     /// AJAX-ответ от сервера
     /// </summary>
-    /// <typeparam name="T"></typeparam>
     public class JsonServerResult
     {
         /// <summary>
@@ -43,6 +45,9 @@ namespace QA.Core.Web
         /// </summary>
         public string Message { get; set; }
 
+        /// <summary>
+        /// JsonServerResult
+        /// </summary>
         public JsonServerResult()
         {
         }

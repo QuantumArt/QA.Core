@@ -1,9 +1,10 @@
 ﻿using System.Web;
+#pragma warning disable 1591
 
 namespace QA.Core.Web
 {
     /// <summary>
-    /// заглушка контекста запроса, заменяющая адрес запроса. 
+    /// заглушка контекста запроса, заменяющая адрес запроса.
     /// Используется в роутинге ContentRoute&lt;T&gt; для нестандартный роутов.
     /// </summary>
     public class CustomHttpContextWrapper : HttpContextWrapper
@@ -29,7 +30,7 @@ namespace QA.Core.Web
         }
     }
     /// <summary>
-    /// заглушка контекста запроса, заменяющая адрес запроса. 
+    /// заглушка контекста запроса, заменяющая адрес запроса.
     /// Используется в роутинге ContentRoute&lt;T&gt; для нестандартный роутов.
     /// </summary>
     public class CustomRequestContextWrapper : HttpRequestWrapper
@@ -51,7 +52,7 @@ namespace QA.Core.Web
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public override string AppRelativeCurrentExecutionFilePath
         {
@@ -68,7 +69,7 @@ namespace QA.Core.Web
                 return base.ApplicationPath;
             }
         }
-        
+
         public override string PathInfo
         {
             get

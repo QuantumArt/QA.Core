@@ -1,4 +1,5 @@
-﻿
+﻿#pragma warning disable 1591
+
 using System.Data;
 namespace QA.Core.Data.Repository
 {
@@ -43,11 +44,6 @@ namespace QA.Core.Data.Repository
         /// </summary>
         /// <returns></returns>
         protected abstract TContext CreateContext();
-
-        /// <summary>
-        /// Освобождает ресурсы
-        /// </summary>
-        //public abstract void Dispose();
 
         /// <summary>
         /// Контекст

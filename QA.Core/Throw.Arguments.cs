@@ -5,11 +5,12 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq.Expressions;
 using QA.Core.Linq;
+#pragma warning disable 1573
 
 namespace QA.Core
 {
     /// <summary>
-    /// Расширения для exception 
+    /// Расширения для exception
     /// </summary>
     public static partial class Throws
     {
@@ -18,8 +19,6 @@ namespace QA.Core
         /// <summary>
         /// Throws an <see cref="ArgumentNullException" /> if the specified argument is null.
         /// </summary>
-        /// <param name="argument">The argument to check.</param>
-        /// <param name="argumentName">The name of the argument.</param>
         /// <param name="modifier">A modifier delegate used to modify the exception before being thrown.</param>
         [DebuggerStepThrough]
         public static void IfArgumentNull<T>(Expression<Func<object, T>> expression, Func<Exception, Exception> modifier = null)
@@ -32,7 +31,6 @@ namespace QA.Core
         /// Throws an <see cref="ArgumentNullException" /> if the specified argument is null.
         /// </summary>
         /// <param name="argument">The argument to check.</param>
-        /// <param name="argumentName">The name of the argument.</param>
         /// <param name="modifier">A modifier delegate used to modify the exception before being thrown.</param>
         [DebuggerStepThrough]
         public static void IfArgumentNull<T>(T argument, Expression<Func<object, T>> expression, Func<Exception, Exception> modifier = null)
@@ -44,13 +42,11 @@ namespace QA.Core
                     modifier);
             }
         }
-              
+
 
         /// <summary>
         /// Throws an <see cref="ArgumentNullException" /> if the specified argument is null.
         /// </summary>
-        /// <param name="argument">The argument to check.</param>
-        /// <param name="argumentName">The name of the argument.</param>
         /// <param name="modifier">A modifier delegate used to modify the exception before being thrown.</param>
         [DebuggerStepThrough]
         public static void IfArgumentNot<T>(bool condition, Expression<Func<object, T>> expression, Func<Exception, Exception> modifier = null)
@@ -61,8 +57,6 @@ namespace QA.Core
         /// <summary>
         /// Throws an <see cref="ArgumentNullException" /> if the specified argument is null.
         /// </summary>
-        /// <param name="argument">The argument to check.</param>
-        /// <param name="argumentName">The name of the argument.</param>
         /// <param name="modifier">A modifier delegate used to modify the exception before being thrown.</param>
         [DebuggerStepThrough]
         public static void IfArgumentNot<T>(Func<bool> condition, Expression<Func<object, T>> expression, Func<Exception, Exception> modifier = null)
@@ -145,7 +139,6 @@ namespace QA.Core
         /// Throws an <see cref="ArgumentNullException" /> if the specified argument is null.
         /// </summary>
         /// <param name="argument">The argument to check.</param>
-        /// <param name="argumentName">The name of the argument.</param>
         /// <param name="modifier">A modifier delegate used to modify the exception before being thrown.</param>
         [DebuggerStepThrough]
         public static void IfArrayArgumentNullOrEmpty<T>(T[] argument, Expression<Func<object, T[]>> expression, Func<Exception, Exception> modifier = null)
@@ -175,7 +168,6 @@ namespace QA.Core
         /// Throws an <see cref="ArgumentException" /> if the specified argument is null or equal to <see cref="String.Empty" />.
         /// </summary>
         /// <param name="argument">The argument to check.</param>
-        /// <param name="argumentName">The name of the argument.</param>
         /// <param name="modifier">A modifier delegate used to modify the exception before being thrown.</param>
         [DebuggerStepThrough]
         public static void IfArgumentNullOrEmpty<T>(string argument, Expression<Func<object, T>> expression, Func<Exception, Exception> modifier = null)
@@ -229,7 +221,6 @@ namespace QA.Core
         /// Throws an <see cref="ArgumentException" /> if the specified argument is null or equal to <see cref="String.Empty" />.
         /// </summary>
         /// <param name="argument">The argument to check.</param>
-        /// <param name="argumentName">The name of the argument.</param>
         /// <param name="modifier">A modifier delegate used to modify the exception before being thrown.</param>
         [DebuggerStepThrough]
         public static void IfArgumentIsNotEqual<T>(T argument, Func<T, bool> condition, Expression<Func<object, T>> expression, Func<Exception, Exception> modifier = null)
@@ -266,7 +257,6 @@ namespace QA.Core
         /// Throws an <see cref="ArgumentException" /> if the specified argument is null or equal to <see cref="String.Empty" />.
         /// </summary>
         /// <param name="argument">The argument to check.</param>
-        /// <param name="argumentName">The name of the argument.</param>
         /// <param name="modifier">A modifier delegate used to modify the exception before being thrown.</param>
         [DebuggerStepThrough]
         public static void IfArgumentIsNotEqual<T>(T argument, Func<T, bool> condition, Func<Exception, Exception> modifier = null)

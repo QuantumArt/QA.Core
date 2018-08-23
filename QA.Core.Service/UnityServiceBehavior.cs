@@ -7,6 +7,7 @@ using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
 using Unity;
+#pragma warning disable 1591
 
 namespace QA.Core.Service
 {
@@ -37,9 +38,9 @@ namespace QA.Core.Service
         {
             Throws.IfArgumentNull(serviceDescription, _ => serviceDescription);
             Throws.IfArgumentNull(serviceDescription.Endpoints, _ => serviceDescription.Endpoints);
-            Throws.IfArgumentNull(serviceDescription.ServiceType, _ => serviceDescription.ServiceType); 
+            Throws.IfArgumentNull(serviceDescription.ServiceType, _ => serviceDescription.ServiceType);
             Throws.IfArgumentNull(serviceHostBase, _ => serviceHostBase);
-            
+
             foreach (ChannelDispatcher channelDispatcher in serviceHostBase.ChannelDispatchers)
             {
                 foreach (EndpointDispatcher endpointDispatcher in channelDispatcher.Endpoints)

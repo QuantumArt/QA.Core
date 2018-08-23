@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Unity.Extension;
 using Unity;
+#pragma warning disable 1591
 
 namespace QA.Core.Extensions
 {
@@ -207,9 +208,7 @@ namespace QA.Core.Extensions
         /// <summary>
         /// Retrieves the child container registered with the specified name.  If one doesn't exist
         /// then a new child container is created, registered and returned.
-        /// </summary>        
-        /// The name the child container instance was registered with
-        /// </param>
+        /// </summary>
         public static IUnityContainer GetChildContainer(this IUnityContainer container, string name)
         {
             if (container.IsRegistered<IUnityContainer>(name))
@@ -226,6 +225,7 @@ namespace QA.Core.Extensions
         /// Resolves a list of types.
         /// </summary>
         /// <typeparam name="T">The base type or common interface of each item in the list.</typeparam>
+        /// <param name="container"></param>
         /// <param name="types">A list of types to resolve.</param>
         public static IEnumerable<T> Resolve<T>(this IUnityContainer container, IEnumerable<Type> types)
         {

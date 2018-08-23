@@ -87,7 +87,9 @@ namespace QA.Core.Service.Interaction
         /// <summary>
         /// Выполнение сервиса
         /// </summary>
+        /// <param name="securityContext"></param>
         /// <param name="func">Функция, выполняющаяся при успешных проверках</param>
+        /// <param name="userContext"></param>
         /// <returns></returns>
         protected virtual ServiceResult<TResult> Run<TResult>(
             UserContext userContext,
@@ -135,6 +137,7 @@ namespace QA.Core.Service.Interaction
         /// </summary>
         /// <typeparam name="TResult">Тип сущности</typeparam>
         /// <param name="userContext">Контекст пользователя</param>
+        /// <param name="securityContext"></param>
         /// <param name="func">Функция, выполняющаяся при успешных проверках</param>
         /// <returns></returns>
         protected virtual ServiceEnumerationResult<TResult> RunEnumeration<TResult>(
@@ -179,6 +182,8 @@ namespace QA.Core.Service.Interaction
         /// <summary>
         /// Выполнение сервиса
         /// </summary>
+        /// <param name="userContext"></param>
+        /// <param name="securityContext"></param>
         /// <param name="func">Функция, выполняющаяся при успешных проверках</param>
         /// <returns></returns>
         protected virtual ServiceResult<TResult> Run2<TResult>(
@@ -224,6 +229,7 @@ namespace QA.Core.Service.Interaction
         /// </summary>
         /// <typeparam name="TResult">Тип сущности</typeparam>
         /// <param name="userContext">Контекст пользователя</param>
+        /// <param name="securityContext"></param>
         /// <param name="func">Функция, выполняющаяся при успешных проверках</param>
         /// <returns></returns>
         protected virtual ServiceEnumerationResult<TResult> RunEnumeration<TResult>(
@@ -329,7 +335,7 @@ namespace QA.Core.Service.Interaction
 
         /// <summary>
         /// Построение объекта
-        /// <param name="T">Тип</param>
+        /// <typeparam name="T">Тип</typeparam>
         /// </summary>
         protected virtual T Resolve<T>()
         {
@@ -338,7 +344,7 @@ namespace QA.Core.Service.Interaction
 
         /// <summary>
         /// Построение объекта
-        /// <param name="T">Тип</param>
+        /// <typeparam name="T">Тип</typeparam>
         /// <param name="name">register name</param>
         /// </summary>
         protected virtual T Resolve<T>(string name)

@@ -18,7 +18,6 @@ namespace QA.Core.Data.Repository
         /// <summary>
         /// Конструирует объект
         /// </summary>
-        /// <param name="unitOfWork">Контекст данных</param>
         public EF5RepositoryBase(IUnitOfWork unityOfWork)
             : base(unityOfWork)
         {
@@ -27,21 +26,21 @@ namespace QA.Core.Data.Repository
         /// <summary>
         /// Возвращает набор сущности
         /// </summary>
-        /// <typeparam name="T">Тип сущности</typeparam>
+        /// <typeparam name="TEntity">Тип сущности</typeparam>
         /// <returns></returns>
-        protected virtual IDbSet<T> GetDbSet<T>() where T : class
+        protected virtual IDbSet<TEntity> GetDbSet<TEntity>() where TEntity : class
         {
-            return (this.UnitOfWork.Context as DbContext).Set<T>();
+            return (UnitOfWork.Context as DbContext)?.Set<TEntity>();
         }
 
         /// <summary>
         /// Возвращает набор сущности
         /// </summary>
-        /// <typeparam name="T">Тип сущности</typeparam>
+        /// <typeparam name="TEntity">Тип сущности</typeparam>
         /// <returns></returns>
-        protected virtual DbSet<T> GetDbSet2<T>() where T : class
+        protected virtual DbSet<TEntity> GetDbSet2<TEntity>() where TEntity : class
         {
-            return (this.UnitOfWork.Context as DbContext).Set<T>();
+            return (UnitOfWork.Context as DbContext)?.Set<TEntity>();
         }
 
         /// <summary>
@@ -51,7 +50,7 @@ namespace QA.Core.Data.Repository
         /// <returns></returns>
         protected virtual IQueryable<TEntity> GetAllQuery<TEntity>() where TEntity : class
         {
-            return (this.UnitOfWork.Context as DbContext).Set<TEntity>().AsQueryable<TEntity>();
+            return (UnitOfWork.Context as DbContext)?.Set<TEntity>().AsQueryable<TEntity>();
         }
 
         /// <summary>

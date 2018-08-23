@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+#pragma warning disable 1591
+
 
 namespace QA.Core.Web
 {
@@ -22,7 +24,7 @@ namespace QA.Core.Web
 
         public virtual void InvalidateKeys(InvalidationMode mode, params string[] keys)
         {
-            ObjectFactoryBase.Logger.Debug(_ => ("Invalidating a set of keys " + string.Join(", ", keys)));
+            ObjectFactoryBase.Logger.Debug(() => ("Invalidating a set of keys " + string.Join(", ", keys)));
 
             if (keys == null || keys.Length == 0)
                 return;

@@ -3,6 +3,7 @@
 using System;
 using System.IO;
 using System.Runtime.Serialization.Json;
+#pragma warning disable 1591
 
 namespace QA.Core.Web
 {

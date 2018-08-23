@@ -1,6 +1,7 @@
 ﻿// Owners: Karlov Nikolay, Abretov Alexey
 using System.Web.Mvc;
 using FluentValidation.Results;
+#pragma warning disable 1591
 
 namespace QA.Core.Web
 {
@@ -13,8 +14,6 @@ namespace QA.Core.Web
         /// <summary>
         /// Отправка информации о валидации
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="isSucceeded"></param>
         /// <returns></returns>
         protected virtual JsonResult JsonValidation(JsonRequestBehavior behavior = JsonRequestBehavior.DenyGet)
         {
@@ -36,8 +35,6 @@ namespace QA.Core.Web
         /// <summary>
         /// Отправка информации о валидации
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="isSucceeded"></param>
         /// <returns></returns>
         protected virtual JsonResult JsonValidation(ValidationResult results, JsonRequestBehavior behavior = JsonRequestBehavior.DenyGet)
         {

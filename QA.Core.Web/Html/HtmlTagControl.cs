@@ -165,6 +165,9 @@ namespace QA.Core.Web.Html
             }
         }
 
+        /// <summary>
+        /// IsRender
+        /// </summary>
         protected bool IsRender { get; set; }
 
         #endregion

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+#pragma warning disable 1591
 
 namespace QA.Core.Extensions
 {
@@ -30,8 +31,6 @@ namespace QA.Core.Extensions
         /// <summary>
         /// Возвращает первый день недели
         /// </summary>
-        /// <param name="dt"></param>
-        /// <param name="startOfWeek">Дата, для которой необходимо вернуть первый день недели</param>
         /// <returns></returns>
         public static DateTime StartOfWeek(this DateTime dateTime)
         {
@@ -51,8 +50,6 @@ namespace QA.Core.Extensions
         /// <summary>
         /// Возвращает последний день недели
         /// </summary>
-        /// <param name="dt"></param>
-        /// <param name="startOfWeek">Дата, для которой необходимо вернуть последний день недели</param>
         /// <returns></returns>
         public static DateTime EndOfWeek(this DateTime dateTime)
         {

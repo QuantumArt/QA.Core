@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web;
 using QA.Core.Logger;
+#pragma warning disable 1591
 
 namespace QA.Core.Web
 {

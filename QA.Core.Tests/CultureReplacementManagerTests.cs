@@ -14,7 +14,7 @@ namespace QA.Core.Tests
         [TestMethod]
         public void Test_ReplacementProcessor()
         {
-            var manager = new ReplacementProcessor(typeof(CultureDependentModel));
+            var manager = new SwapReplacementProcessor(typeof(CultureDependentModel));
 
             Func<CultureDependentModel> factory = () => new CultureDependentModel
             {
@@ -85,7 +85,7 @@ namespace QA.Core.Tests
         [TestMethod]
         public void Test_CultureReplacementExtension()
         {
-            var manager = new ReplacementProcessor(typeof(CultureDependentModel));
+            var manager = new SwapReplacementProcessor(typeof(CultureDependentModel));
 
             Func<CultureDependentObject> factory = () => new CultureDependentObject
             {
@@ -124,7 +124,7 @@ namespace QA.Core.Tests
         [TestMethod]
         public void Test_ReplacementProcessor_Benchmark()
         {
-            var manager = new ReplacementProcessor(typeof(CultureDependentModel));
+            var manager = new SwapReplacementProcessor(typeof(CultureDependentModel));
 
             Func<CultureDependentModel> factory = () => new CultureDependentModel
             {
@@ -193,43 +193,43 @@ namespace QA.Core.Tests
                 TitleInv = null,
                 Cost = 31,
                 CostInDollars = 1,
-                Children = new CultureDependentComplexObject[] 
+                Children = new CultureDependentComplexObject[]
                 {
                     new CultureDependentComplexObject
                     {
                         Title = "12ru-ru",
                         TitleEng = "en-us3",
-                        MyProperty = new CultureDependentComplexModel 
+                        MyProperty = new CultureDependentComplexModel
                         {
                             Title = "russian123",
-                            Children = new CultureDependentComplexObject[] 
+                            Children = new CultureDependentComplexObject[]
                             {
                                 new CultureDependentComplexObject
                                 {
                                     Title = "12ru-ru",
                                     TitleEng = "en-us3",
-                                    MyProperty = new CultureDependentComplexModel 
+                                    MyProperty = new CultureDependentComplexModel
                                     {
-                                        Title = "rusqwsian123",                                          
+                                        Title = "rusqwsian123",
                                     }
                                 },
                                 new CultureDependentComplexObject
                                 {
                                     Title = "233ru-ru",
                                     TitleEng = "en-us1",
-                                    MyProperty = new CultureDependentComplexModel 
+                                    MyProperty = new CultureDependentComplexModel
                                     {
                                         Title = "ruswwwsian1233",
                                     }
                                 },
-                            } 
+                            }
                         }
                     },
                     new CultureDependentComplexObject
                     {
                         Title = "233ru-ru",
                         TitleEng = "en-us1",
-                        MyProperty = new CultureDependentComplexModel 
+                        MyProperty = new CultureDependentComplexModel
                         {
                             Title = "russian1233",
                         }
@@ -255,43 +255,43 @@ namespace QA.Core.Tests
                 TitleInv = null,
                 Cost = 31,
                 CostInDollars = 1,
-                Children = new CultureDependentComplexObject[] 
+                Children = new CultureDependentComplexObject[]
                 {
                     new CultureDependentComplexObject
                     {
                         Title = "12ru-ru",
                         TitleEng = "en-us3",
-                        MyProperty = new CultureDependentComplexModel 
+                        MyProperty = new CultureDependentComplexModel
                         {
                             Title = "russian123",
-                            Children = new CultureDependentComplexObject[] 
+                            Children = new CultureDependentComplexObject[]
                             {
                                 new CultureDependentComplexObject
                                 {
                                     Title = "12ru-ru",
                                     TitleEng = "en-us3",
-                                    MyProperty = new CultureDependentComplexModel 
+                                    MyProperty = new CultureDependentComplexModel
                                     {
-                                        Title = "rusqwsian123",                                          
+                                        Title = "rusqwsian123",
                                     }
                                 },
                                 new CultureDependentComplexObject
                                 {
                                     Title = "233ru-ru",
                                     TitleEng = "en-us1",
-                                    MyProperty = new CultureDependentComplexModel 
+                                    MyProperty = new CultureDependentComplexModel
                                     {
                                         Title = "ruswwwsian1233",
                                     }
                                 },
-                            } 
+                            }
                         }
                     },
                     new CultureDependentComplexObject
                     {
                         Title = "233ru-ru",
                         TitleEng = "en-us1",
-                        MyProperty = new CultureDependentComplexModel 
+                        MyProperty = new CultureDependentComplexModel
                         {
                             Title = "russian1233",
                         }
@@ -350,7 +350,7 @@ namespace QA.Core.Tests
             }
             st.Stop();
             Console.WriteLine(string.Format("Made {0} replacements in {1} ms", LoopCount, st.ElapsedMilliseconds));
-        } 
+        }
         #endregion
     }
 }

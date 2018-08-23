@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using Microsoft.SqlServer.Server;
+#pragma warning disable 1591
 
 namespace QA.Core.Data
 {

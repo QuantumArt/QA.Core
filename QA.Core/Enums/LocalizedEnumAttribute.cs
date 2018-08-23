@@ -3,6 +3,7 @@
 using System;
 using System.ComponentModel;
 using System.Reflection;
+#pragma warning disable 1591
 
 namespace QA.Core
 {

@@ -18,7 +18,7 @@ namespace QA.Core.Data.Repository
         /// <summary>
         /// Конструирует объект
         /// </summary>
-        /// <param name="unitOfWork">Контекст данных</param>
+        /// <param name="unityOfWork"></param>
         public EFRepositoryBase(IUnitOfWork unityOfWork) : base(unityOfWork)
         {
         }
@@ -26,21 +26,21 @@ namespace QA.Core.Data.Repository
         /// <summary>
         /// Возвращает набор сущности
         /// </summary>
-        /// <typeparam name="T">Тип сущности</typeparam>
+        /// <typeparam name="TEntity">Тип сущности</typeparam>
         /// <returns></returns>
-        protected virtual IObjectSet<T> GetDbSet<T>() where T : class
+        protected virtual IObjectSet<TEntity> GetDbSet<TEntity>() where TEntity : class
         {
-            return (this.UnitOfWork.Context as ObjectContext).CreateObjectSet<T>();
+            return (this.UnitOfWork.Context as ObjectContext).CreateObjectSet<TEntity>();
         }
 
         /// <summary>
         /// Возвращает набор сущности
         /// </summary>
-        /// <typeparam name="T">Тип сущности</typeparam>
+        /// <typeparam name="TEntity">Тип сущности</typeparam>
         /// <returns></returns>
-        protected virtual ObjectSet<T> GetDbSet2<T>() where T : class
+        protected virtual ObjectSet<TEntity> GetDbSet2<TEntity>() where TEntity : class
         {
-            return (this.UnitOfWork.Context as ObjectContext).CreateObjectSet<T>();
+            return (this.UnitOfWork.Context as ObjectContext).CreateObjectSet<TEntity>();
         }
 
         /// <summary>

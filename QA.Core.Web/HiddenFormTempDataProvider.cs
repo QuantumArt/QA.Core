@@ -6,6 +6,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Web;
 using System.Web.Mvc;
+#pragma warning disable 1591
 
 namespace QA.Core.Web
 {

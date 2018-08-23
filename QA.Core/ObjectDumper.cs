@@ -1,7 +1,7 @@
 ﻿// Owners: Karlov Nikolay, Abretov Alexey
 //
 // Copyright © Microsoft Corporation.  All Rights Reserved.
-// This code released under the terms of the 
+// This code released under the terms of the
 // Microsoft Public License (MS-PL, http://opensource.org/licenses/ms-pl.html.)
 //
 // Copyright (C) Microsoft Corporation.  All rights reserved.
@@ -13,6 +13,7 @@ using System.Collections;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+#pragma warning disable 1591
 
 namespace QA.Core
 {
@@ -27,7 +28,7 @@ namespace QA.Core
 	/// <summary>
     /// Сериализация текущего состояния объекта в поток/строку
     /// <remarks>
-    /// Используется для журналирования состояния объектов. 
+    /// Используется для журналирования состояния объектов.
     /// Взято из примеров к VisualStudio 2010
     /// </remarks>
     /// </summary>
@@ -64,6 +65,7 @@ namespace QA.Core
         /// </summary>
         /// <param name="element">Уровень вложенности, до которого анализируется объект</param>
         /// <param name="depth">объект</param>
+        /// <param name="log"></param>
         public static void Write(object element, int depth, TextWriter log)
         {
             ObjectDumper dumper = new ObjectDumper(depth);

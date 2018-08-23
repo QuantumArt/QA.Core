@@ -1,6 +1,7 @@
 ﻿// Owners: Karlov Nikolay, Abretov Alexey
 using System;
 using System.Runtime.Serialization;
+#pragma warning disable 1591
 
 namespace QA.Core.Service.Interaction
 {
@@ -44,7 +45,7 @@ namespace QA.Core.Service.Interaction
             ErrorCode = error.ErrorCode;
         }
 
-        public static void Throw(int errorCode, string message) 
+        public static void Throw(int errorCode, string message)
         {
             throw new OperationExecutionException(errorCode, message);
         }

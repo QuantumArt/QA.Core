@@ -63,6 +63,7 @@ namespace QA.Core.Web
         /// </summary>
         /// <param name="page"></param>
         /// <param name="sectionName"></param>
+        /// <param name="defaultContent"></param>
         /// <returns></returns>
         public static HelperResult RedefineSection(this WebPageBase page,
                                 string sectionName,

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Helpers;
 using System.Web.Mvc;
+#pragma warning disable 1591
 
 namespace QA.Core.Web
 {
@@ -116,7 +117,7 @@ namespace QA.Core.Web
         /// <returns></returns>
         public static bool IsAjaxTokenValid(this ControllerBase controller)
         {
-            return controller.ControllerContext
+            return (string)controller.ControllerContext
                 .HttpContext
                 .Items[ValidateAjaxToken.DefaultHeaderKey] == "valid";
         }

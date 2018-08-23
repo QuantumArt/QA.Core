@@ -7,6 +7,7 @@ using System.Globalization;
 using System.IO;
 using System.Runtime.Serialization.Json;
 using System.Text;
+#pragma warning disable 1591
 
 namespace QA.Core.Extensions
 {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
+#pragma warning disable 1591
 
 namespace QA.Core
 {
@@ -18,7 +19,6 @@ namespace QA.Core
         /// <summary>
         /// При вызове конструктора происходит генерация выражения для быстрого доступа к свойству
         /// </summary>
-        /// <param name="objectType"></param>
         /// <param name="propertyName"></param>
         public FastPropertyAccessor(string propertyName)
         {
@@ -30,14 +30,14 @@ namespace QA.Core
             var targetExpression = Expression.Parameter(_objectType, propertyName);
             var valueExpression = Expression.Parameter(typeof(object), "value");
 
-            var mi = _objectType.GetProperty(propertyName).GetSetMethod();
+            var mi = _objectType.GetProperty(propertyName)?.GetSetMethod();
             var parameterType = mi.GetParameters().Select(x => x.ParameterType).FirstOrDefault();
 
             // Создаем лямбда-выражение:
             // "obj => { ((ObjectType)obj).set_PropertyName((PropertyType)value) }"
             var setterExpression = Expression.Lambda<Action<T, object>>(
                   Expression.Call(
-                     targetExpression, 
+                     targetExpression,
                       mi, // сеттер
                       Expression.Convert(valueExpression, parameterType) // приводим object к типу поля
                   ),

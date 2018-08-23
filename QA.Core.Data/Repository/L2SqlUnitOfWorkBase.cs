@@ -2,6 +2,8 @@
 using System.Data;
 using System.Data.Common;
 using System.Data.Linq;
+#pragma warning disable 1591
+
 
 namespace QA.Core.Data.Repository
 {
@@ -32,10 +34,7 @@ namespace QA.Core.Data.Repository
         /// <param name="mappingSource">Источник маппинга</param>
         public L2SqlUnitOfWorkBase(string connectionString, IXmlMappingResolver mappingSource)
         {
-            _connectionStringName = connectionString;
-
             ConnectionString = connectionString;
-
             _mappingSource = mappingSource;
 
             OnCreated();
@@ -49,10 +48,7 @@ namespace QA.Core.Data.Repository
         /// <param name="siteName">Имя сайта</param>
         public L2SqlUnitOfWorkBase(string connectionString, string siteName, IXmlMappingResolver mappingSource)
         {
-            _connectionStringName = connectionString;
-
             ConnectionString = connectionString;
-
             _mappingSource = mappingSource;
             _siteName = siteName;
 
@@ -117,7 +113,7 @@ namespace QA.Core.Data.Repository
         /// <summary>
         /// Освобождает ресурсы
         /// </summary>
-        ~L2SqlUnitOfWorkBase() 
+        ~L2SqlUnitOfWorkBase()
         {
             Dispose(false);
         }

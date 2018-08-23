@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
+#pragma warning disable 1591
 
 namespace QA.Core
 {
@@ -84,7 +85,6 @@ namespace QA.Core
         /// <summary>
         /// Получение атрибута описания
         /// </summary>
-        /// <param name="value">Описание</param>
         /// <returns></returns>
         public static int GetNumberByDescription(
             this Enum @enum,

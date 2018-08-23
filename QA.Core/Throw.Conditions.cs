@@ -4,11 +4,12 @@ using System;
 using System.Diagnostics;
 using System.Linq.Expressions;
 using QA.Core.Linq;
+#pragma warning disable 1591
 
 namespace QA.Core
 {
     /// <summary>
-    /// Расширения для exception 
+    /// Расширения для exception
     /// </summary>
     public static partial class Throws
     {
@@ -17,7 +18,10 @@ namespace QA.Core
         /// <summary>
         /// Throws an <see cref="ArgumentException" /> if the specified argument is null.
         /// </summary>
+        /// <param name="message"></param>
         /// <param name="modifier">A modifier delegate used to modify the exception before being thrown.</param>
+        /// <param name="condition"></param>
+        /// <param name="expression"></param>
         [DebuggerStepThrough]
         public static void IfNot<T>(Func<bool> condition, Expression<Func<object, T>> expression, string message = null, Func<Exception, Exception> modifier = null)
         {
@@ -41,7 +45,9 @@ namespace QA.Core
         /// <summary>
         /// Throws an <see cref="Exception" /> if the specified argument is null.
         /// </summary>
+        /// <param name="message"></param>
         /// <param name="modifier">A modifier delegate used to modify the exception before being thrown.</param>
+        /// <param name="condition"></param>
         [DebuggerStepThrough]
         public static void IfNot(Func<bool> condition, string message, Func<Exception, Exception> modifier = null)
         {

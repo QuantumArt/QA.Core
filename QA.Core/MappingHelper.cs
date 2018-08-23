@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using AutoMapper;
+#pragma warning disable 1591
 
 namespace QA.Core
 {
@@ -26,6 +27,7 @@ namespace QA.Core
         /// <typeparam name="TSource">Тип исходного элемента</typeparam>
         /// <typeparam name="TDest">Тип конечного элмента</typeparam>
         /// <param name="source">Элемент для преобразования</param>
+        /// <param name="dest"></param>
         /// <returns></returns>
         public static void Map<TSource, TDest>(TSource source, TDest dest)
         {

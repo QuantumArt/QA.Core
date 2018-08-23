@@ -10,7 +10,7 @@ using QA.Core.Performance;
 namespace QA.Core.Performance
 {
     /// <summary>
-    /// Класс, предоставляющий возможность прекращать обращения к функционалу на некоторое время на основе статистики работы этого функционала. 
+    /// Класс, предоставляющий возможность прекращать обращения к функционалу на некоторое время на основе статистики работы этого функционала.
     /// Класс потокобезопасный, должен быть синглтоном.
     /// Если работа функционала заблокирована, то бросается исключение OperationCancelledException
     /// </summary>
@@ -212,7 +212,7 @@ namespace QA.Core.Performance
             // проверка по количеству одновременных транзакций
             if (activeRequests > _config.MaxActiveRequestsCount)
             {
-                _logger.Info(_ => string.Format("RapidFailProtection {0} active transactions: {1} max: {2}",
+                _logger.Info(() => string.Format("RapidFailProtection {0} active transactions: {1} max: {2}",
                     _systemName, activeRequests, maxActiveRequestsCount));
 
                 // для того, чтобы очередь вытеснялась, добавляем значение
@@ -238,7 +238,7 @@ namespace QA.Core.Performance
 
             if (errorsCount > maxErrorCount)
             {
-                _logger.Info(_ => string.Format("RapidFailProtection {0} errors: {1} max: {2}", _systemName, errorsCount, maxErrorCount));
+                _logger.Info(() => string.Format("RapidFailProtection {0} errors: {1} max: {2}", _systemName, errorsCount, maxErrorCount));
                 Volatile.Write(ref _isInLockedState, true);
 
                 if (throwOnError)
@@ -264,19 +264,19 @@ namespace QA.Core.Performance
                 if (percentage > thresholdRatio)
                 {
                     _logger.Info(string.Format("RapidFailProtection {0} too much timeouts: {1}, thresholdRatio: {2}, active requests: {3}, minRequestsCount {4}",
-                        _systemName, 
-                        percentage, 
-                        thresholdRatio, 
-                        activeRequests, 
+                        _systemName,
+                        percentage,
+                        thresholdRatio,
+                        activeRequests,
                         minRequestsCount));
 
                     Volatile.Write(ref _isInLockedState, true);
 
                     if (throwOnError)
                         throw new OperationCancelledException(string.Format("Обработка запроса к сервису {0} была прекращена из-за превышения допустимой доли долгих ответов.Текущая величина: {1} Допустимо не более: {2} при пороге {3} ms",
-                            _systemName, 
-                            percentage, 
-                            thresholdRatio, 
+                            _systemName,
+                            percentage,
+                            thresholdRatio,
                             threshold));
 
                     return false;
@@ -285,7 +285,7 @@ namespace QA.Core.Performance
 
             if (log)
             {
-                _logger.Info(_ => ("RapidFailProtection OK " + ObjectDumper.DumpObject(
+                _logger.Info(() => ("RapidFailProtection OK " + ObjectDumper.DumpObject(
                            new
                            {
                                activeRequests,

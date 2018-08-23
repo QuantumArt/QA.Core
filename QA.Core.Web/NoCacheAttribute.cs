@@ -9,6 +9,10 @@ namespace QA.Core.Web
     /// </summary>
     public class NoCacheAttribute : ActionFilterAttribute
     {
+        /// <summary>
+        /// OnResultExecuting
+        /// </summary>
+        /// <param name="filterContext"></param>
         public override void OnResultExecuting(ResultExecutingContext filterContext)
         {
             filterContext.HttpContext.Response.Cache.SetExpires(DateTime.UtcNow.AddDays(-1));

@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.Common;
 using System.Data.Objects;
+#pragma warning disable 1591
 
 namespace QA.Core.Data.Repository
 {
@@ -115,7 +116,7 @@ namespace QA.Core.Data.Repository
         /// <summary>
         /// Освобождает ресурсы
         /// </summary>
-        ~EFUnitOfWorkBase() 
+        ~EFUnitOfWorkBase()
         {
             Dispose(false);
         }

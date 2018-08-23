@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+#pragma warning disable 1591
+
 
 namespace QA.Core
 {
@@ -30,6 +32,7 @@ namespace QA.Core
         /// <summary>
         /// Сообщает, что данные этого тега (контента) обновились
         /// </summary>
+        /// <param name="mode"></param>
         /// <param name="tag">тег</param>
         public void InvalidateByTag(InvalidationMode mode, string tag) { }
 
@@ -86,14 +89,14 @@ namespace QA.Core
         {
             result = null;
             return false;
-        }      
+        }
 
         void IDisposable.Dispose() { }
 
 
         public void InvalidateByTags(InvalidationMode mode, params string[] tags)
         {
-            
+
         }
 
         /// <summary>
@@ -117,7 +120,7 @@ namespace QA.Core
         /// и кладет результат в кэш
         /// </summary>
         /// <typeparam name="T">тип объектов в кэше</typeparam>
-        /// <param name="key">тэг, в общем случае представляет имя класса сервиса + имя метода + список параметров</param>    
+        /// <param name="key">тэг, в общем случае представляет имя класса сервиса + имя метода + список параметров</param>
         /// <param name="expiration">время жизни в кэше</param>
         /// <param name="getData">функция для получения данных, если объектов кэше нет. нужно использовать анонимный делегат</param>
         /// <returns>закэшированне данные, если они присутствуют в кэше или результат выполнения функции</returns>

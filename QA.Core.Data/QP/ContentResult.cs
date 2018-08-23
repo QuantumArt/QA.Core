@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Quantumart.QPublishing.Info;
-using Quantumart.QPublishing.Info;
 
 namespace QA.Core.Data.QP
 {
@@ -115,37 +114,6 @@ namespace QA.Core.Data.QP
             }
 
             throw new NotImplementedException();
-
-            var metadata = new QPMetadataManager(/*Query.ConnectionString*/null);
-
-            var attr = metadata.GetContentAttribute(
-                Query.SiteName,
-                Query.ContentName,
-                fieldName);
-
-            string referenceIds = string.Empty;
-
-            if (attr.LinkId == null)
-            {
-                var item = PrimaryContent.Select("CONTENT_ITEM_ID = " + id).FirstOrDefault();
-                if (item != null && item.Table.Columns.Contains(fieldName))
-                {
-                    referenceIds = item[fieldName].ToString();
-                }
-            }
-            else
-            {
-                referenceIds = DbConnection.GetContentItemLinkIDs(attr.Name, id);
-            }
-
-            if (!string.IsNullOrEmpty(referenceIds))
-            {
-                string contentName = metadata.GetContentName(attr.RelatedContentId.Value);
-
-                return Contents[contentName].Select("CONTENT_ITEM_ID in (" + referenceIds + ")").ToList();
-            }
-
-            return new List<DataRow>();
         }
 
         #endregion

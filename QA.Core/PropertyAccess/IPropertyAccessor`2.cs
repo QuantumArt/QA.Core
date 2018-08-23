@@ -6,6 +6,7 @@ namespace QA.Core
     /// Экземпляры таких классов надо кешировать.
     /// <typeparam name="T">тип объекта</typeparam>
     /// <typeparam name="P">тип параметра</typeparam>
+    /// </summary>
     public interface IPropertyAccessor<T, P>
     {
         /// <summary>

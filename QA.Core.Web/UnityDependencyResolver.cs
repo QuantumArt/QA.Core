@@ -21,6 +21,7 @@ namespace QA.Core.Web
         /// Создание экземпляра класса
         /// </summary>
         /// <param name="container">Текущий контейнер</param>
+        /// <param name="logger"></param>
         public UnityDependencyResolver(IUnityContainer container, ILogger logger)
         {
             _container = container;

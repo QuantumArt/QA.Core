@@ -1,4 +1,5 @@
-﻿using System;
+﻿#pragma warning disable 1591
+
 namespace QA.Core
 {
     public interface IContentInvalidator

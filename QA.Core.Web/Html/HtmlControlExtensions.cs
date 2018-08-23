@@ -24,6 +24,7 @@ namespace QA.Core.Web.Html
         /// <typeparam name="TModel">Тип модели</typeparam>
         /// <param name="helper">Фабрика</param>
         /// <param name="tagType">Тип тэга</param>
+        /// <param name="isDisabled"></param>
         /// <param name="htmlAttributes">Атрибуты</param>
         /// <returns></returns>
         public static HtmlTagControl<TModel> BeginHtmlTag<TModel>(
@@ -35,7 +36,7 @@ namespace QA.Core.Web.Html
             var tag = new HtmlTagControl<TModel>(helper.HtmlHelper.ViewContext)
                 .SetTagType(tagType)
                 .SetHtmlAttributes(htmlAttributes);
-            
+
             tag.Factory = helper;
 
             if (isDisabled)
@@ -57,6 +58,7 @@ namespace QA.Core.Web.Html
         /// <param name="helper">Фабрика</param>
         /// <param name="tagType">Тип тэга</param>
         /// <param name="expression">Выражение для значения</param>
+        /// <param name="isDisabled"></param>
         /// <param name="htmlAttributes">Атрибуты</param>
         /// <returns></returns>
         public static HtmlTagControl<TModel> BeginHtmlTagFor<TModel, TProperty>(
@@ -73,7 +75,7 @@ namespace QA.Core.Web.Html
                 .SetValue(value == null ? string.Empty : value.ToString())
                 .SetTagType(tagType)
                 .SetHtmlAttributes(htmlAttributes);
-            
+
             tag.Factory = helper;
 
             if (isDisabled)
@@ -158,6 +160,7 @@ namespace QA.Core.Web.Html
         /// <param name="tagType">Тип тэга</param>
         /// <param name="htmlAttributes">Атрибуты</param>
         /// <param name="val">Значение</param>
+        /// <param name="isDisabled"></param>
         /// <param name="renderMode">Режим отрисовки тэга</param>
         /// <returns></returns>
         public static MvcHtmlString RenderTag(

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
+#pragma warning disable 1591
 
 namespace QA.Core
 {

@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+#pragma warning disable 1591
 
 namespace QA.Core
 {
     /// <summary>
-    /// Класс, анализирующий соответствие строки и wildcard. 
+    /// Класс, анализирующий соответствие строки и wildcard.
     /// Примеры:  *.js
     /// </summary>
     public class WildcardMatcher : IWildcardMatcher

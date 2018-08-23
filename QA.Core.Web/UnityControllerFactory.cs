@@ -30,7 +30,7 @@ namespace QA.Core.Web
         /// <summary>
         /// Конструирует класс фабрики с unity-контейнером
         /// </summary>
-        /// <param name="_container">Unity-контейнер</param>
+        /// <param name="container">Unity-контейнер</param>
         public UnityControllerFactory(IUnityContainer container)
         {
             _container = container;
@@ -62,7 +62,7 @@ namespace QA.Core.Web
             {
                 if (Logger != null)
                 {
-                    Logger.ErrorException(ex.Message, ex); 
+                    Logger.ErrorException(ex.Message, ex);
                 }
 
                 throw new HttpException(404, ex.Message);

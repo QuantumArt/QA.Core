@@ -3,6 +3,7 @@ using System;
 using System.ServiceModel;
 using System.Threading;
 using System.Threading.Tasks;
+#pragma warning disable 1591
 
 namespace QA.Core.Service.Interaction
 {
@@ -63,7 +64,7 @@ namespace QA.Core.Service.Interaction
                 {
                     modifier(service);
                 }
-                
+
                 var c1 = Thread.CurrentThread.CurrentCulture;
                 var c2 = Thread.CurrentThread.CurrentUICulture;
 

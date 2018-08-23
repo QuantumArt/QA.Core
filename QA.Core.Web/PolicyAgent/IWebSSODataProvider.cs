@@ -14,6 +14,7 @@ namespace QA.Core.Web
         /// </summary>
         /// <remarks>Передает cookie</remarks>
         /// <param name="context">Контекст запроса</param>
+        /// <param name="saveInSession"></param>
         /// <exception cref="System.Exception">ВСе типы исключений при работе с HttpWebRequest</exception>
         /// <returns></returns>
         WebSSOData GetUserData(HttpContextBase context, bool saveInSession);

@@ -4,6 +4,7 @@ using System;
 using System.Configuration;
 using System.Linq;
 using System.Web;
+#pragma warning disable 1591
 
 namespace QA.Core.Web
 {

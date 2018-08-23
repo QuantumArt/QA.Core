@@ -19,7 +19,7 @@ namespace QA.Core.Web
         /// <summary>
         /// Конструирует класс с контейнером объектов
         /// </summary>
-        /// <param name="_container">Unity-контейнер</param>
+        /// <param name="container">Unity-контейнер</param>
         public UnityFilterAttributeFilterProvider(IUnityContainer container)
         {
             _container = container;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Linq;
+#pragma warning disable 1591
 
 namespace QA.Core.PropertyAccess
 {
