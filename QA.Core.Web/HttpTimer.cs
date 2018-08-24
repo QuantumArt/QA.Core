@@ -34,6 +34,8 @@ namespace QA.Core.Web
                 if (_isStarted)
                     return;
 
+                _isStarted = true;
+
                 AddItem();
             }
         }
@@ -60,11 +62,11 @@ namespace QA.Core.Web
                 if (!_isStarted)
                     return;
 
+
+                _isStarted = false;
+
                 var cache = GetCache();
-                if (cache != null)
-                {
-                    cache.Remove(_key);
-                }
+                cache?.Remove(_key);
 
             }
         }

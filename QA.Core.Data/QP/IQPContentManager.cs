@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Quantumart.QPublishing.Info;
 
 namespace QA.Core.Data.QP
