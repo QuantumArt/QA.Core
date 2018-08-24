@@ -1,9 +1,6 @@
-﻿using System.Configuration;
-using System.ServiceModel;
-using System.Web;
-using QA.Core.Service.Interaction;
-using Quantumart.QPublishing.Info;
-using Quantumart.QPublishing.Database;
+﻿using QA.Core.Service.Interaction;
+
+#pragma warning disable 1591
 
 namespace QA.Core.Web.Qp
 {

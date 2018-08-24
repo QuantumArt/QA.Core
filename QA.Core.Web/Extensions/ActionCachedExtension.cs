@@ -18,7 +18,7 @@ namespace QA.Core.Web
         /// <summary>
         /// Создает и кеширует ссылку
         /// </summary>
-        /// <param name="_htmlHelper">Хелпер</param>
+        /// <param name="htmlHelper"></param>
         /// <param name="linkText">Текст ссылки</param>
         /// <param name="actionName">Наименование действия</param>
         /// <param name="controllerName">Наименование контроллера</param>
@@ -66,7 +66,7 @@ namespace QA.Core.Web
         /// <summary>
         /// Создает и кеширует ссылку
         /// </summary>
-        /// <param name="_htmlHelper">Хелпер</param>
+        /// <param name="htmlHelper"></param>
         /// <param name="linkText">Текст ссылки</param>
         /// <param name="actionName">Наименование действия</param>
         /// <param name="controllerName">Наименование контроллера</param>

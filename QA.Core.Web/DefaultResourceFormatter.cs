@@ -1,4 +1,6 @@
-﻿namespace QA.Core.Web
+﻿#pragma warning disable 1591
+
+namespace QA.Core.Web
 {
     /// <summary>
     /// Тривиальная ничего не делающая реализация IResourceFormatter. Значения ресурсов остаются неизменными.

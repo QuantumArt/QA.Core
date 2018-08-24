@@ -1,5 +1,7 @@
 using System.Web.Compilation;
 
+#pragma warning disable 1591
+
 namespace QA.Core.Web
 {
     public class QpCustomResourceProviderFactory : ResourceProviderFactory

@@ -2,6 +2,7 @@
 
 using System;
 using QA.Core.Service.Interaction;
+#pragma warning disable 1591
 
 namespace QA.Core.Service
 {

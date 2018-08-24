@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+#pragma warning disable 1591
 
 namespace QA.Core
 {
@@ -73,7 +74,7 @@ namespace QA.Core
         /// <param name="pattern">Pattern against which string is matched.</param>
         /// <param name="singleWildcard">Character which can be used to replace any single character in input string.</param>
         /// <param name="multipleWildcard">Character which can be used to replace zero or more characters in input string.</param>
-        /// <returns>true if <paramref name="pat"/> matches the string <paramref name="str"/>; otherwise false.</returns>
+        /// <returns>true if <paramref name="pattern"/> matches the string <paramref name="input"/>; otherwise false.</returns>
         static bool IsMatch(string input, string pattern, char singleWildcard = '?', char multipleWildcard = '*')
         {
             int[] inputPosStack = new int[(input.Length + 1) * (pattern.Length + 1)];   // Stack containing input positions that should be tested for further matching

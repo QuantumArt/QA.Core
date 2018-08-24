@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web;
 using QA.Core.Logger;
+#pragma warning disable 1591
 
 namespace QA.Core.Web
 {
@@ -33,6 +34,8 @@ namespace QA.Core.Web
                 if (_isStarted)
                     return;
 
+                _isStarted = true;
+
                 AddItem();
             }
         }
@@ -59,11 +62,11 @@ namespace QA.Core.Web
                 if (!_isStarted)
                     return;
 
+
+                _isStarted = false;
+
                 var cache = GetCache();
-                if (cache != null)
-                {
-                    cache.Remove(_key);
-                }
+                cache?.Remove(_key);
 
             }
         }

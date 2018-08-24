@@ -1,10 +1,8 @@
-﻿using System;
-using System.Configuration;
+﻿using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using Quantumart.QPublishing.Info;
 using Quantumart.QPublishing.Database;
-using Quantumart.QPublishing.Info;
 
 namespace QA.Core.Data.QP
 {
@@ -47,9 +45,9 @@ namespace QA.Core.Data.QP
         /// <param name="query">Запрос</param>
         /// <param name="totalRecords">Общее количество строк</param>
         /// <returns></returns>
-        public DataTable GetContentData(ContentDataQueryObject query, ref long totalRecords)
+        public DataTable GetContentData(ContentDataQueryObject query, out long totalRecords)
         {
-            return DbConnector.GetContentData(query, ref totalRecords);
+            return DbConnector.GetContentData(query, out totalRecords);
         }
 
         /// <summary>

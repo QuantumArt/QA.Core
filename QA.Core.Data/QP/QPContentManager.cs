@@ -5,7 +5,6 @@ using System.Data.SqlClient;
 using System.Linq;
 using Quantumart.QPublishing.Info;
 using Quantumart.QPublishing.Database;
-using Quantumart.QPublishing.Info;
 
 namespace QA.Core.Data.QP
 {
@@ -83,7 +82,7 @@ namespace QA.Core.Data.QP
             string connectionString)
         {
             Throws.IfArgumentNullOrEmpty(connectionString, _ => connectionString);
-            Query.Cnn = new DBConnector(connectionString);
+            Query.DbConnector = new DBConnector(connectionString);
 
             return this;
         }
@@ -350,7 +349,7 @@ namespace QA.Core.Data.QP
             long totalRecords = 0;
             var result = new ContentResult
             {
-                PrimaryContent = DbConnection.GetContentData(Query, ref totalRecords),
+                PrimaryContent = DbConnection.GetContentData(Query, out totalRecords),
                 Query = Query,
                 DbConnection = DbConnection
             };
@@ -474,7 +473,7 @@ namespace QA.Core.Data.QP
                             ContentItemStatus.Published.GetDescription(),
                             (byte)0, (byte)0, false, 0.0, false, false);
 
-                        var contentData = DbConnection.GetContentData(query, ref total);
+                        var contentData = DbConnection.GetContentData(query, out total);
                         var existsContentData = result.GetContent(contentName);
 
                         if (existsContentData != null)
@@ -497,7 +496,7 @@ namespace QA.Core.Data.QP
         {
             Throws.IfArgumentNull(DbConnection, _ => DbConnection);
             Throws.IfArgumentNull(ContentItem, _ => ContentItem);
-            Throws.IfArgumentNot(Query.Cnn != null, _ => Query.Cnn);
+            Throws.IfArgumentNot(Query.DbConnector != null, _ => Query.DbConnector);
             Throws.IfArgumentNull(Query.SiteName, _ => Query.SiteName);
             Throws.IfArgumentNull(Query.ContentName, _ => Query.ContentName);
         }
@@ -509,8 +508,7 @@ namespace QA.Core.Data.QP
         {
             ValidateQuery();
 
-            long totalRecords = 0;
-            var items = DbConnection.GetContentData(Query, ref totalRecords);
+            var items = DbConnection.GetContentData(Query, out var totalRecords);
             foreach (DataRow row in items.Rows)
             {
                 var item = ContentItem.Read(
@@ -528,8 +526,7 @@ namespace QA.Core.Data.QP
         {
             ValidateQuery();
 
-            long totalRecords = 0;
-            var items = DbConnection.GetContentData(Query, ref totalRecords);
+            var items = DbConnection.GetContentData(Query, out var totalRecords);
             foreach (DataRow row in items.Rows)
             {
                 var item = ContentItem.Read(
@@ -547,8 +544,7 @@ namespace QA.Core.Data.QP
         {
             ValidateQuery();
 
-            long totalRecords = 0;
-            var items = DbConnection.GetContentData(Query, ref totalRecords);
+            var items = DbConnection.GetContentData(Query, out var totalRecords);
             foreach (DataRow row in items.Rows)
             {
                 var item = ContentItem.Read(
@@ -558,12 +554,15 @@ namespace QA.Core.Data.QP
             }
         }
 
+        /// <summary>
+        /// ChangeStatus
+        /// </summary>
+        /// <param name="status"></param>
         public void ChangeStatus(ContentItemStatus status)
         {
             ValidateQuery();
 
-            long totalRecords = 0;
-            var items = DbConnection.GetContentData(Query, ref totalRecords);
+            var items = DbConnection.GetContentData(Query, out var totalRecords);
             foreach (DataRow row in items.Rows)
             {
                 var item = ContentItem.Read(

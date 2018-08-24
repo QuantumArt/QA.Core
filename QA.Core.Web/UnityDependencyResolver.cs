@@ -21,6 +21,7 @@ namespace QA.Core.Web
         /// Создание экземпляра класса
         /// </summary>
         /// <param name="container">Текущий контейнер</param>
+        /// <param name="logger"></param>
         public UnityDependencyResolver(IUnityContainer container, ILogger logger)
         {
             _container = container;
@@ -39,11 +40,12 @@ namespace QA.Core.Web
             {
                 return _container.Resolve(serviceType);
             }
-            catch
+            catch (Exception ex)
             {
-                _logger.Debug(string.Format("An error was occured when resolving type {0} in UnityDependencyResolver", serviceType));
+                _logger.ErrorException(
+                    $"An error was occured when resolving type {serviceType} in UnityDependencyResolver", ex);
                 return null;
-            }            
+            }
         }
 
         /// <summary>

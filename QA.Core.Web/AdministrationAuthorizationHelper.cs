@@ -11,7 +11,6 @@ namespace QA.Core.Web
         /// <summary>
         ///  Проверяет, авторизован ли пользователь
         /// </summary>
-        /// <param name="httpContext"></param>
         /// <returns></returns>
         public static bool IsAuthorize()
         {

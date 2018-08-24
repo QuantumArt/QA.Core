@@ -1,4 +1,5 @@
 using System.ComponentModel;
+#pragma warning disable 1591
 
 namespace QA.Core.Web.Qp
 {

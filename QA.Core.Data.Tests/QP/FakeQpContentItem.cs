@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Data;
-using System.Data.SqlClient;
 using QA.Core.Data.QP;
-using Quantumart.QPublishing.Info;
 using Quantumart.QPublishing.Info;
 
 namespace QA.Core.Data.Tests.QP

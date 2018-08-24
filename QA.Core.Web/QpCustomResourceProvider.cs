@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Resources;
 using System.Web;
 using System.Web.Compilation;
+#pragma warning disable 1591
 
 namespace QA.Core.Web
 {
@@ -11,7 +12,6 @@ namespace QA.Core.Web
     {
         private string _virtualPath;
         private string _className;
-        private ResourceManager _resourceManager = null;
 
         public QpCustomResourceProvider(string virtualPath, string classname)
         {

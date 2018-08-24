@@ -9,6 +9,8 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
 
+#pragma warning disable 1591
+
 namespace QA.Core.Web
 {
     /// <summary>
@@ -58,10 +60,11 @@ namespace QA.Core.Web
         /// </summary>
         /// <typeparam name="TModel"></typeparam>
         /// <typeparam name="TProperty"></typeparam>
-        /// <param name="_htmlHelper"></param>
+        /// <param name="htmlHelper"></param>
         /// <param name="expression"></param>
         /// <param name="value">значение</param>
         /// <param name="htmlAttributes"></param>
+        /// <param name="labelWrapperFormat"></param>
         /// <returns></returns>
         public static MvcHtmlString RadioButtonForSingleEnum<TModel, TProperty>(
             this HtmlHelper<TModel> htmlHelper,
@@ -151,7 +154,7 @@ namespace QA.Core.Web
             if (!elementWrapperFormat.Contains('{') && !elementWrapperFormat.Contains('}') && !elementWrapperFormat.Contains('<') && !elementWrapperFormat.Contains('>'))
             {
                 var tb = new TagBuilder(elementWrapperFormat);
-                
+
                 tb.AddCssClass(className ?? string.Empty);
 
                 tb.InnerHtml =  source.ToString();

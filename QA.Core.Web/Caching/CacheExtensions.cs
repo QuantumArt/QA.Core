@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Caching;
+#pragma warning disable 1591
 
 namespace QA.Core.Web
 {
-    using System.Data.SqlClient;
     using Cache = System.Web.Caching.Cache;
 
     /// <summary>
@@ -23,6 +20,7 @@ namespace QA.Core.Web
         /// <param name="key">ключ</param>
         /// <param name="lock">объект синхронизации</param>
         /// <param name="factory">получени объекта из источника данных</param>
+        /// <param name="absoluteExpiration"></param>
         /// <param name="tags">версионные теги</param>
         /// <returns></returns>
         public static T Get<T>(this Cache cache, string key,

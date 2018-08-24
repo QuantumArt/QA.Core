@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+#pragma warning disable 1591
 
 namespace QA.Core
 {
@@ -56,6 +57,7 @@ namespace QA.Core
         /// </summary>
         /// <param name="source">Исходная коллекция.</param>
         /// <param name="selector">Селектор для извлечения поленй, по которым производится сравнение.</param>
+        /// <param name="grouppingSelector"></param>
         /// <param name="distinct">Указать <b>true</b> Чтобы вернуть только уникальные.</param>
         /// <returns>Список элементов с повторами.</returns>
         /// <remarks>Метод-расширение IEnumerable&lt;T&gt;</remarks>

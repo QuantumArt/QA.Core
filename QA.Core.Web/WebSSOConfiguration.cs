@@ -1,6 +1,7 @@
 ﻿// Owners: Alexey Abretov, Nikolay Karlov
 
 using System.Configuration;
+#pragma warning disable 1591
 
 namespace QA.Core.Web
 {
@@ -8,7 +9,7 @@ namespace QA.Core.Web
     /// Набор параметров голосовой почты
     /// </summary>
     public class WebSSOConfiguration
-    {      
+    {
         #region WebSSO
 
         /// <summary>
@@ -86,9 +87,9 @@ namespace QA.Core.Web
         #endregion
 
         #region WebSSO ClientConfiguration
-        
+
         public static string ClientMethod {
-            get 
+            get
             {
                 string val = ConfigurationManager.AppSettings["WebSSO.ClientMethod"];
                 return val ?? "GET";
@@ -135,7 +136,7 @@ namespace QA.Core.Web
 
                 return result;
             }
-        } 
+        }
 
         public static int ClientTimeout
         {
@@ -150,7 +151,7 @@ namespace QA.Core.Web
 
                 return 1000;
             }
-        } 
+        }
         #endregion
     }
 }

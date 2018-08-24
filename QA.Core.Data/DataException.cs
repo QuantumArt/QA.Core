@@ -1,5 +1,6 @@
 ﻿// Owners: Karlov Nikolay, Abretov Alexey
 using System;
+#pragma warning disable 1591
 
 namespace QA.Core.Data
 {
@@ -19,7 +20,7 @@ namespace QA.Core.Data
         {
         }
 
-        public static void Throw(string message) 
+        public static void Throw(string message)
         {
             throw new DataException(message, null);
         }

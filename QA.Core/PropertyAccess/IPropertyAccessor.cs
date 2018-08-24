@@ -1,4 +1,5 @@
-﻿using System;
+﻿#pragma warning disable 1591
+
 namespace QA.Core
 {
     /// <summary>
@@ -7,18 +8,6 @@ namespace QA.Core
     /// </summary>
     public interface IPropertyAccessor : IPropertyAccessor<object>
     {
-        /// <summary>
-        /// Получение значения свойства объекта
-        /// </summary>
-        /// <param name="obj">Объект, к свойству которого предоставляется доступ</param>
-        /// <returns></returns>
-        object GetValue(object obj);
 
-        /// <summary>
-        /// Устаногвка значения свойства объекта
-        /// </summary>
-        /// <param name="obj">Объект, к свойству которого предоставляется доступ</param>
-        /// <param name="value">Устанавливаемое значение</param>
-        void SetValue(object obj, object value);
     }
 }

@@ -1,11 +1,9 @@
 ﻿// Owners: Alexey Abretov, Nikolay Karlov
 
-using System.Collections.Generic;
-using System.Configuration;
 using System.Globalization;
 using System.Web.Mvc;
-using System.Linq;
 using Unity;
+#pragma warning disable 1591
 
 namespace QA.Core.Web
 {
@@ -29,6 +27,7 @@ namespace QA.Core.Web
         /// <summary>
         /// Возвращает значение глобального ресурса данного класса
         /// </summary>
+        /// <param name="htmlHelper"></param>
         /// <param name="classKey">Название класса</param>
         /// <param name="resourceKey">Ключ ресурса</param>
         /// <returns></returns>
@@ -64,7 +63,7 @@ namespace QA.Core.Web
                 var formatter = ObjectFactoryBase.DefaultContainer.Resolve<IResourceFormatter>();
                 return formatter.Modify(resource);
             }
-            
+
             return resource;
         }
     }

@@ -3,6 +3,8 @@
 using System;
 using System.Collections.Concurrent;
 using System.Runtime.Caching;
+#pragma warning disable 1591
+
 
 namespace QA.Core
 {
@@ -216,10 +218,9 @@ namespace QA.Core
         }
 
         /// <summary>
-        /// Автовосстановление устаревшего объекта. 
-        /// Объект восстанавливается на короткое время для использования в других потоках, пока в одном из потоке происходит обновление его значения. 
+        /// Автовосстановление устаревшего объекта.
+        /// Объект восстанавливается на короткое время для использования в других потоках, пока в одном из потоке происходит обновление его значения.
         /// </summary>
-        /// <param name="arguments"></param>
         private static void CacheItemRemovedCallBack(CacheEntryRemovedArguments args)
         {
             if (args.CacheItem != null)

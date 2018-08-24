@@ -1,6 +1,4 @@
-﻿using System;
-using Quantumart.QPublishing.Info;
-using Quantumart.QPublishing.Info;
+﻿using Quantumart.QPublishing.Info;
 
 namespace QA.Core.Data.QP
 {

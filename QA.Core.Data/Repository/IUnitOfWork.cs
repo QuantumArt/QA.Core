@@ -1,5 +1,5 @@
 ﻿// Owners: Alexey Abretov, Nikolay Karlov
-using System;
+
 using System.Data;
 
 namespace QA.Core.Data.Repository

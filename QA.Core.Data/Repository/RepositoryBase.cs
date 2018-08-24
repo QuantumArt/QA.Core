@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Transactions;
+#pragma warning disable 1591
+
 
 namespace QA.Core.Data.Repository
 {
@@ -82,11 +84,11 @@ namespace QA.Core.Data.Repository
         /// <summary>
         /// Добавляет в запрос постраничную выборку
         /// </summary>
-        /// <typeparam name="T">Тип запроса</typeparam>
+        /// <typeparam name="TQ">Тип запроса</typeparam>
         /// <param name="query">Запрос</param>
         /// <param name="beginIndex">Начальная позиция</param>
         /// <param name="pageSize">Размер страницы</param>
-        protected virtual void ApplyPaging<T>(ref IQueryable<T> query, int? beginIndex, int? pageSize)
+        protected virtual void ApplyPaging<TQ>(ref IQueryable<TQ> query, int? beginIndex, int? pageSize)
         {
             if (beginIndex != null & pageSize != null)
             {
@@ -95,7 +97,7 @@ namespace QA.Core.Data.Repository
             }
         }
 
-        protected virtual T ReadWithNoLock<T>(Func<T> func)
+        protected virtual TT ReadWithNoLock<TT>(Func<TT> func)
         {
             using (var txn = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions { IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted }))
             {

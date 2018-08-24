@@ -11,6 +11,7 @@ using System.Web.Caching;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using QA.Core.Web;
+#pragma warning disable 1591
 
 namespace QA.Core.Web
 {
@@ -250,7 +251,7 @@ namespace QA.Core.Web
             DonutCacheItem donutItem = CurrentDonutItem.Value;
             if (donutItem != null)
             {
-                // если элемент был найден в кеше, 
+                // если элемент был найден в кеше,
                 // берем его автозамены
                 return donutItem.Replacements;
             }

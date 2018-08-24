@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using NLog;
 using NLog.Config;
+#pragma warning disable 1591
 
 namespace QA.Core.Logger
 {
@@ -82,7 +83,7 @@ namespace QA.Core.Logger
         /// Инициализация экземпляра <see cref="NLogLogger"/>
         /// </summary>
         private NLogLogger() { }
-        
+
         /// <summary>
         /// Журналирование сообщения об исключении c уровнем <see cref="F:EventLevel.Error"/>
         /// </summary>
@@ -102,7 +103,7 @@ namespace QA.Core.Logger
 
                 foreach (var ex in exception.Flat())
                 {
-                    CurrentLogger.ErrorException(ex.Message, ex);
+                    CurrentLogger.Error(ex, ex.Message);
                 }
             }
             catch (Exception logEx)
@@ -351,7 +352,7 @@ namespace QA.Core.Logger
 
                 foreach (var ex in exception.Flat())
                 {
-                    CurrentLogger.FatalException(ex.Message, ex);
+                    CurrentLogger.Fatal(ex, ex.Message);
                 }
             }
             catch
@@ -478,7 +479,7 @@ namespace QA.Core.Logger
                 return;
 
 	        LogEventInfo theEvent;
-			
+
 			try
 	        {
 				theEvent = new LogEventInfo(logLevel, logger.Name, message());

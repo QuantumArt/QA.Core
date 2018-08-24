@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Web;
 using System.Web.Caching;
 using System.Web.Hosting;
+#pragma warning disable 1591
 
 namespace QA.Core.Web
 {
@@ -119,7 +120,7 @@ namespace QA.Core.Web
 
                 return resourceStream;
             }
-        } 
+        }
         #endregion
     }
 }

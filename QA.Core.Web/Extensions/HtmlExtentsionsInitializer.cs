@@ -3,6 +3,8 @@ using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using System.Web.WebPages;
 using QA.Core.Web.Extensions;
+#pragma warning disable 1591
+
 
 namespace QA.Core.Web
 {
@@ -17,11 +19,7 @@ namespace QA.Core.Web
         {
             return new OverlayExtention(htmlHelper);
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="html"></param>
-        /// <returns></returns>
+
         public static HtmlHelper GetPageHelper(this System.Web.WebPages.Html.HtmlHelper html)
         {
             return ((System.Web.Mvc.WebViewPage)WebPageContext.Current.Page).Html;

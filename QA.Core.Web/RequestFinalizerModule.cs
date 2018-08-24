@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Web;
+#pragma warning disable 1591
 
 namespace QA.Core.Web
 {
@@ -7,7 +8,7 @@ namespace QA.Core.Web
     /// Очистка ресурсов запроса. Применяется в элементам коллекции HttpContext.Items, которые реализуют IDisposable
     /// </summary>
     public class RequestFinalizerModule : IHttpModule
-    {       
+    {
         #region IHttpModule Members
 
         void IHttpModule.Dispose()
@@ -19,8 +20,8 @@ namespace QA.Core.Web
             context.EndRequest += new EventHandler(OnEndRequest);
         }
 
-        #endregion        
-       
+        #endregion
+
         protected virtual void OnEndRequest(Object source, EventArgs e)
         {
             var context = ((HttpApplication)source).Context;

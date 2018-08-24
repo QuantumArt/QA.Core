@@ -15,7 +15,7 @@ namespace QA.Core.Tests
         {
             Logger = new TextWriterLogger(Console.Out);
         }
-        
+
         [TestMethod]
         public void ObjectDumper_Samples()
         {
@@ -39,7 +39,7 @@ namespace QA.Core.Tests
             Logger.Info(str1);
             Logger.Info(str2);
 
-            
+
         }
 
         [TestMethod]
@@ -50,7 +50,7 @@ namespace QA.Core.Tests
             IEnumerable<string> items = new string[] { "apple", "onion" };
 
             // вэтом случае значение будет вычисляться только в том случае, если включен уровень журналирования Info
-            Logger.Info(_ => ObjectDumper.DumpObject(new
+            Logger.Info(() => ObjectDumper.DumpObject(new
             {
                 age,
                 name,

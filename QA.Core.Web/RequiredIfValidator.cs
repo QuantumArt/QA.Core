@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
+#pragma warning disable 1591
 
 namespace QA.Core.Web
 {

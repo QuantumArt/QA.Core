@@ -1,6 +1,4 @@
 ﻿// Owners: Karlov Nikolay, Abretov Alexey
-
-using QA.Core;
 using System;
 using System.Linq;
 using System.Net;
@@ -8,6 +6,8 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.SessionState;
 using QA.Core.Logger;
+#pragma warning disable 1591
+
 
 namespace QA.Core.Web
 {
@@ -30,6 +30,7 @@ namespace QA.Core.Web
         /// </summary>
         /// <remarks>Передает cookie</remarks>
         /// <param name="context">Контекст запроса</param>
+        /// <param name="saveInSession"></param>
         /// <exception cref="System.Exception">ВСе типы исключений при работе с HttpWebRequest</exception>
         /// <returns></returns>
         public WebSSOData GetUserData(HttpContextBase context, bool saveInSession)
@@ -61,7 +62,7 @@ namespace QA.Core.Web
 
                     // добавляем querystring
                     url = urlHelper.ContentAbsolute(string.Format(WebSSOConfiguration.AddressToHandler, requestId, DateTime.Now.ToBinary()));
-                    
+
                     originalUrl = context.Request.Url.ToString();
 
                     var client = (HttpWebRequest)WebRequest.Create(url);
@@ -107,7 +108,7 @@ namespace QA.Core.Web
 
                     if (session != null)
                     {
-                        Logger.Value.Info(m => requestId + "WebSSO получен из хендлера: " +
+                        Logger.Value.Info(() => requestId + "WebSSO получен из хендлера: " +
                             session.SessionID + "данные: " +
                             ObjectDumper.DumpObject(result) + " " +
                             originalUrl + " " + url);
@@ -118,7 +119,7 @@ namespace QA.Core.Web
                 }
                 else
                 {
-                    Logger.Value.Info(m => requestId +  " WebSSO получен из сессии: " + session.SessionID + "данные: " + ObjectDumper.DumpObject(result));
+                    Logger.Value.Info(() => requestId +  " WebSSO получен из сессии: " + session.SessionID + "данные: " + ObjectDumper.DumpObject(result));
                 }
 
                 if (cookies != null)

@@ -1,11 +1,13 @@
 ﻿// Owners: Alexey Abretov, Nikolay Karlov
 using System;
 using System.Collections.Generic;
+#pragma warning disable 1591
+
 
 namespace QA.Core.Data.Repository
 {
     /// <summary>
-    ////Контракт репозитория
+    /// Контракт репозитория
     /// </summary>
     /// <typeparam name="T">Тип сущности</typeparam>
     /// <typeparam name="TId">Тип ключа</typeparam>
@@ -33,13 +35,11 @@ namespace QA.Core.Data.Repository
         /// <summary>
         /// Создание новой сущности в БД
         /// </summary>
-        /// </exception>
         T Create(T entity);
 
         /// <summary>
         /// Удаление сущности по идентификатору
         /// </summary>
-        /// </exception>
         void Delete(TId id);
     }
 }

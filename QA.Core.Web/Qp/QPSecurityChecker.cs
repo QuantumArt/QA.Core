@@ -7,6 +7,9 @@ using QA.Core.Service.Interaction;
 using Quantumart.QPublishing.Database;
 using Quantumart.QPublishing.OnScreen;
 
+#pragma warning disable 1591
+
+
 namespace QA.Core.Web.Qp
 {
     /// <summary>
@@ -57,11 +60,11 @@ namespace QA.Core.Web.Qp
                 var csSettings = ConfigurationManager.ConnectionStrings[
                         CurrentServiceToken.ConnectionName];
 
-                
+
                 var dBConnector = new DBConnector( csSettings != null ? csSettings.ConnectionString : CurrentServiceToken.ConnectionName );
 
 
-                int userId = QScreen.AuthenticateForCustomTab(dBConnector);
+                int userId = new QScreen(dBConnector).AuthenticateForCustomTab();
 
                 bool result = userId > 0; // CheckCustomTabAuthentication(dBConnector);
 

@@ -8,6 +8,8 @@ using System.Linq;
 using System.Threading;
 using QA.Core.Cache;
 using System.Transactions;
+#pragma warning disable 1591
+
 
 namespace QA.Core.Data
 {
@@ -34,7 +36,7 @@ namespace QA.Core.Data
         private readonly Func<Tuple<int[], string[]>, bool> _onInvalidate;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="mode">режим работы</param>
         /// <param name="invalidator">объект, инвалидирующий кеш</param>
@@ -43,18 +45,20 @@ namespace QA.Core.Data
             : this(mode, Timeout.InfiniteTimeSpan, invalidator, connectionName, 0, false)
         {
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="mode">режим работы</param>
-        /// <param name="pollPeriod">интервал опроса бд</param>
-        /// <param name="invalidator">объект, инвалидирующий кеш</param>
-        /// <param name="connectionName">имя строки подключения</param>
-        /// <param name="dueTime">отложенный запуск (ms)</param>
+
+        ///  <summary>
+        ///
+        ///  </summary>
+        ///  <param name="mode">режим работы</param>
+        ///  <param name="pollPeriod">интервал опроса бд</param>
+        ///  <param name="invalidator">объект, инвалидирующий кеш</param>
+        ///  <param name="connectionName">имя строки подключения</param>
+        ///  <param name="dueTime">отложенный запуск (ms)</param>
+        /// <param name="useTimer"></param>
         /// <param name="onInvalidate">вызывается при удалении старых записей</param>
-        public QPCacheItemWatcher(InvalidationMode mode, TimeSpan pollPeriod, IContentInvalidator invalidator, 
-            string connectionName = "qp_database", 
-            int dueTime = 0, 
+        public QPCacheItemWatcher(InvalidationMode mode, TimeSpan pollPeriod, IContentInvalidator invalidator,
+            string connectionName = "qp_database",
+            int dueTime = 0,
             bool useTimer = true,
             Func<Tuple<int[], string[]>, bool> onInvalidate = null)
         {
@@ -78,7 +82,7 @@ namespace QA.Core.Data
             }
 
             Throws.IfArgumentNullOrEmpty(_connectionString, nameof(_connectionString));
-                     
+
             _trackers = new ConcurrentBag<CacheItemTracker>();
             _mode = mode;
             _invalidator = invalidator;
@@ -157,7 +161,7 @@ namespace QA.Core.Data
                     List<string> itemsTables = new List<string>();
                     if (_modifications != null && _modifications.Count > 0)
                     {
-                        
+
                         // check for updates
                         Compare(_modifications, newValues, itemsIds);
 
@@ -165,13 +169,13 @@ namespace QA.Core.Data
                         if (itemsIds.Count > 0)
                         {
                             _invalidator.InvalidateIds(_mode, itemsIds.ToArray());
-                            ObjectFactoryBase.Logger.Debug(_ => ("Invalidating a set of ids " + string.Join(", ", itemsIds)));
+                            ObjectFactoryBase.Logger.Debug(() => ("Invalidating a set of ids " + string.Join(", ", itemsIds)));
                         }
                     }
 
                     if (_tableModifications != null && _tableModifications.Count > 0)
                     {
-                        
+
                         // check for updates
                         Compare(_tableModifications, tableChanges, itemsTables);
 
@@ -179,7 +183,7 @@ namespace QA.Core.Data
                         if (itemsTables.Count > 0)
                         {
                             _invalidator.InvalidateTables(_mode, itemsTables.ToArray());
-                            ObjectFactoryBase.Logger.Debug(_ => ("Invalidating a set of tables " + string.Join(", ", itemsTables)));
+                            ObjectFactoryBase.Logger.Debug(() => ("Invalidating a set of tables " + string.Join(", ", itemsTables)));
                         }
                     }
 
@@ -217,7 +221,7 @@ namespace QA.Core.Data
         {
             // при возникновении исключения в базе, даже если его перехватить
             // родительская транзакция все равно откатывается, и дальнейшая работа с базой будет вызывать ошибки.
-            // чтобы этого не было, выполняем код вне родительской транзакции (TransactionScopeOption.Suppress). 
+            // чтобы этого не было, выполняем код вне родительской транзакции (TransactionScopeOption.Suppress).
             using (var tsSuppressed = new TransactionScope(TransactionScopeOption.Suppress))
             {
                 if (newValues == null) throw new ArgumentNullException(nameof(newValues));

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
+#pragma warning disable 1591
 
 namespace QA.Core.Linq
 {
@@ -14,6 +15,7 @@ namespace QA.Core.Linq
         /// Получение имени свойства по lambda-выражению
         /// </summary>
         /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
         /// <param name="expression"></param>
         /// <returns></returns>
         public static string GetPropertyName<T, TResult>(Expression<Func<T, TResult>> expression)

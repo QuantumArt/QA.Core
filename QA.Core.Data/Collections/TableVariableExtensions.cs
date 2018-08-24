@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using System.Data;
 using Microsoft.SqlServer.Server;
+#pragma warning disable 1591
 
 namespace QA.Core.Data.Collections
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public static class TableVariableExtensions
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public static IEnumerable<SqlDataRecord> CreateSqlDataRecords(this IEnumerable<int> ids)

@@ -6,7 +6,7 @@ namespace QA.Core.Service.Interaction
 {
     /// <summary>
     /// Абстрактный базовый класс, описывающий результат выполнения операции.
-    /// <remarks>При сериализации будет представлен классом ServiceResult<object></remarks>
+    /// <remarks>При сериализации будет представлен классом ServiceResul&lt;object&gt;</remarks>
     /// </summary>
     [DataContract]
     [KnownType("GetKnownTypes")]

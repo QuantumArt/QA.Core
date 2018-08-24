@@ -78,7 +78,9 @@ namespace QA.Core.Web
         /// <typeparam name="TEnum"></typeparam>
         /// <param name="htmlHelper"></param>
         /// <param name="expression"></param>
-        /// <param name="enumDescription"></param>
+        /// <param name="name"></param>
+        /// <param name="exclude"></param>
+        /// <param name="htmlAttributes"></param>
         /// <returns></returns>
         public static MvcHtmlString LocalizableEnumDropDownListFor<TModel, TEnum>(
             this HtmlHelper<TModel> htmlHelper,

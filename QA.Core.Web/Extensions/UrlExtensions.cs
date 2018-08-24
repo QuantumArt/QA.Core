@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using System.Web;
+#pragma warning disable 1591
 
 namespace QA.Core.Web
 {
@@ -71,7 +72,7 @@ namespace QA.Core.Web
         public static bool UseVersioning { get; set; }
 
         /// <summary>
-        /// Берем информацию из конфигурационного файла. 
+        /// Берем информацию из конфигурационного файла.
         /// <remarks></remarks>
         /// </summary>
         public static void Configure()
@@ -120,10 +121,10 @@ namespace QA.Core.Web
         #endregion
 
         /// <summary>
-        /// Преобразование имени файла контента. Например, '*.js' -> '*.min.js'. 
+        /// Преобразование имени файла контента. Например, '*.js' -> '*.min.js'.
         /// </summary>
-        /// <param name="forceMinify">Преобразовать имя принудительно</param>
         /// <param name="path"></param>
+        /// <param name="isDebug"></param>
         /// <returns></returns>
         private static string GetMinified(this string path, bool isDebug)
         {
@@ -136,7 +137,7 @@ namespace QA.Core.Web
             }
 
             string result = path;
-            
+
             if (ShouldMinify)
             {
                 if (!IgnoreScripts)
@@ -147,7 +148,7 @@ namespace QA.Core.Web
                 if (!IgnoreCSS)
                 {
                     result = _styleSheetPattern.Replace(result, x => string.Format(".min{0}", x.Value));
-                } 
+                }
             }
 
             return result;
@@ -156,6 +157,7 @@ namespace QA.Core.Web
         /// <summary>
         /// Конвертация относительного (виртуального) пути к контенту с преобразованием минифицирования
         /// </summary>
+        /// <param name="urlHelper"></param>
         /// <param name="path">The virtual path of the content</param>
         /// <returns></returns>
         public static string MinifiedContent(this UrlHelper urlHelper, string path)
@@ -207,7 +209,7 @@ namespace QA.Core.Web
         /// <summary>
         /// Получение абсолютного пути
         /// </summary>
-        /// <param name="url"></param>
+        /// <param name="request"></param>
         /// <returns></returns>
         public static Uri GetBaseUrl(HttpRequestBase request)
         {
@@ -230,7 +232,8 @@ namespace QA.Core.Web
         /// <summary>
         /// Получение абсолютного пути к контенту
         /// </summary>
-        /// <param name="url"></param>
+        /// <param name="urlHelper"></param>
+        /// <param name="path"></param>
         /// <returns></returns>
         public static string ContentAbsolute(this UrlHelper urlHelper, string path)
         {
@@ -240,7 +243,8 @@ namespace QA.Core.Web
         /// <summary>
         /// Получение абсолютного пути к контенту (с преобразоваением)
         /// </summary>
-        /// <param name="url"></param>
+        /// <param name="urlHelper"></param>
+        /// <param name="path"></param>
         /// <returns></returns>
         public static string ContentMinifiedAbsolute(this UrlHelper urlHelper, string path)
         {

@@ -1,40 +1,38 @@
 using System.Collections.Generic;
-using System.Linq;
 using Quantumart.QPublishing.Info;
 using Quantumart.QPublishing.Database;
-using Quantumart.QPublishing.Info;
 
 namespace QA.Core.Data.QP
 {
     /// <summary>
-    /// Контракт менеджера метаданных QP
+    /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ QP
     /// </summary>
     public interface IQPMetadataManager
     {
         /// <summary>
-        /// Возвращает список атрибутов контента
+        /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         /// </summary>
-        /// <param name="siteName">Имя сайта</param>
-        /// <param name="contentName">Имя контента</param>
+        /// <param name="siteName">пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ</param>
+        /// <param name="contentName">пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ</param>
         /// <returns></returns>
         List<ContentAttribute> GetContentAttributes(
             string siteName,
             string contentName);
 
         /// <summary>
-        /// Возвращает список атрибутов контента
+        /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         /// </summary>
-        /// <param name="contentId">Идентификатор контента</param>
+        /// <param name="contentId">пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ</param>
         /// <returns></returns>
         List<ContentAttribute> GetContentAttributes(
             int contentId);
 
         /// <summary>
-        /// Возвращает атрибут контента
+        /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         /// </summary>
-        /// <param name="siteName">Имя сайта</param>
-        /// <param name="contentName">Имя контента</param>
-        /// <param name="fieldName">Имя поля</param>
+        /// <param name="siteName">пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ</param>
+        /// <param name="contentName">пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ</param>
+        /// <param name="fieldName">пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ</param>
         /// <returns></returns>
         ContentAttribute GetContentAttribute(
             string siteName,
@@ -42,37 +40,37 @@ namespace QA.Core.Data.QP
             string fieldName);
 
         /// <summary>
-        /// Возвращает идентификатор контента
+        /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         /// </summary>
-        /// <param name="siteName">Имя сайта</param>
-        /// <param name="contentName">Имя контента</param>
+        /// <param name="siteName">пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ</param>
+        /// <param name="contentName">пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ</param>
         /// <returns></returns>
         int GetContentId(
             string siteName,
             string contentName);
 
         /// <summary>
-        /// Возвращает имя контента
+        /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         /// </summary>
-        /// <param name="contentId">Идентификатор контента</param>
+        /// <param name="contentId">пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ</param>
         /// <returns></returns>
         string GetContentName(
             int contentId);
 
         /// <summary>
-        /// Возвращает идентификатор сайта
+        /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
         /// </summary>
-        /// <param name="siteName">Название сайта</param>
+        /// <param name="siteName">пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ</param>
         /// <returns></returns>
         int GetSiteId(string siteName);
 
         /// <summary>
-        /// Подключение к QP
+        /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ QP
         /// </summary>
         DBConnector DbConnection { get; }
 
         /// <summary>
-        /// Строка подключения
+        /// пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         /// </summary>
         string ConnectionString { get; }
     }

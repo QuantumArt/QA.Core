@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Configuration;
 using System.Data.Linq.Mapping;
 using System.IO;
 using System.Web;
+#pragma warning disable 1591
+
 
 namespace QA.Core.Data.Resolvers
 {
@@ -12,7 +13,7 @@ namespace QA.Core.Data.Resolvers
     public class FileXmlMappingResolver : ResolverBase
     {
         /// <summary>
-        ////Маппинг Stage
+        /// Маппинг Stage
         /// </summary>
         protected XmlMappingSource _mappingStageSource;
 

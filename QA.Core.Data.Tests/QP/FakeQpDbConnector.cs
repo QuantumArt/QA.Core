@@ -3,13 +3,12 @@ using System.Data;
 using System.Data.SqlClient;
 using QA.Core.Data.QP;
 using Quantumart.QPublishing.Info;
-using Quantumart.QPublishing.Info;
 
 namespace QA.Core.Data.Tests.QP
 {
     public class FakeQpDbConnector : IQpDbConnector
     {
-        public DataTable GetContentData(ContentDataQueryObject query, ref long totalRecords)
+        public DataTable GetContentData(ContentDataQueryObject query, out long totalRecords)
         {
             throw new NotImplementedException();
         }

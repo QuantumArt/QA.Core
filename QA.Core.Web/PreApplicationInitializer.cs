@@ -1,4 +1,5 @@
 ﻿using Microsoft.Web.Infrastructure.DynamicModuleHelper;
+#pragma warning disable 1591
 
 namespace QA.Core.Web.Properties
 {
@@ -9,7 +10,7 @@ namespace QA.Core.Web.Properties
     {
         public static void Start()
         {
-            // регистрируем модуль, вызывающий dispose у всех IDisposable 
+            // регистрируем модуль, вызывающий dispose у всех IDisposable
             DynamicModuleUtility.RegisterModule(typeof(RequestFinalizerModule));
         }
     }

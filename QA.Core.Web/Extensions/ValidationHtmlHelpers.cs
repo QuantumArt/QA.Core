@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 using System.Web.Mvc;
+#pragma warning disable 1591
 
 namespace QA.Core.Web
 {
@@ -14,14 +15,18 @@ namespace QA.Core.Web
     public static class ValidationHtmlHelpers
     {
         public const string TempDataViewDataKey = "TempDataViewDataKey";
+
         /// <summary>
         /// Создает элемент для отображения сообщений о валидации.
         /// Сами сообщения не добавляются (если не указан innerHtml)
         /// </summary>
-        /// <param name="elementTagName">название тега</param>
         /// <param name="htmlAttributes">html-аттрибуты</param>
+        /// <param name="className"></param>
         /// <param name="innerHtml">текст или Html-разметка внутри блока</param>
         /// <param name="validationAttribute">название html-аттрибута, который будет выставляться у блока</param>
+        /// <param name="htmlHelper"></param>
+        /// <param name="expression"></param>
+        /// <param name="tagName"></param>
         /// <returns></returns>
         public static MvcHtmlString ValidationBlockFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper,
             Expression<Func<TModel, TProperty>> expression,
@@ -52,11 +57,12 @@ namespace QA.Core.Web
         /// </summary>
         /// <param name="className">html-класс/классы</param>
         /// <param name="alternativeText">альтернативный текст. Если null или пусто, то сообщение берется из ModelState</param>
+        /// <param name="expression"></param>
         /// <param name="elementTagName">название тега</param>
         /// <param name="hideOnValidFields">скрывать ли элемент при отсутсвии ошибок и/или сообщений</param>
         /// <param name="htmlAttributes">html-аттрибуты</param>
-        /// <param name="innerHtml">текст или Html-разметка внутри блока</param>
         /// <param name="validationAttribute">название html-аттрибута, который будет выставляться у блока</param>
+        /// <param name="htmlHelper"></param>
         /// <returns></returns>
         public static MvcHtmlString ValidationFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper,
             Expression<Func<TModel, TProperty>> expression,
@@ -110,7 +116,7 @@ namespace QA.Core.Web
         /// <summary>
         /// Проверяет верно ли заполнено свойство модели
         /// </summary>
-        /// <param name="_htmlHelper"></param>
+        /// <param name="htmlHelper"></param>
         /// <param name="expression"></param>
         /// <returns></returns>
         public static bool IsValid<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper,
@@ -189,7 +195,7 @@ namespace QA.Core.Web
             tb.Attributes[validationAttribute] = propertyPath;
 
             return MvcHtmlString.Create(tb.ToString(TagRenderMode.Normal));
-        } 
+        }
         #endregion
     }
 }
