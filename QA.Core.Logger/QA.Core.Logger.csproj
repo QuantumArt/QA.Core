@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net471</TargetFramework>
+    <Version>3.5.0-beta1</Version>
+    <Authors>Nickolay Karlov</Authors>
+    <Company>Quantum Art</Company>
+    <Product>QA.Core</Product>
+    <Description>QA.Core.Logger for DPC</Description>
+    <Copyright>Copyright © 2007-2018 Quantum Art</Copyright>
+    <PackageReleaseNotes>Update to .net standard.</PackageReleaseNotes>
+    <PackageLicenseUrl>https://github.com/QuantumArt/QA.Core/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/QuantumArt/QA.Core</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/QuantumArt/QA.Core</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>Core DPC Logger</PackageTags>
+    <AssemblyVersion>3.5.0.0</AssemblyVersion>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+  <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="log4net" Version="2.0.8" PrivateAssets="None" />
+      <PackageReference Include="NLog" Version="4.5.10" PrivateAssets="None" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\QA.Core.Throws\QA.Core.Throws.csproj" PrivateAssets="None" />
+    </ItemGroup>
+
+</Project>

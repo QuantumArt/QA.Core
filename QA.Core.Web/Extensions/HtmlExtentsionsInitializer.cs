@@ -1,6 +1,6 @@
 ﻿using System.Web;
 using System.Web.Mvc;
-using System.Web.Script.Serialization;
+using Newtonsoft.Json;
 using System.Web.WebPages;
 using QA.Core.Web.Extensions;
 #pragma warning disable 1591
@@ -36,7 +36,7 @@ namespace QA.Core.Web
 
             if (model != null)
             {
-                result = new JavaScriptSerializer().Serialize(model);
+                result = JsonConvert.SerializeObject(model);
 
                 if (encode && result != null)
                 {

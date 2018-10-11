@@ -1,5 +1,5 @@
 ﻿using System.Text;
-using System.Web.Script.Serialization;
+using Newtonsoft.Json;
 #pragma warning disable 1591
 
 namespace System.Web.Mvc
@@ -29,8 +29,7 @@ namespace System.Web.Mvc
                 var cfn = CallbackFunctionParamName ?? "callback";
                 HttpRequestBase request = context.HttpContext.Request;
                 var callback = (CallbackFunction ?? request.Params[cfn]) ?? "callback";
-                var serializer = new JavaScriptSerializer();
-                response.Write(string.Format("{0}({1});", callback, (Data != null ? serializer.Serialize(Data) : "null")));
+                response.Write(string.Format("{0}({1});", callback, (Data != null ? JsonConvert.SerializeObject(Data) : "null")));
             }
         }
     }
