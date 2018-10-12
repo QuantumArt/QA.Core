@@ -17,6 +17,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="netstandard" />
+    <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\QA.Core.Web\QA.Core.Web.csproj" PrivateAssets="None" />
