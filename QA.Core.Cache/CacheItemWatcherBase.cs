@@ -11,7 +11,7 @@ using QA.Core.Logger;
 
 namespace QA.Core.Cache
 {
-    public class CacheItemWatcherBase
+    public class CacheItemWatcherBase : ICacheItemWatcher
     {
         private readonly object Locker = new object();
         private bool _disposing;
