@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net471</TargetFramework>
-    <Version>3.5.0-beta3</Version>
+    <Version>3.5.0-beta4</Version>
     <Authors>Nickolay Karlov</Authors>
     <Company>Quantum Art</Company>
     <Product>QA.Core</Product>
@@ -26,7 +26,7 @@
     <Reference Include="netstandard" />
     <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Web" />
-    <Reference Include="System.ServiceModel" />    
+    <Reference Include="System.ServiceModel" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\QA.Core.Service.Interaction\QA.Core.Service.Interaction.csproj" PrivateAssets="None" />
