@@ -21,7 +21,7 @@ namespace QA.Core.Data.QP
         /// </summary>
         public QpDbConnector()
         {
-            DbConnector = new DBConnector();
+            DbConnector = new DBConnector(null);
         }
 
         /// <summary>
@@ -35,6 +35,8 @@ namespace QA.Core.Data.QP
             {
                 connectionString = connectionStringFromConfig.ConnectionString;
             }
+
+            Throws.IfArgumentNull(connectionString, nameof(connectionString));
 
             DbConnector = new DBConnector(connectionString);
         }

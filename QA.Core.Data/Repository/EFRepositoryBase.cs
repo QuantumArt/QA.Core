@@ -1,7 +1,7 @@
 ﻿// Owners: Alexey Abretov, Nikolay Karlov
 using System;
 using System.Collections.Generic;
-using System.Data.Objects;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 
 namespace QA.Core.Data.Repository

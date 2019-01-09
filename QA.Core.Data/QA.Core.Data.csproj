@@ -1,164 +1,38 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7AF052FF-C40A-45C7-ADFE-BC0FFF0B59FD}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>QA.Core.Data</RootNamespace>
-    <AssemblyName>QA.Core.Data</AssemblyName>
-    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
-    <TargetFrameworkProfile />
+    <TargetFramework>net471</TargetFramework>
+    <Version>3.5.0</Version>
+    <Authors>Nickolay Karlov</Authors>
+    <Company>Quantum Art</Company>
+    <Product>QA.Core</Product>
+    <Description>QA.Core.Data for DPC</Description>
+    <Copyright>Copyright © 2007-2018 Quantum Art</Copyright>
+    <PackageReleaseNotes>Update to .net standard.</PackageReleaseNotes>
+    <PackageLicenseUrl>https://github.com/QuantumArt/QA.Core/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/QuantumArt/QA.Core</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/QuantumArt/QA.Core</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>Core DPC Data</PackageTags>
+    <AssemblyVersion>3.5.0.0</AssemblyVersion>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <DocumentationFile>bin\Debug\QA.Core.Data.XML</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\QA.Core.Data.XML</DocumentationFile>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Bee_test|AnyCPU'">
-    <OutputPath>bin\Bee_test\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>bin\Release\QA.Core.Data.XML</DocumentationFile>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Client3|AnyCPU'">
-    <OutputPath>bin\Client3\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>bin\Release\QA.Core.Data.XML</DocumentationFile>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Client1|AnyCPU'">
-    <OutputPath>bin\Client1\</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Client2|AnyCPU'">
-    <OutputPath>bin\Client2\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>bin\Release\QA.Core.Data.XML</DocumentationFile>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Client1_Prod|AnyCPU'">
-    <OutputPath>bin\Client1_Prod\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="netstandard" />
-    <Reference Include="Quantumart, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\Quantumart.3.2.2\lib\net471\Quantumart.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Quantumart.QP8.Assembling, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\Quantumart.3.2.2\lib\net471\Quantumart.QP8.Assembling.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Web.Mobile" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Collections\TableIdCollection.cs" />
-    <Compile Include="Collections\TableVariableExtensions.cs" />
-    <Compile Include="ITableParameter.cs" />
-    <Compile Include="IXmlMappingResolver.cs" />
-    <Compile Include="DataException.cs" />
-    <Compile Include="QP\ContentItemStatus.cs" />
-    <Compile Include="QP\ContentResult.cs" />
-    <Compile Include="QP\QpContentItem.cs" />
-    <Compile Include="QP\IQpContentItem.cs" />
-    <Compile Include="QP\IQpDbConnector.cs" />
-    <Compile Include="QP\IQPMetadataManager.cs" />
-    <Compile Include="QP\QpDbConnector.cs" />
-    <Compile Include="QP\QPMetadataManager.cs" />
-    <Compile Include="Repository\ConnectionManager.cs" />
-    <Compile Include="Repository\EF5RepositoryBase.cs" />
-    <Compile Include="Repository\EF5UnitOfWorkBase.cs" />
-    <Compile Include="Repository\EFRepositoryBase.cs" />
-    <Compile Include="QP\QPContentManager.cs" />
-    <Compile Include="QP\IQPContentManager.cs" />
-    <Compile Include="Repository\IRepository.cs" />
-    <Compile Include="Repository\IUnitOfWork.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repository\L2SqlUnitOfWorkBase.cs" />
-    <Compile Include="Repository\RepositoryBase.cs" />
-    <Compile Include="Repository\L2SqlRepositoryBase.cs" />
-    <Compile Include="Repository\UnitOfWork%271.cs" />
-    <Compile Include="Repository\EFUnitOfWorkBase.cs" />
-    <Compile Include="Resolvers\FileXmlMappingResolver.cs" />
-    <Compile Include="Resolvers\ManifestXmlMappingResolver.cs" />
-    <Compile Include="Resolvers\ResolverBase.cs" />
+    <ProjectReference Include="..\QA.Core\QA.Core.csproj" PrivateAssets="None" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
-    <None Include="QA.Core.Data.nuspec" />
+    <PackageReference Include="EntityFramework" Version="6.2.0" PrivateAssets="None" />
+    <PackageReference Include="Quantumart.AspNetCore" Version="3.3.0-beta2" PrivateAssets="None" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\QA.Core\QA.Core.csproj">
-      <Project>{21895C57-CB09-4AF4-906A-71ED4599FE65}</Project>
-      <Name>QA.Core</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

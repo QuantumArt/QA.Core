@@ -2,7 +2,7 @@
 using System.Configuration;
 using System.Data;
 using System.Data.Common;
-using System.Data.Objects;
+using System.Data.Entity.Core.Objects;
 #pragma warning disable 1591
 
 namespace QA.Core.Data.Repository

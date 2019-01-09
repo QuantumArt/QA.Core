@@ -1,148 +1,35 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{55DD52CC-35E6-4254-A753-5005EF682F14}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>QA.Core.Service.Interaction</RootNamespace>
-    <AssemblyName>QA.Core.Service.Interaction</AssemblyName>
-    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
-    <TargetFrameworkProfile />
+    <TargetFramework>net471</TargetFramework>
+    <Version>3.5.0</Version>
+    <Authors>Nickolay Karlov</Authors>
+    <Company>Quantum Art</Company>
+    <Product>QA.Core</Product>
+    <Description>QA.Core.Service.Interaction for DPC</Description>
+    <Copyright>Copyright © 2007-2018 Quantum Art</Copyright>
+    <PackageReleaseNotes>Update to .net standard.</PackageReleaseNotes>
+    <PackageLicenseUrl>https://github.com/QuantumArt/QA.Core/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/QuantumArt/QA.Core</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/QuantumArt/QA.Core</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>Core DPC Service Interaction</PackageTags>
+    <AssemblyVersion>3.5.0.0</AssemblyVersion>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <DocumentationFile>bin\Debug\QA.Core.Service.Interaction.XML</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\QA.Core.Service.Interaction.XML</DocumentationFile>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Bee_test|AnyCPU'">
-    <OutputPath>bin\Bee_test\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>bin\Release\QA.Core.Service.Interaction.XML</DocumentationFile>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Client3|AnyCPU'">
-    <OutputPath>bin\Client3\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>bin\Release\QA.Core.Service.Interaction.XML</DocumentationFile>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Client1|AnyCPU'">
-    <OutputPath>bin\Client1\</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Client2|AnyCPU'">
-    <OutputPath>bin\Client2\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>bin\Release\QA.Core.Service.Interaction.XML</DocumentationFile>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Client1_Prod|AnyCPU'">
-    <OutputPath>bin\Client1_Prod\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data.Entity" />
-    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="netstandard" />
     <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Web" />
     <Reference Include="System.Web.Services" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IServiceResult.cs" />
-    <Compile Include="ServiceResultWithNoReturnValue.cs" />
-    <Compile Include="WebServiceToken.cs" />
-    <Compile Include="QAWebServiceBase.cs" />
-    <Compile Include="QAClientBase.cs" />
-    <Compile Include="ISecurityContext.cs" />
-    <Compile Include="OperationExecutionException.cs" />
-    <Compile Include="PageInfo.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="QAServiceBase.cs" />
-    <Compile Include="ServiceEnumerationResult.cs" />
-    <Compile Include="ServiceError.cs" />
-    <Compile Include="ServiceErrorType.cs" />
-    <Compile Include="ServiceExecutor.cs" />
-    <Compile Include="ServiceResult.cs" />
-    <Compile Include="ServiceResult`1.cs" />
-    <Compile Include="ServiceToken.cs" />
-    <Compile Include="UserContext.cs" />
+    <ProjectReference Include="..\QA.Core\QA.Core.csproj" PrivateAssets="None"  />
+    <ProjectReference Include="..\QA.Core.Data\QA.Core.Data.csproj" PrivateAssets="None" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
-    <None Include="QA.Core.Service.Interaction.nuspec" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\QA.Core.Data\QA.Core.Data.csproj">
-      <Project>{7af052ff-c40a-45c7-adfe-bc0fff0b59fd}</Project>
-      <Name>QA.Core.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\QA.Core\QA.Core.csproj">
-      <Project>{21895C57-CB09-4AF4-906A-71ED4599FE65}</Project>
-      <Name>QA.Core</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

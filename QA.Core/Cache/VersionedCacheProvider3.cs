@@ -1,7 +1,6 @@
 ﻿// Owners: Alexey Abretov, Nikolay Karlov
 
 using System;
-using System.Collections.Concurrent;
 using System.Runtime.Caching;
 #pragma warning disable 1591
 
@@ -14,33 +13,20 @@ namespace QA.Core
     public class VersionedCacheProvider3 : CacheProvider, IVersionedCacheProvider
     {
         private readonly MemoryCache _cache;
+        public bool _useRemovedCallback;
         private static readonly int DeprecatedCachePeriod = 120;
         private static readonly string DeprecatedCacheKey = "<>__deprecated__cache_element_";
 
-        public VersionedCacheProvider3()
+        public VersionedCacheProvider3() : this(MemoryCache.Default, true)
         {
-            _cache = MemoryCache.Default;
+
         }
 
-        ///// <summary>
-        ///// Для совместимости со старым кодом
-        ///// </summary>
-        ///// <param name="innerCache"></param>
-        //public VersionedCacheProvider3(ICacheProvider innerCache)
-        //{
-        //    if (innerCache == null)
-        //    {
-        //        _cache = new MemoryCache("VersionedCacheProvider2" + Guid.NewGuid().ToString());
-        //    }
-        //    else if (innerCache is CacheProvider)
-        //    {
-        //        _cache = ((CacheProvider)innerCache).Cache;
-        //    }
-        //    else
-        //    {
-        //        throw new InvalidOperationException("VersionedCacheProvider2 supports only CacheProvider as an internal cache, but provided: " + innerCache.GetType());
-        //    }
-        //}
+        public VersionedCacheProvider3(MemoryCache cache, bool useRemovedCallback)
+        {
+            _cache = cache;
+            _useRemovedCallback = useRemovedCallback;
+        }
 
         /// <summary>
         /// Получает данные из кеша по ключу
@@ -72,7 +58,10 @@ namespace QA.Core
 
             var policy = new CacheItemPolicy();
             policy.AbsoluteExpiration = DateTime.Now + TimeSpan.FromSeconds(cacheTime);
-            policy.RemovedCallback = CacheItemRemovedCallBack;
+            if (_useRemovedCallback)
+            {
+                policy.RemovedCallback = CacheItemRemovedCallBack;
+            }
             _cache.Set(new CacheItem(key, data), policy);
         }
 
@@ -91,7 +80,10 @@ namespace QA.Core
 
             var policy = new CacheItemPolicy();
             policy.AbsoluteExpiration = DateTime.Now + expiration;
-            policy.RemovedCallback = CacheItemRemovedCallBack;
+            if (_useRemovedCallback)
+            {
+                policy.RemovedCallback = CacheItemRemovedCallBack;
+            }
             _cache.Set(new CacheItem(key, data), policy);
         }
 
@@ -136,8 +128,8 @@ namespace QA.Core
         /// </summary>
         public override void Dispose()
         {
+            _cache.Dispose();
         }
-
 
 
         #region IVersionedCacheProvider Members
@@ -149,7 +141,10 @@ namespace QA.Core
                 AbsoluteExpiration = DateTime.Now + expiration
             };
 
-            policy.RemovedCallback = CacheItemRemovedCallBack;
+            if (_useRemovedCallback)
+            {
+                policy.RemovedCallback = CacheItemRemovedCallBack;
+            }
 
             ConfigureDependency(tags, policy);
 
