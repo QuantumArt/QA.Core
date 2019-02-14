@@ -1,4 +1,5 @@
-﻿// Owners: Alexey Abretov, Nikolay Karlov
+﻿#if !NETSTANDARD
+// Owners: Alexey Abretov, Nikolay Karlov
 
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -59,3 +60,4 @@ namespace QA.Core.Service
         }
     }
 }
+#endif

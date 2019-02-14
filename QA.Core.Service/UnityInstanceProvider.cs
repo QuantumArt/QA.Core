@@ -1,3 +1,4 @@
+#if !NETSTANDARD
 // Owners: Alexey Abretov, Nikolay Karlov
 
 using System;
@@ -37,3 +38,4 @@ namespace QA.Core.Service
         }
     }
 }
+#endif

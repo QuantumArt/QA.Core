@@ -319,10 +319,12 @@ namespace QA.Core.Service.Interaction
                     }
                 }
 
+ #if !NETSTANDARD
                 if (token == null && HttpContext.Current != null)
                 {
                     token = HttpContext.Current.Items[ServiceToken.ServiceTokenKey] as ServiceToken;
                 }
+ #endif
 
                 if (token == null && ObjectFactoryBase.CacheProvider != null)
                 {

@@ -6,7 +6,6 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using Unity;
 using QA.Core.Logger;
-using Unity.Attributes;
 
 namespace QA.Core.Web
 {

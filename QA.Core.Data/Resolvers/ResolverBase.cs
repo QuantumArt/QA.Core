@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if !NETSTANDARD
+using System;
 using System.Configuration;
 using System.Data.Linq.Mapping;
 
@@ -85,3 +86,4 @@ namespace QA.Core.Data.Resolvers
         }
     }
 }
+#endif

@@ -51,10 +51,10 @@ namespace QA.Core
         /// </summary>
         /// <typeparam name="T1"></typeparam>
         /// <typeparam name="T2"></typeparam>
-        public static void CreateDualMap<T1, T2>()
+        public static void CreateDualMap<T1, T2>(IMapperConfigurationExpression cfg)
         {
-            Mapper.CreateMap<T1, T2>();
-            Mapper.CreateMap<T2, T1>();
+            cfg.CreateMap<T1, T2>();
+            cfg.CreateMap<T2, T1>();
         }
 
         /// <summary>
@@ -62,9 +62,9 @@ namespace QA.Core
         /// </summary>
         /// <typeparam name="T1"></typeparam>
         /// <typeparam name="T2"></typeparam>
-        public static IMappingExpression<T1, T2> CreateMap<T1, T2>()
+        public static IMappingExpression<T1, T2> CreateMap<T1, T2>(IMapperConfigurationExpression cfg)
         {
-            return Mapper.CreateMap<T1, T2>();
+            return cfg.CreateMap<T1, T2>();
         }
     }
 }
