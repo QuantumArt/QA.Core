@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Version>3.5.1-beta2</Version>
+    <Version>3.5.1</Version>
     <Authors>Nickolay Karlov</Authors>
     <Company>QA.Core</Company>
     <Product>QP8.Framework</Product>
