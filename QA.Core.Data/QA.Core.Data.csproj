@@ -17,12 +17,14 @@
     <AssemblyVersion>3.5.0.0</AssemblyVersion>
 
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+
+    <PackageVersion>3.5.2-beta5</PackageVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
   </PropertyGroup>
-  <PropertyGroup  Condition=" '$(TargetFramework)' == 'netstandard2.0'">
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
     <DefineConstants>NETSTANDARD</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
@@ -34,12 +36,12 @@
   <ItemGroup>
     <PackageReference Include="Quantumart.AspNetCore" Version="3.3.0-beta2" PrivateAssets="None" />
   </ItemGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net471'" >
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net471'">
     <PackageReference Include="EntityFramework" Version="6.2.0" PrivateAssets="None" />
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.Web" />
   </ItemGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'" >
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
     <PackageReference Include="Z.EntityFramework.Classic" Version="7.0.0" PrivateAssets="None" />
   </ItemGroup>
 </Project>

@@ -3,10 +3,12 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading;
 using System.Transactions;
+using Npgsql;
 using QA.Core.Logger;
 
 namespace QA.Core.Cache
@@ -23,11 +25,19 @@ namespace QA.Core.Cache
         private readonly IContentInvalidator _invalidator;
         private readonly ILogger _logger;
         private readonly InvalidationMode _mode;
-        private readonly string _cmdText = @"SELECT [CONTENT_ID], [LIVE_MODIFIED], [STAGE_MODIFIED] FROM [CONTENT_MODIFICATION] WITH (NOLOCK)";
+
+        private string getCmdText()
+        {
+            return $@"SELECT CONTENT_ID, LIVE_MODIFIED, STAGE_MODIFIED
+                FROM CONTENT_MODIFICATION{(DbType == "SqlServer"
+                ? " WITH (NOLOCK)"
+                : string.Empty)}";
+        }
 
         private volatile bool _isBusy;
         private readonly TimeSpan _pollPeriod;
         private readonly TimeSpan _dueTime;
+        protected readonly string DbType;
 
         private readonly Func<Tuple<int[], string[]>, bool> _onInvalidate;
 
@@ -38,8 +48,12 @@ namespace QA.Core.Cache
         /// <param name="invalidator">объект, инвалидирующий кеш</param>
         /// <param name="connectionString">строка подключения</param>
         /// <param name="logger">логгер</param>
-        public CacheItemWatcherBase(InvalidationMode mode, IContentInvalidator invalidator, string connectionString, ILogger logger)
-            : this(mode, Timeout.InfiniteTimeSpan, invalidator, connectionString, logger, 0, false)
+        public CacheItemWatcherBase(InvalidationMode mode,
+            IContentInvalidator invalidator,
+            string connectionString,
+            ILogger logger,
+            string databaseType = "SqlServer")
+            : this(mode, Timeout.InfiniteTimeSpan, invalidator, connectionString, logger, 0, false, databaseType: databaseType)
         {
 
         }
@@ -59,7 +73,8 @@ namespace QA.Core.Cache
             string connectionString, ILogger logger,
             int dueTime = 0,
             bool useTimer = true,
-            Func<Tuple<int[], string[]>, bool> onInvalidate = null)
+            Func<Tuple<int[], string[]>, bool> onInvalidate = null,
+            string databaseType = "SqlServer")
         {
             Throws.IfArgumentNull(_ => connectionString);
             Throws.IfArgumentNull(_ => invalidator);
@@ -75,6 +90,7 @@ namespace QA.Core.Cache
             _mode = mode;
             _invalidator = invalidator;
             _onInvalidate = onInvalidate;
+            DbType = databaseType;
 
             if (useTimer)
             {
@@ -214,13 +230,19 @@ namespace QA.Core.Cache
             using (var tsSuppressed = new TransactionScope(TransactionScopeOption.Suppress))
             {
                 if (newValues == null) throw new ArgumentNullException(nameof(newValues));
-
-                using (SqlConnection con = new SqlConnection(ConnectionString))
+                DbConnection connection = DbType == "SqlServer"
+                    ? (DbConnection)new SqlConnection(ConnectionString)
+                    : new NpgsqlConnection(ConnectionString);
+                using (connection)
                 {
-                    using (SqlCommand cmd = new SqlCommand(_cmdText, con))
+                    DbCommand cmd = DbType == "SqlServer"
+                        ? (DbCommand)new SqlCommand(getCmdText())
+                        : new NpgsqlCommand(getCmdText());
+                    using (cmd)
                     {
+                        cmd.Connection = connection;
                         cmd.CommandType = CommandType.Text;
-                        con.Open();
+                        connection.Open();
 
                         try
                         {
@@ -242,7 +264,7 @@ namespace QA.Core.Cache
                         }
                         finally
                         {
-                            con.Close();
+                            connection.Close();
                         }
                     }
                 }
