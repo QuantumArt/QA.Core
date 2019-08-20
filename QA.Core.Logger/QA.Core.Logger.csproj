@@ -15,7 +15,7 @@
     <PackageTags>Core DPC Logger</PackageTags>
     <AssemblyVersion>3.5.0.0</AssemblyVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageVersion>3.5.2-beta5</PackageVersion>
+    <PackageVersion>3.5.2-beta6</PackageVersion>
   </PropertyGroup>
 
     <ItemGroup>

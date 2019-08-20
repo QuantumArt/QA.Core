@@ -14,8 +14,8 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>Core DPC Throws</PackageTags>
     <AssemblyVersion>3.5.0.0</AssemblyVersion>
-
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageVersion>3.5.2-beta6</PackageVersion>
   </PropertyGroup>
     <ItemGroup>
       <ProjectReference Include="..\QA.Core.Linq\QA.Core.Linq.csproj" PrivateAssets="None"  />
