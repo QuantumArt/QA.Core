@@ -21,7 +21,7 @@ namespace QA.Core.Data.QP
         /// </summary>
         public QpDbConnector()
         {
-            DbConnector = new DBConnector(null);
+            DbConnector = new DBConnector((string)null);
         }
 
         /// <summary>

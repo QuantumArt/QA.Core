@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net471</TargetFramework>
-    <Version>3.5.1</Version>
+    <Version>3.5.2</Version>
     <Authors>Nickolay Karlov</Authors>
     <Company>Quantum Art</Company>
     <Product>QA.Core</Product>
@@ -18,7 +18,7 @@
 
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 
-    <PackageVersion>3.5.2-beta6</PackageVersion>
+    <PackageVersion>3.5.2</PackageVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <DebugSymbols>true</DebugSymbols>
@@ -38,6 +38,6 @@
     <PackageReference Include="FluentValidation" Version="8.0.100" PrivateAssets="None" />
     <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.6" PrivateAssets="None" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" PrivateAssets="None" />
-    <PackageReference Include="Quantumart.AspNetCore" Version="3.3.0-beta2" PrivateAssets="None" />
+    <PackageReference Include="Quantumart.AspNetCore" Version="3.4.0" PrivateAssets="None" />
   </ItemGroup>
 </Project>
