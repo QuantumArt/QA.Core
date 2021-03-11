@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net471</TargetFramework>
-    <Version>3.5.3</Version>
+    <Version>3.5.4</Version>
     <Authors>Nickolay Karlov</Authors>
     <Company>Quantum Art</Company>
     <Product>QA.Core</Product>
@@ -18,7 +18,7 @@
 
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 
-    <PackageVersion>3.5.3</PackageVersion>
+    <PackageVersion>3.5.4</PackageVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <DebugSymbols>true</DebugSymbols>
