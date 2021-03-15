@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if !NETSTANDARD
+using System;
 using System.Data.Linq.Mapping;
 
 namespace QA.Core.Data
@@ -38,3 +39,4 @@ namespace QA.Core.Data
         string GetTableName<TContext, TContent>();
     }
 }
+#endif

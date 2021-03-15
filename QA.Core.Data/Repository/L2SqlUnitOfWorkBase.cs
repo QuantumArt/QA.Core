@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if !NETSTANDARD
+using System;
 using System.Data;
 using System.Data.Common;
 using System.Data.Linq;
@@ -217,3 +218,4 @@ namespace QA.Core.Data.Repository
         }
     }
 }
+#endif

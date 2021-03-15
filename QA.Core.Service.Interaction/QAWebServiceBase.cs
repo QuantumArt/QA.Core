@@ -1,4 +1,5 @@
-﻿// Owners: Alexey Abretov, Nikolay Karlov
+﻿#if !NETSTANDARD
+// Owners: Alexey Abretov, Nikolay Karlov
 using System;
 
 namespace QA.Core.Service.Interaction
@@ -37,3 +38,4 @@ namespace QA.Core.Service.Interaction
         }
     }
 }
+#endif

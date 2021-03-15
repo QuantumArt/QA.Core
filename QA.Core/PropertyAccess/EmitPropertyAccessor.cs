@@ -1,5 +1,5 @@
 ﻿/* Has been got from: http://www.codeproject.com/Articles/9927/Fast-Dynamic-Property-Access-with-C
- * 
+ *
  * Modified by KarlovN
  * */
 
@@ -74,7 +74,7 @@ namespace QA.Core
         public void SetValue(object target, object value)
         {
             if (mCanWrite)
-            {               
+            {
                 //
                 // Set the property value
                 //
@@ -148,7 +148,7 @@ namespace QA.Core
         private void Init()
         {
             this.InitTypes();
-            // Create the assembly and an instance of the 
+            // Create the assembly and an instance of the
             // property accessor class.
             Assembly assembly = EmitAssembly();
             mEmittedPropertyAccessor =
@@ -162,8 +162,8 @@ namespace QA.Core
         /// <summary>
         /// Thanks to Ben Ratzlaff for this snippet of code
         /// http://www.codeproject.com/cs/miscctrl/CustomPropGrid.asp
-        /// 
-        /// "Initialize a private hashtable with type-opCode pairs 
+        ///
+        /// "Initialize a private hashtable with type-opCode pairs
         /// so i dont have to write a long if/else statement when outputting msil"
         /// </summary>
         private void InitTypes()
@@ -197,7 +197,7 @@ namespace QA.Core
             // Create a new assembly with one module
             //
             AssemblyBuilder newAssembly =
-               Thread.GetDomain().DefineDynamicAssembly(assemblyName,
+                AssemblyBuilder.DefineDynamicAssembly(assemblyName,
                AssemblyBuilderAccess.Run);
             ModuleBuilder newModule =
                newAssembly.DefineDynamicModule("Module");
@@ -207,14 +207,14 @@ namespace QA.Core
             TypeBuilder myType =
                newModule.DefineType("Property", TypeAttributes.Public);
             //
-            // Mark the class as implementing IPropertyAccessor. 
+            // Mark the class as implementing IPropertyAccessor.
             //
             myType.AddInterfaceImplementation(typeof(IPropertyAccessor));
             // Add a constructor
             ConstructorBuilder constructor =
                myType.DefineDefaultConstructor(MethodAttributes.Public);
             //
-            // Define a method for the get operation. 
+            // Define a method for the get operation.
             //
             Type[] getParamTypes = new Type[] { typeof(object) };
             Type getReturnType = typeof(object);
@@ -230,7 +230,7 @@ namespace QA.Core
             ILGenerator getIL = getMethod.GetILGenerator();
 
             //
-            // Emit the IL. 
+            // Emit the IL.
             //
             MethodInfo targetGetMethod = this.mTargetType.GetMethod("get_" +
                                                         this.mProperty);
@@ -274,7 +274,7 @@ namespace QA.Core
             //
             ILGenerator setIL = setMethod.GetILGenerator();
             //
-            // Emit the IL. 
+            // Emit the IL.
             //
             MethodInfo targetSetMethod =
                 this.mTargetType.GetMethod("set_" + this.mProperty);
@@ -282,15 +282,15 @@ namespace QA.Core
             {
                 Type paramType = targetSetMethod.GetParameters()[0].ParameterType;
                 setIL.DeclareLocal(paramType);
-                setIL.Emit(OpCodes.Ldarg_1); //Load the first argument 
+                setIL.Emit(OpCodes.Ldarg_1); //Load the first argument
                 //(target object)
                 //Cast to the source type
                 setIL.Emit(OpCodes.Castclass, this.mTargetType);
-                setIL.Emit(OpCodes.Ldarg_2); //Load the second argument 
+                setIL.Emit(OpCodes.Ldarg_2); //Load the second argument
                 //(value object)
                 if (paramType.IsValueType)
                 {
-                    setIL.Emit(OpCodes.Unbox, paramType); //Unbox it 
+                    setIL.Emit(OpCodes.Unbox, paramType); //Unbox it
                     if (mTypeHash[paramType] != null) //and load
                     {
                         OpCode load = (OpCode)mTypeHash[paramType];
@@ -317,7 +317,7 @@ namespace QA.Core
             //
             // Load the type
             //
-            myType.CreateType();
+            myType.CreateTypeInfo();
             return newAssembly;
         }
     }

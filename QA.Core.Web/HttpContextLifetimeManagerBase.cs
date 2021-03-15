@@ -12,7 +12,7 @@ namespace QA.Core.Web
     /// Реализует жизненный цикл объекта в текущем запросе.
     /// Если контекст запроса пуст, то используется стратегия ThreadLocal&lt;T&gt;.
     /// </summary>
-    public abstract class HttpContextLifetimeManagerBase : LifetimeManager, IDisposable
+    public abstract class HttpContextLifetimeManagerBase : LifetimeManager, IDisposable, ITypeLifetimeManager
     {
 
         private ThreadLocal<object> _val = new ThreadLocal<object>();

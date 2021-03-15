@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if !NETSTANDARD
+using System;
 using System.Linq;
 using System.Web.Services.Protocols;
 
@@ -35,3 +36,4 @@ namespace QA.Core.Service.Interaction
         public const string ServiceTokenKey = "ServiceTokenKey";
     }
 }
+#endif

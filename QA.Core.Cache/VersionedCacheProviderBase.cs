@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Primitives;
@@ -272,6 +274,49 @@ namespace QA.Core.Cache
             }
             return (T) result;
         }
+
+        public T[] GetOrAddValues<T>(string[] keys, string keySuffix, string[] tags, TimeSpan expiration,
+            Func<string[], Dictionary<string, T>> getData)
+        {
+            keys = keys.Distinct().ToArray();
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+
+            List<T> resultValues = new List<T>(keys.Length);
+            List<string> excludeKeys = new List<string>(keys.Length);
+            foreach (string key in keys)
+            {
+                string fullKey = key + keySuffix;
+                object cacheValue = Get(fullKey, tags);
+                if (cacheValue == null)
+                {
+                    excludeKeys.Add(key);
+                }
+                else
+                {
+                    resultValues.Add(cacheValue is T value ? value : default(T));
+                }
+            }
+
+            if (excludeKeys.Count > 0)
+            {
+                var time1 = sw.ElapsedMilliseconds;
+                Dictionary<string, T> newValues = getData(excludeKeys.ToArray());
+                sw.Stop();
+                var time2 = sw.ElapsedMilliseconds;
+                CheckPerformance($"\"{string.Join(", ", excludeKeys.Select(ek => ek + keySuffix))}\"", time1, time2);
+
+                foreach (KeyValuePair<string, T> newValue in newValues.Where(nv => nv.Value != null))
+                {
+                    Add(newValue.Value, newValue.Key + keySuffix, tags, expiration);
+                    resultValues.Add(newValue.Value);
+                }
+            }
+
+            sw.Stop();
+            return resultValues.ToArray();
+        }
+
 
 
         private void CheckPerformance(string key, long time1, long time2, bool reportTime1 = true)

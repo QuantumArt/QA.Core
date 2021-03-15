@@ -16,11 +16,11 @@
     <DebugType>full</DebugType>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="netstandard" />
+        <Reference Include="netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\QA.Core.Data\QA.Core.Data.csproj" PrivateAssets="None" />
-    <ProjectReference Include="..\QA.Core\QA.Core.csproj" PrivateAssets="None" />    
+    <ProjectReference Include="..\QA.Core\QA.Core.csproj" PrivateAssets="None" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />

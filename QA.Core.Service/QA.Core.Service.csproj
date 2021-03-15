@@ -1,35 +1,41 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net471</TargetFramework>
-    <Version>3.5.0</Version>
+    <Version>3.5.4</Version>
     <Authors>Nickolay Karlov</Authors>
     <Company>QA.Core</Company>
     <Product>QP8.Framework</Product>
     <Description>QA.Core.Service for DPC</Description>
     <Copyright>Copyright © 2007-2018 Quantum Art</Copyright>
     <PackageReleaseNotes>Update to .net standard.</PackageReleaseNotes>
-    <PackageLicenseUrl>https://github.com/QuantumArt/QA.Core/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageLicense>MPL2.0</PackageLicense>
     <PackageProjectUrl>https://github.com/QuantumArt/QA.Core</PackageProjectUrl>
     <RepositoryUrl>https://github.com/QuantumArt/QA.Core</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>Core DPC Service</PackageTags>
     <AssemblyVersion>3.5.0.0</AssemblyVersion>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <TargetFrameworks>net471;netstandard2.0</TargetFrameworks>
+    <PackageVersion>3.5.4</PackageVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+    <DefineConstants>NETSTANDARD</DefineConstants>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="netstandard" />
+        <Reference Include="netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51" />
+    <PackageReference Include="System.ServiceModel.Primitives" Version="4.5.3" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net471'">
     <Reference Include="System.Web.Services" />
-    <Reference Include="System.ServiceModel" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\QA.Core.Data\QA.Core.Data.csproj" PrivateAssets="None"  />
-    <ProjectReference Include="..\QA.Core.Service.Interaction\QA.Core.Service.Interaction.csproj" PrivateAssets="None"  />
-    <ProjectReference Include="..\QA.Core\QA.Core.csproj" PrivateAssets="None"  />
+    <ProjectReference Include="..\QA.Core.Data\QA.Core.Data.csproj" PrivateAssets="None" />
+    <ProjectReference Include="..\QA.Core.Service.Interaction\QA.Core.Service.Interaction.csproj" PrivateAssets="None" />
+    <ProjectReference Include="..\QA.Core\QA.Core.csproj" PrivateAssets="None" />
   </ItemGroup>
 </Project>

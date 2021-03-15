@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if !NETSTANDARD
+using System;
 using System.Data.Linq.Mapping;
 
 namespace QA.Core.Data.Resolvers
@@ -72,7 +73,7 @@ namespace QA.Core.Data.Resolvers
             return GetMapping(IsStageMode);
         }
 
-        
+
         /// <summary>
         /// Получение полного пути к ресурсу.
         /// Например, "QA.Core.Site.Data.QP.Mapping.ContentContext_Stage.map"
@@ -82,3 +83,4 @@ namespace QA.Core.Data.Resolvers
         protected abstract string GetManifestResourcePath(bool isStage);
     }
 }
+#endif

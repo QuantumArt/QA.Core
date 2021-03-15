@@ -1,38 +1,47 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net471</TargetFramework>
-    <Version>3.5.0</Version>
+    <TargetFrameworks>net471;netstandard2.0</TargetFrameworks>
+    <Version>3.5.4</Version>
     <Authors>Nickolay Karlov</Authors>
     <Company>Quantum Art</Company>
     <Product>QA.Core</Product>
     <Description>QA.Core.Data for DPC</Description>
     <Copyright>Copyright © 2007-2018 Quantum Art</Copyright>
     <PackageReleaseNotes>Update to .net standard.</PackageReleaseNotes>
-    <PackageLicenseUrl>https://github.com/QuantumArt/QA.Core/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageLicense>MPL2.0</PackageLicense>
     <PackageProjectUrl>https://github.com/QuantumArt/QA.Core</PackageProjectUrl>
     <RepositoryUrl>https://github.com/QuantumArt/QA.Core</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>Core DPC Data</PackageTags>
     <AssemblyVersion>3.5.0.0</AssemblyVersion>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+
+    <PackageVersion>3.5.4</PackageVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
+    <DefineConstants>NETSTANDARD</DefineConstants>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="netstandard" />
-    <Reference Include="System.Data.Linq" />
-    <Reference Include="System.Transactions" />
-    <Reference Include="System.Web" />
+        <Reference Include="netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\QA.Core\QA.Core.csproj" PrivateAssets="None" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Quantumart.AspNetCore" Version="3.4.0" PrivateAssets="None" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net471'">
     <PackageReference Include="EntityFramework" Version="6.2.0" PrivateAssets="None" />
-    <PackageReference Include="Quantumart.AspNetCore" Version="3.3.0-beta2" PrivateAssets="None" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Web" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="Z.EntityFramework.Classic" Version="7.0.0" PrivateAssets="None" />
   </ItemGroup>
 </Project>
