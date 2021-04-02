@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Version>3.5.4</Version>
+    <Version>3.5.5</Version>
     <Authors>Nickolay Karlov</Authors>
     <Company>QA.Core</Company>
     <Product>QP8.Framework</Product>
@@ -17,7 +17,7 @@
 
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <TargetFrameworks>net471;netstandard2.0</TargetFrameworks>
-    <PackageVersion>3.5.4</PackageVersion>
+    <PackageVersion>3.5.5</PackageVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <DebugSymbols>true</DebugSymbols>
