@@ -37,7 +37,7 @@
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="8.0.100" PrivateAssets="None" />
     <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.6" PrivateAssets="None" />
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" PrivateAssets="None" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" PrivateAssets="None" />
     <PackageReference Include="Quantumart.AspNetCore" Version="3.4.0" PrivateAssets="None" />
   </ItemGroup>
 </Project>
