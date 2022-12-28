@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net471</TargetFramework>
-    <Version>3.5.5</Version>
+    <Version>3.6.0</Version>
     <Authors>Nickolay Karlov</Authors>
     <Company>Quantum Art</Company>
     <Product>QA.Core</Product>
@@ -14,11 +14,8 @@
     <RepositoryUrl>https://github.com/QuantumArt/QA.Core</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>Core DPC Web</PackageTags>
-    <AssemblyVersion>3.5.0.0</AssemblyVersion>
-
+    <AssemblyVersion>3.6.0.0</AssemblyVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-
-    <PackageVersion>3.5.5</PackageVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <DebugSymbols>true</DebugSymbols>
@@ -32,12 +29,10 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\QA.Core.Service.Interaction\QA.Core.Service.Interaction.csproj" PrivateAssets="None" />
-    <ProjectReference Include="..\QA.Core\QA.Core.csproj" PrivateAssets="None" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="8.0.100" PrivateAssets="None" />
-    <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.6" PrivateAssets="None" />
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" PrivateAssets="None" />
-    <PackageReference Include="Quantumart.AspNetCore" Version="3.4.0" PrivateAssets="None" />
+    <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.9" PrivateAssets="None" />
+    <PackageReference Include="Quantumart.AspNetCore" Version="4.0.8" PrivateAssets="None" />
   </ItemGroup>
 </Project>
