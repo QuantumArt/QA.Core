@@ -1,12 +1,12 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Version>3.6.0</Version>
+    <Version>3.6.1</Version>
     <Authors>Nickolay Karlov</Authors>
     <Company>QA.Core</Company>
     <Product>QP8.Framework</Product>
     <Description>QA.Core.Service for DPC</Description>
-    <Copyright>Copyright © 2007-2018 Quantum Art</Copyright>
+    <Copyright>Copyright © 2007-2025 Quantum Art</Copyright>
     <PackageReleaseNotes>Update to .net standard.</PackageReleaseNotes>
     <PackageLicense>MPL2.0</PackageLicense>
     <PackageProjectUrl>https://github.com/QuantumArt/QA.Core</PackageProjectUrl>
